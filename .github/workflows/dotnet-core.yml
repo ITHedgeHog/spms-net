@@ -20,4 +20,4 @@ jobs:
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save spms-cluster
     - name: Docker Build
-      run: docker build -t registry.digitalocean.com/agile-h/spms:$(echo $GITHUB_SHA | head -c7) SPMS.Web/
+      run: docker build -t registry.digitalocean.com/agile-h/spms:$(echo $GITHUB_SHA | head -c7) SPMS.Web/ -f SPMS.Web/Dockerfile
