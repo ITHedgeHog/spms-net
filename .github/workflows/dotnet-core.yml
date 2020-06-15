@@ -13,13 +13,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
       with:
-        dotnet-version: 3.1.101
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore SPMS.sln
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save spms-cluster
+    - name: Docker Build
+      run: docker build -t registry.digitalocean.com/agile-h/spms:$(echo $GITHUB_SHA | head -c7) SPMS.Web\Docker
