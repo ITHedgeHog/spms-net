@@ -30,6 +30,6 @@ jobs:
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save spms-cluster
     - name: Deploy to DigitalOcean Kubernetes
-      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
+      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment-0.yml
     - name: Verify deployment
       run: kubectl rollout status deployment/spms-0
