@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+  database:
+    image:  postgres
+    container_name: pg_container
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: 123xyz12!
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  sql:
+    container_name: sql
+    image: "mcr.microsoft.com/mssql/server"
+    environment:
+      SA_PASSWORD: "123xyz12!"
+      ACCEPT_EULA: "Y"
+
+  spms.web:
+    image: ${DOCKER_REGISTRY-}spmsweb
+    build:
+      context: .
+      dockerfile: SPMS.Web/Dockerfile
+    depends_on:
+      - sql
+    
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  pgdata: {}

@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Star Trek: Beyond the Darkness</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    @RenderSection("Style", false)
+</head>
+<body>
+    <header>
+        @{ Html.RenderPartial("_Menu"); }
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Beyond the Darkness RPG. <a href="http://www.getspms.net" target="_blank">Powered by <i>SPMS.Net</i></a> - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy & Disclaimer</a> <a asp-area="" asp-controller="Rules" asp-action="Index">Rules</a> @if (User.IsInRole("player"))
+                                                                                                                                                                                                                                                                 {
+            <text>
+                [ <a asp-area="" asp-controller="Debug" asp-action="Index"> Debug </a>] </text>
+                                                                                                                                                                                                                                                                 }
+        </div>
+    </footer>
+
+    <div class="disclaimer text-muted">
+        <div class="container">
+            <p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p>
+            <p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

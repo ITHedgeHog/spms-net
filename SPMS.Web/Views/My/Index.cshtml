@@ -1,0 +1,26 @@
+﻿@model SPMS.Web.ViewModels.MyViewModel
+<div class="row">
+    
+    <div class="col-10">
+        <h1>My Characters</h1>
+        
+        <ul>
+            @foreach (var character in Model.Characters)
+            {
+            <li><a asp-action="Details" asp-controller="Biography" asp-area="" asp-route-id="@character.Key">@character.Value</a> [<a asp-action="Edit" asp-controller="Biography" asp-route-id="@character.Key">Edit</a>]</li>
+            }
+        </ul>
+    </div>
+    <div class="col-2">
+        @if (Model.IsCreateCharacterEnabled)
+        {
+            <a asp-action="Create" asp-controller="Biography" asp-area="" class="btn btn-primary">Create New Character</a>
+        }
+        else
+        {
+            <p class="btn btn-primary">Character Creation Disabled</p>
+        }
+
+        <a asp-action="Create" asp-controller="Authoring" asp-area="" class="btn btn-primary">Create New Post</a>
+    </div>
+</div>
