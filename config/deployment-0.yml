@@ -23,7 +23,11 @@ spec:
       - name: spms-0
         image: <IMAGE>
         ports:
-        - containerPort: 5000
+        - containerPort: 80
+        - containerPort: 443
+        env:
+        - name: ASPNETCORE_ENVIORNMENT
+          value: "Production"
         resources:
           requests:
             cpu: 100m
