@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SPMS.Web.Service;
 
 namespace SPMS.Web.Models
 {
@@ -51,12 +54,35 @@ namespace SPMS.Web.Models
 
         public static void SeedDevelopment(SpmsContext context)
         {
-            var btdGame = new Game() {Name = "Beyond the Darkness", Description = "BtD Simulation"};
-            if (!context.Game.Any(g => g.Name == "Beyond the Darkness"))
+            var btdGame = new Game() {Name = StaticValues.DefaultGameName, Description = "BtD Simulation"};
+            if (!context.Game.Any(g => g.Name == StaticValues.DefaultGameName))
+            {
                 context.Game.Add(btdGame);
 
-            context.SaveChanges();
-            
+                context.SaveChanges();
+
+                // Add Game URL's
+
+                context.GameUrl.Add(new GameUrl() {GameId = btdGame.Id, Url = "www.beyond-the-darkness.com"});
+                context.GameUrl.Add(new GameUrl() { GameId = btdGame.Id, Url = "spms0.beyond-the-darkness.com" });
+                context.GameUrl.Add(new GameUrl() { GameId = btdGame.Id, Url = "btd.beyond-the-darkness.com" });
+            }
+
+
+            var aquaGame = new Game() { Name = "USS Aqua", Description = "Aqua  Simulation" };
+            if (!context.Game.Any(g => g.Name == "USS Aqua"))
+            {
+                context.Game.Add(aquaGame);
+
+                context.SaveChanges();
+
+                // Add Game URL's
+
+                context.GameUrl.Add(new GameUrl() { GameId = aquaGame.Id, Url = "aqua.beyond-the-darkness.com" });
+                context.GameUrl.Add(new GameUrl() { GameId = aquaGame.Id, Url = "spms1.beyond-the-darkness.com" });
+            }
+
+
             // Character
             if (!context.Biography.Any(b => b.Firstname == "Marcus" && b.Surname == "Brightstar"))
                 context.Biography.Add(new Biography()

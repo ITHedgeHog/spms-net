@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace SPMS.Web.Models
 {
@@ -12,6 +13,18 @@ namespace SPMS.Web.Models
 
         public string Description { get; set; }
 
+        public Collection<GameUrl> Url { get; set; }
+
+    }
+
+    public class GameUrl {
+        [Key]
+        public int Id { get; set; }
+        [Required, DataType(DataType.Url)]
+        public string Url { get; set; }
+
+        public int GameId { get; set; }
+        public Game Game { get; set; }
 
     }
 }

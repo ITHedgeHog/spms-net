@@ -18,6 +18,7 @@ namespace SPMS.Web.Models
         public DbSet<SPMS.Web.Models.Biography> Biography { get; set; }
         public DbSet<BiographyStatus> BiographyStatus { get; set; }
         public DbSet<Game> Game { get; set; }
+        public DbSet<GameUrl> GameUrl { get; set; }
         public DbSet<Series> Series { get; set; }
         public DbSet<EpisodeStatus> EpisodeStatus { get; set; }
         public DbSet<Episode> Episode { get; set; }
