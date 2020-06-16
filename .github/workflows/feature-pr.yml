@@ -13,12 +13,12 @@ jobs:
       with:
         source_branch: ""                                 # If blank, default: triggered branch
         destination_branch: "main"                      # If blank, default: master
-        pr_title: "Pulling ${{ github.ref }} into master" # Title of pull request
+        pr_title: "Pulling ${{ github.ref }} into main" # Title of pull request
         pr_body: ":crown: *An automated PR*"              # Full markdown support, requires pr_title to be set
         pr_template: ".github/PULL_REQUEST_TEMPLATE.md"   # Path to pull request template, requires pr_title to be set, excludes pr_body
         pr_reviewer: "wei,worker"                         # Comma-separated list (no spaces)
         pr_assignee: "wei,worker"                         # Comma-separated list (no spaces)
         pr_label: "auto-pr"                               # Comma-separated list (no spaces)
-        pr_milestone: "Milestone 1"                       # Milestone name
+        pr_milestone: "Beta"                       # Milestone name
         pr_draft: false                                    # Creates pull request as draft
         github_token: ${{ secrets.GITHUB_TOKEN }}
