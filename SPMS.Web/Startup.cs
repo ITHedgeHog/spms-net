@@ -122,6 +122,16 @@ namespace SPMS.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SpmsContext context)
         {
+            app.Use((httpContext, next) =>
+            {
+                if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
+                {
+                    httpContext.Request.Scheme = "https";
+                }
+                return next();
+            });
+
+
             //context.Database.EnsureDeleted();
             context.Database.Migrate();
             Seed.SeedDefaults(context);
