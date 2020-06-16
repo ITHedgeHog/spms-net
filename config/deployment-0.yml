@@ -24,6 +24,9 @@ spec:
         image: <IMAGE>
         ports:
         - containerPort: 5000
+        env:
+        - name: ASPNETCORE_ENVIORNMENT
+          value: "Production"
         resources:
           requests:
             cpu: 100m
