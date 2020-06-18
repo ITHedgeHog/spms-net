@@ -10,24 +10,45 @@
                 <li class="nav-item">
                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Biography" asp-action="Index">Dramatis Personae</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Database
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item text-dark" asp-area="" asp-controller="Biography" asp-action="Index">Dramatis Personae</a>
+                        <a class="dropdown-item text-dark" asp-area="" asp-controller="Registry" asp-action="Index">Starship Registry</a>
+                    </div>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Story" asp-action="Index">The Story So Far</a>
+                </li>
+
             </ul>
         </div>
         <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
             <ul class="navbar-nav flex-grow-1">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <li class="nav-item">
-                        @{
-                            var avatar = User.Claims.First(x => x.Type == "picture").Value;
-                        }
-                        <a asp-action="Index" asp-controller="My"><img src="@avatar" alt="Users avatar" width="25px" /></a>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            @{
+                                var avatar = User.Claims.First(x => x.Type == "picture").Value;
+                            }
+                            <img src="@avatar" alt="@User.Identity.Name avatar and menu" width="25px" /> Manage Account
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            @* Show Application Link if not a player? *@
+                            <a asp-action="Index" asp-controller="My" class="dropdown-item">Characters</a>
+                            @*<a class="dropdown-item" href="#">Another action</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Something else here</a>*@
+                            <a id="qsLogoutBtn" class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a>
+                        </div>
                     </li>
-                    <li class="nav-item">
-                        <a id="qsLogoutBtn" class="nav-link text-dark" asp-controller="Account" asp-action="Logout">Logout</a>
-                    </li>
+
+
                 }
                 else
                 {

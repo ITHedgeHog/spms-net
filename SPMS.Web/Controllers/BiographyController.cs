@@ -2,25 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SPMS.Web.Models;
+using SPMS.Web.Service;
 using SPMS.Web.ViewModels;
 using SPMS.Web.ViewModels.Biography;
 
 namespace SPMS.Web.Controllers
 {
+    [Authorize(Roles = "player")]
     public class BiographyController : Controller
     {
         private readonly SpmsContext _context;
+        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public BiographyController(SpmsContext context)
+        public BiographyController(SpmsContext context, IMapper mapper, IUserService userService)
         {
             _context = context;
+            _mapper = mapper;
+            _userService = userService;
         }
 
+        [AllowAnonymous]
         // GET: Biography
         public async Task<IActionResult> Index()
         {
@@ -33,6 +44,7 @@ namespace SPMS.Web.Controllers
             return View(vm);
         }
 
+        [AllowAnonymous]
         // GET: Biography/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -67,8 +79,10 @@ namespace SPMS.Web.Controllers
             var vm = new CreateBiographyViewModel { Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList() };
             if (ModelState.IsValid)
             {
-                biography.Owner = User.Claims.First(u => u.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
-                _context.Add((Biography)biography);
+                var entity = _mapper.Map<Biography>(biography);
+
+                entity.Owner = User.Claims.First(u => u.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+                _context.Add(entity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -83,24 +97,30 @@ namespace SPMS.Web.Controllers
                 return NotFound();
             }
 
-            EditBiographyViewModel biography = new EditBiographyViewModel() { }; ;
+            //EditBiographyViewModel biography = new EditBiographyViewModel() { }; ;
                 
-            var biographyData = JsonConvert.SerializeObject(await _context.Biography.AsNoTracking().FirstAsync(x => x.Id == id));
-            biography = JsonConvert.DeserializeObject<EditBiographyViewModel>(biographyData);
-            biography.Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
-            if (biography == null)
+            var biography = await _context.Biography.Include(b => b.Player).Include(b => b.Posting)
+                .Include(b => b.Status)
+                .Where(x => x.Id == id).ProjectTo<EditBiographyViewModel>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
+
+            if (biography.Owner != _userService.GetAuthId()|| biography == default(EditBiographyViewModel))
             {
                 return NotFound();
             }
+
+            biography.Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+            biography.Statuses = _context.BiographyStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+      
             return View(biography);
         }
 
         // POST: Biography/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,PlayerId,History")] EditBiographyViewModel biography)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,PlayerId,History,StatusId")] EditBiographyViewModel biography)
         {
             if (id != biography.Id)
             {
@@ -111,7 +131,8 @@ namespace SPMS.Web.Controllers
             {
                 try
                 {
-                    _context.Update((Biography)biography);
+                    var entity = _mapper.Map<Biography>(biography);
+                    _context.Update(entity);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

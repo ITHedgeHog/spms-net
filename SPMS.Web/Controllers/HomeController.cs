@@ -6,21 +6,34 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SPMS.Web.Models;
+using SPMS.Web.Service;
+using SPMS.Web.ViewModels;
 
 namespace SPMS.Web.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IGameService _gameService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IGameService gameService)
         {
             _logger = logger;
+            _gameService = gameService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+           //// var game = await _gameService.GetGameNameAsync();
+            var vm = new ViewModel()
+            {
+                GameName = await _gameService.GetGameNameAsync(),
+                SiteTitle = await _gameService.GetSiteTitleAsync(),
+                SiteDisclaimer = await _gameService.GetSiteDisclaimerAsync(),
+                IsReadOnly = await _gameService.GetReadonlyStatus()
+            };
+
+            return View(vm);
         }
 
         public IActionResult Privacy()

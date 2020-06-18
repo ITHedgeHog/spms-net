@@ -1,16 +1,18 @@
-﻿<!DOCTYPE html>
+﻿@model SPMS.Web.ViewModels.ViewModel
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Star Trek: Beyond the Darkness</title>
+    <title>@ViewData["Title"] - @Model.SiteTitle</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("Style", false)
 </head>
 <body>
     <header>
-        @{ Html.RenderPartial("_Menu"); }
+        @{ await Html.RenderPartialAsync("_Menu", Model); }
     </header>
     <div class="container">
         <main role="main" class="pb-3">
@@ -29,8 +31,7 @@
 
     <div class="disclaimer text-muted">
         <div class="container">
-            <p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p>
-            <p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>
+            @Html.Raw(Model.SiteDisclaimer)
         </div>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

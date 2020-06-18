@@ -1,13 +1,13 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +15,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using SPMS.Web.Models;
+using SPMS.Web.Policy;
+using SPMS.Web.Service;
 
 namespace SPMS.Web
 {
@@ -114,14 +116,37 @@ namespace SPMS.Web
             });
 
 
+            // Add AutoMapper
+            services.AddAutoMapper(typeof(Startup));
+
             
+
+            // Add Services
+            services.AddHttpContextAccessor();
+            services.AddTransient<IGameService, GameService>();
+            services.AddTransient<IUserService, UserService>();
+
+
+
+            // Policies
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(
+                    "Administrator", policy =>
+                        policy.Requirements.Add(
+                            new AdministratorRequirement()));
+            });
+            services.AddTransient<IAuthorizationHandler,
+                AdministratorHandler>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SpmsContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SpmsContext context, IMapper mapper)
         {
+            mapper.ConfigurationProvider.AssertConfigurationIsValid();
+
             app.Use((httpContext, next) =>
             {
                 if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
@@ -133,12 +158,20 @@ namespace SPMS.Web
 
 
             //context.Database.EnsureDeleted();
-            context.Database.Migrate();
-            Seed.SeedDefaults(context);
+            if (Configuration.GetValue<bool>("MigrateAndSeed"))
+            {
+                context.Database.Migrate();
+                Seed.SeedDefaults(context);
+            }
+
+            if (Configuration.GetValue<bool>("SeedBtd"))
+            {
+                Seed.SeedBtd(context);
+            }
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();;
-                Seed.SeedDevelopment(context);
+                
             }
             else
             {
@@ -157,6 +190,11 @@ namespace SPMS.Web
 
             app.UseEndpoints(endpoints =>
             {
+
+                endpoints.MapControllerRoute(
+                    name: "admin",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
