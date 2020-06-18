@@ -31,7 +31,7 @@ namespace SPMS.Web.ViewModels.Biography
         public BiographyStatus Status { get; set; }
 
         public int PostingId { get; set; }
-        public Posting Posting { get; set; }
+        public string Posting { get; set; }
 
         public string Owner { get; set; }
         public int PlayerId { get; set; }

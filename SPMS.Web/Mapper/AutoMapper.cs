@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using SPMS.Web.Models;
+using SPMS.Web.ViewModels;
 using SPMS.Web.ViewModels.Biography;
 
 namespace SPMS.Web.Mapper
@@ -13,7 +14,7 @@ namespace SPMS.Web.Mapper
         public AutoMapper()
         {
             CreateMap<Biography, CreateBiographyViewModel>()
-                .ForMember(x => x.Posting, opt => opt.Ignore())//MapFrom(y => y.Posting.Name))
+                .ForMember(x => x.Posting, opt => opt.MapFrom(y => y.Posting.Name))
                 .ForMember(x => x.IsReadOnly, opt => opt.Ignore())
                 .ForMember(x => x.SiteDisclaimer, opt => opt.Ignore())
                 .ForMember(x => x.SiteTitle, opt => opt.Ignore())
@@ -31,8 +32,9 @@ namespace SPMS.Web.Mapper
                 .ForMember(x => x.SiteDisclaimer, opt => opt.Ignore())
                 .ForMember(x => x.SiteTitle, opt => opt.Ignore())
                 .ForMember(x => x.GameName, opt => opt.Ignore());
+            CreateMap<PlayerRole, PlayerRoleViewModel>();
             CreateMap<Player, PlayerViewModel>()
-                .ForMember(x => x.Roles, opt => opt.Ignore());
+                .ForMember(x => x.Roles, opt => opt.MapFrom(y => y.Roles.Select(z => new PlayerRoleViewModel(){ Id = z.PlayerRole.Id, Name = z.PlayerRole.Name})));
             CreateMap<PlayerViewModel, Player>()
                 .ForMember(p=>p.Roles, opt=>opt.Ignore());
             CreateMap<CreateBiographyViewModel, Biography>()

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using SPMS.Web.Models;
+using SPMS.Web.Policy;
 using SPMS.Web.Service;
 
 namespace SPMS.Web
@@ -117,11 +119,25 @@ namespace SPMS.Web
             // Add AutoMapper
             services.AddAutoMapper(typeof(Startup));
 
+            
+
             // Add Services
             services.AddHttpContextAccessor();
             services.AddTransient<IGameService, GameService>();
             services.AddTransient<IUserService, UserService>();
-            
+
+
+
+            // Policies
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(
+                    "Administrator", policy =>
+                        policy.Requirements.Add(
+                            new AdministratorRequirement()));
+            });
+            services.AddTransient<IAuthorizationHandler,
+                AdministratorHandler>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
@@ -174,6 +190,11 @@ namespace SPMS.Web
 
             app.UseEndpoints(endpoints =>
             {
+
+                endpoints.MapControllerRoute(
+                    name: "admin",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+                );
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

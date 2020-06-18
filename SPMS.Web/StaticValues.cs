@@ -8,7 +8,7 @@
 
         public static string Post => "Post";
         public static string PersonalLog => "Personal Log";
-        public static string PlayerRole => "player";
-        public static string AdminRole => "admin";
+        public const string PlayerRole =  "player";
+        public const string AdminRole = "admin";
     }
 }
