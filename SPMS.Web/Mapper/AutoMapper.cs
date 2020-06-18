@@ -32,7 +32,9 @@ namespace SPMS.Web.Mapper
                 .ForMember(x => x.SiteDisclaimer, opt => opt.Ignore())
                 .ForMember(x => x.SiteTitle, opt => opt.Ignore())
                 .ForMember(x => x.GameName, opt => opt.Ignore());
-            CreateMap<PlayerRole, PlayerRoleViewModel>();
+            
+            CreateMap<PlayerRole, PlayerRoleViewModel>().ForMember(x => x.Name, opt => opt.MapFrom(y => y.Name))
+                .ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id));
             CreateMap<Player, PlayerViewModel>()
                 .ForMember(x => x.Roles, opt => opt.MapFrom(y => y.Roles.Select(z => new PlayerRoleViewModel(){ Id = z.PlayerRole.Id, Name = z.PlayerRole.Name})));
             CreateMap<PlayerViewModel, Player>()

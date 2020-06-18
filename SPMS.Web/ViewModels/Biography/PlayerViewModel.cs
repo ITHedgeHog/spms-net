@@ -9,6 +9,6 @@ namespace SPMS.Web.ViewModels.Biography
         public string DisplayName { get; set; }
 
         public string AuthString { get; set; }
-        public List<string> Roles { get; set; }
+        public List<PlayerRoleViewModel> Roles { get; set; }
     }
 }
