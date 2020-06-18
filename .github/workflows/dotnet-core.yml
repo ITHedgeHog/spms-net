@@ -26,10 +26,12 @@ jobs:
     - name: Push image to DigitalOcean Container Registry
       run: docker push  registry.digitalocean.com/agile-h/spms:$(echo $GITHUB_SHA | head -c7)
     - name: Update deployment file
-      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/agile-h/spms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment-0.yml
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/agile-h/spms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment0/deployment.yml
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save spms-cluster
     - name: Deploy to DigitalOcean Kubernetes
-      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment-0.yml
+      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment0/deployment.yml
+    - name: Configure Ingresses
+      run: kbectl apply -f $GITHUB_WORKSPACE/config/deployment0/sites/spms.yml
     - name: Verify deployment
       run: kubectl rollout status deployment/spms-0
