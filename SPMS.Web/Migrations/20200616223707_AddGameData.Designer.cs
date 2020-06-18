@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPMS.Web.Models;
 
 namespace SPMS.Web.Migrations
 {
     [DbContext(typeof(SpmsContext))]
-    partial class SpmsContextModelSnapshot : ModelSnapshot
+    [Migration("20200616223707_AddGameData")]
+    partial class AddGameData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,7 +79,7 @@ namespace SPMS.Web.Migrations
                     b.Property<string>("Species")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("StatusId")
+                    b.Property<int?>("StatusId")
                         .HasColumnType("int");
 
                     b.Property<string>("Surname")
@@ -151,22 +153,8 @@ namespace SPMS.Web.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EpisodeEntryTypeId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("EpisodeId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
-
-                    b.Property<int>("SeriesId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Timeline")
-                        .HasColumnType("nvarchar(200)")
-                        .HasMaxLength(200);
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(200)")
@@ -174,29 +162,9 @@ namespace SPMS.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EpisodeEntryTypeId");
-
                     b.HasIndex("EpisodeId");
 
-                    b.HasIndex("SeriesId");
-
                     b.ToTable("EpisodeEntry");
-                });
-
-            modelBuilder.Entity("SPMS.Web.Models.EpisodeEntryType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(150)")
-                        .HasMaxLength(150);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EpisodeEntryType");
                 });
 
             modelBuilder.Entity("SPMS.Web.Models.EpisodeStatus", b =>
@@ -227,9 +195,6 @@ namespace SPMS.Web.Migrations
                     b.Property<string>("Disclaimer")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsReadonly")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(255)")
@@ -288,36 +253,6 @@ namespace SPMS.Web.Migrations
                     b.ToTable("Player");
                 });
 
-            modelBuilder.Entity("SPMS.Web.Models.PlayerRole", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PlayerRole");
-                });
-
-            modelBuilder.Entity("SPMS.Web.Models.PlayerRolePlayer", b =>
-                {
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayerRoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlayerId", "PlayerRoleId");
-
-                    b.HasIndex("PlayerRoleId");
-
-                    b.ToTable("PlayerRolePlayer");
-                });
-
             modelBuilder.Entity("SPMS.Web.Models.Posting", b =>
                 {
                     b.Property<int>("Id")
@@ -371,9 +306,7 @@ namespace SPMS.Web.Migrations
 
                     b.HasOne("SPMS.Web.Models.BiographyStatus", "Status")
                         .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StatusId");
                 });
 
             modelBuilder.Entity("SPMS.Web.Models.Episode", b =>
@@ -389,21 +322,9 @@ namespace SPMS.Web.Migrations
 
             modelBuilder.Entity("SPMS.Web.Models.EpisodeEntry", b =>
                 {
-                    b.HasOne("SPMS.Web.Models.EpisodeEntryType", "EpisodeEntryType")
-                        .WithMany()
-                        .HasForeignKey("EpisodeEntryTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SPMS.Web.Models.Episode", null)
                         .WithMany("Entries")
                         .HasForeignKey("EpisodeId");
-
-                    b.HasOne("SPMS.Web.Models.Series", "Series")
-                        .WithMany()
-                        .HasForeignKey("SeriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("SPMS.Web.Models.GameUrl", b =>
@@ -420,21 +341,6 @@ namespace SPMS.Web.Migrations
                     b.HasOne("SPMS.Web.Models.EpisodeEntry", null)
                         .WithMany("Players")
                         .HasForeignKey("EpisodeEntryId");
-                });
-
-            modelBuilder.Entity("SPMS.Web.Models.PlayerRolePlayer", b =>
-                {
-                    b.HasOne("SPMS.Web.Models.Player", "Player")
-                        .WithMany("Roles")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SPMS.Web.Models.PlayerRole", "PlayerRole")
-                        .WithMany("PlayerRolePlayer")
-                        .HasForeignKey("PlayerRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("SPMS.Web.Models.Series", b =>

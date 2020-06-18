@@ -6,7 +6,7 @@ using SPMS.Web.Models;
 
 namespace SPMS.Web.ViewModels
 {
-    public class BiographiesViewModel
+    public class BiographiesViewModel : ViewModel
     {
         public List<Posting> Postings { get; set; }
 

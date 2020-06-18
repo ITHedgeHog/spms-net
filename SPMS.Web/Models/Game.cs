@@ -14,7 +14,11 @@ namespace SPMS.Web.Models
         public string Description { get; set; }
 
         public Collection<GameUrl> Url { get; set; }
-
+        [Required]
+        public string SiteTitle { get; set; }
+        [Required]
+        public string Disclaimer { get; set; }
+        public bool IsReadonly { get; set; }
     }
 
     public class GameUrl {

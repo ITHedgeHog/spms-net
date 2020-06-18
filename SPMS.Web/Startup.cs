@@ -1,5 +1,7 @@
 using System;
+using System.Reflection;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Builder;
@@ -111,17 +113,24 @@ namespace SPMS.Web
                 };
             });
 
+
+            // Add AutoMapper
+            services.AddAutoMapper(typeof(Startup));
+
             // Add Services
             services.AddHttpContextAccessor();
             services.AddTransient<IGameService, GameService>();
+            services.AddTransient<IUserService, UserService>();
             
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SpmsContext context)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SpmsContext context, IMapper mapper)
         {
+            mapper.ConfigurationProvider.AssertConfigurationIsValid();
+
             app.Use((httpContext, next) =>
             {
                 if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
@@ -133,12 +142,20 @@ namespace SPMS.Web
 
 
             //context.Database.EnsureDeleted();
-            context.Database.Migrate();
-            Seed.SeedDefaults(context);
+            if (Configuration.GetValue<bool>("MigrateAndSeed"))
+            {
+                context.Database.Migrate();
+                Seed.SeedDefaults(context);
+            }
+
+            if (Configuration.GetValue<bool>("SeedBtd"))
+            {
+                Seed.SeedBtd(context);
+            }
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();;
-                Seed.SeedDevelopment(context);
+                
             }
             else
             {

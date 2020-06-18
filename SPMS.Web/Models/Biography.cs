@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Security.AccessControl;
 
 namespace SPMS.Web.Models
 {
@@ -23,6 +24,7 @@ namespace SPMS.Web.Models
         public string Rank { get; set; }
         public string RankImage { get; set; }
 
+        public int StatusId { get; set; }
         public BiographyStatus Status { get; set; }
 
         public int PostingId { get; set; }

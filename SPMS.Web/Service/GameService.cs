@@ -41,10 +41,28 @@ namespace SPMS.Web.Service
         {
             return (await GetGameAsync()).Name;
         }
+
+        public async Task<string> GetSiteTitleAsync()
+        {
+            return (await GetGameAsync()).SiteTitle;
+        }
+
+        public async Task<string> GetSiteDisclaimerAsync()
+        {
+            return (await GetGameAsync()).Disclaimer;
+        }
+
+        public async Task<bool> GetReadonlyStatus()
+        {
+            return (await GetGameAsync()).IsReadonly;
+        }
     }
 
     public interface IGameService
     {
         Task<string> GetGameNameAsync();
+        Task<string> GetSiteTitleAsync();
+        Task<string> GetSiteDisclaimerAsync();
+        Task<bool> GetReadonlyStatus();
     }
 }

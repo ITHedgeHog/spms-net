@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPMS.Web.Models;
 
 namespace SPMS.Web.Migrations
 {
     [DbContext(typeof(SpmsContext))]
-    partial class SpmsContextModelSnapshot : ModelSnapshot
+    [Migration("20200618025641_PlayerRoles")]
+    partial class PlayerRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,24 +300,14 @@ namespace SPMS.Web.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("PlayerId");
+
                     b.ToTable("PlayerRole");
-                });
-
-            modelBuilder.Entity("SPMS.Web.Models.PlayerRolePlayer", b =>
-                {
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlayerRoleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlayerId", "PlayerRoleId");
-
-                    b.HasIndex("PlayerRoleId");
-
-                    b.ToTable("PlayerRolePlayer");
                 });
 
             modelBuilder.Entity("SPMS.Web.Models.Posting", b =>
@@ -422,19 +414,11 @@ namespace SPMS.Web.Migrations
                         .HasForeignKey("EpisodeEntryId");
                 });
 
-            modelBuilder.Entity("SPMS.Web.Models.PlayerRolePlayer", b =>
+            modelBuilder.Entity("SPMS.Web.Models.PlayerRole", b =>
                 {
-                    b.HasOne("SPMS.Web.Models.Player", "Player")
+                    b.HasOne("SPMS.Web.Models.Player", null)
                         .WithMany("Roles")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SPMS.Web.Models.PlayerRole", "PlayerRole")
-                        .WithMany("PlayerRolePlayer")
-                        .HasForeignKey("PlayerRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlayerId");
                 });
 
             modelBuilder.Entity("SPMS.Web.Models.Series", b =>

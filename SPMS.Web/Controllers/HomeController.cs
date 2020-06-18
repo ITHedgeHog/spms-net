@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
+using SPMS.Web.ViewModels;
 
 namespace SPMS.Web.Controllers
 {
@@ -23,9 +24,16 @@ namespace SPMS.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var game = await _gameService.GetGameNameAsync();
+           //// var game = await _gameService.GetGameNameAsync();
+            var vm = new ViewModel()
+            {
+                GameName = await _gameService.GetGameNameAsync(),
+                SiteTitle = await _gameService.GetSiteTitleAsync(),
+                SiteDisclaimer = await _gameService.GetSiteDisclaimerAsync(),
+                IsReadOnly = await _gameService.GetReadonlyStatus()
+            };
 
-            return View();
+            return View(vm);
         }
 
         public IActionResult Privacy()
