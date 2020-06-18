@@ -48,12 +48,13 @@ namespace SPMS.Web.Controllers
         // GET: Biography/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var vm = new BiographyViewModel();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var biography = await _context.Biography.Include(x => x.Player).Include(x=>x.Status).Include(x => x.Posting)
+            var biography = await _context.Biography.Include(x => x.Player).Include(x=>x.Status).Include(x => x.Posting).ProjectTo<BiographyViewModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (biography == null)
             {
