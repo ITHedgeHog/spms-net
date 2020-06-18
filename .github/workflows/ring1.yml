@@ -1,0 +1,29 @@
+name: Deploy Ring 1
+
+on:
+  push:
+    branches: [ ring1 ]
+  pull_request:
+    branches: [ ring1 ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save spms-cluster
+    - name: Update deployment file
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/agile-h/spms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment-1.yml
+    - name: Save DigitalOcean kubeconfig
+      run: doctl kubernetes cluster kubeconfig save spms-cluster
+    - name: Deploy to DigitalOcean Kubernetes
+      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment-1.yml
+    - name: Verify deployment
+      run: kubectl rollout status deployment/spms-1
