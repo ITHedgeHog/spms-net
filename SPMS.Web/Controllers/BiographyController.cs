@@ -66,7 +66,9 @@ namespace SPMS.Web.Controllers
 
         public IActionResult Create()
         {
-            var vm = new CreateBiographyViewModel { Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList() };
+            var vm = new CreateBiographyViewModel { Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList(),
+            
+            Statuses = _context.BiographyStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString()))};
             return View(vm);
         }
 
@@ -75,14 +77,19 @@ namespace SPMS.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId")] CreateBiographyViewModel biography)
+        public async Task<IActionResult> Create([Bind("Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,StatusId")] CreateBiographyViewModel biography)
         {
-            var vm = new CreateBiographyViewModel { Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList() };
+            var vm = new CreateBiographyViewModel
+            {
+                Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList(),
+                Statuses = _context.BiographyStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString()))
+            };
             if (ModelState.IsValid)
             {
                 var entity = _mapper.Map<Biography>(biography);
 
                 entity.Owner = User.Claims.First(u => u.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
+                entity.PlayerId = _context.Player.First(x => x.AuthString == _userService.GetAuthId()).Id;
                 _context.Add(entity);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

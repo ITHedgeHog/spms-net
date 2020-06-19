@@ -9,19 +9,22 @@
 
 @foreach (var posting in Model.Postings)
 {
-    <h2>@posting.Name</h2>
-
-    @foreach (var item in Model.Biographies.Where(x => x.PostingId == posting.Id))
+    if (Model.Biographies.Any(b => b.PostingId == posting.Id))
     {
-        <div style="width:121px">
-            <div style="border: 1px solid #1e4f18; position: relative; width: 121px; height: 145px; overflow: hidden;">
-                <div style="position: absolute; top: 0; left: 0; font-size: 1000pt; width: 121px; height: 145px; overflow: hidden; line-height: 145px; z-index: 3;"> <a asp-action="Details" asp-route-id="@item.Id" title="@item.Firstname @item.Surname">&nbsp;</a></div>
-                <div style="position: absolute; top: 0; left: 0; z-index: 2;"> <a asp-action="Details" asp-route-id="@item.Id" title="@item.Firstname @item.Surname"><img alt="@item.Firstname @item.Surname" src="https://placehold.it/121x151" width="121" height="151"></a></div>
+        <h2>@posting.Name</h2>
+
+        @foreach (var item in Model.Biographies.Where(x => x.PostingId == posting.Id).OrderBy(x => x.Surname))
+        {
+            <div style="width:121px">
+                <div style="border: 1px solid #1e4f18; position: relative; width: 121px; height: 145px; overflow: hidden;">
+                    <div style="position: absolute; top: 0; left: 0; font-size: 1000pt; width: 121px; height: 145px; overflow: hidden; line-height: 145px; z-index: 3;"> <a asp-action="Details" asp-route-id="@item.Id" title="@item.Firstname @item.Surname">&nbsp;</a></div>
+                    <div style="position: absolute; top: 0; left: 0; z-index: 2;"> <a asp-action="Details" asp-route-id="@item.Id" title="@item.Firstname @item.Surname"><img alt="@item.Firstname @item.Surname" src="https://placehold.it/121x151" width="121" height="151"></a></div>
+                </div>
+                <div style="font-size: smaller;text-align: center">
+                    <b><a asp-action="Details" asp-route-id="@item.Id" title="@item.Firstname @item.Surname">@Html.DisplayFor(m => item.Firstname) @Html.DisplayFor(m => item.Surname)</a></b><br />@Html.DisplayFor(m => item.Assignment)
+                </div>
             </div>
-            <div style="font-size: smaller;text-align: center">
-                <b><a asp-action="Details" asp-route-id="@item.Id" title="@item.Firstname @item.Surname">@Html.DisplayFor(m => item.Firstname) @Html.DisplayFor(m => item.Surname)</a></b><br />@Html.DisplayFor(m => item.Assignment)
-            </div>
-        </div>
+        }
     }
 }
 
