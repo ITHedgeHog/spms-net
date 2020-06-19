@@ -33,17 +33,19 @@ namespace SPMS.Web.Filter
             var resultContext = await next();
             // resultContext.Result is set.
             // Do something after the action executes.
-            if (resultContext.Controller is Controller controller && controller.ViewData.Model is ViewModel)
+            if (resultContext.Controller is Controller controller)
             {
-                var model = controller.ViewData.Model;
-                ((ViewModel) model).GameName = await _gameService.GetGameNameAsync();
-                ((ViewModel) model).SiteTitle = await _gameService.GetSiteTitleAsync();
-                ((ViewModel) model).SiteDisclaimer = await _gameService.GetSiteDisclaimerAsync();
-                ((ViewModel) model).IsReadOnly = await _gameService.GetReadonlyStatusAsync();
-                ((ViewModel) model).SiteAnalytics = await _gameService.GetAnalyticsAsyncTask();
-                 ((ViewModel) model).UseAnalytics = _useAnalytics;
-                 ((ViewModel) model).IsAdmin = _userService.IsAdmin();
-                 ((ViewModel) model).IsPlayer = _userService.IsPlayer();
+                if (controller.ViewData.Model is ViewModel model)
+                {
+                    model.GameName = await _gameService.GetGameNameAsync();
+                    model.SiteTitle = await _gameService.GetSiteTitleAsync();
+                    model.SiteDisclaimer = await _gameService.GetSiteDisclaimerAsync();
+                    model.IsReadOnly = await _gameService.GetReadonlyStatusAsync();
+                    model.SiteAnalytics = await _gameService.GetAnalyticsAsyncTask();
+                    model.UseAnalytics = _useAnalytics;
+                    model.IsAdmin = _userService.IsAdmin();
+                    model.IsPlayer = _userService.IsPlayer();
+                }
             }
         }
 
