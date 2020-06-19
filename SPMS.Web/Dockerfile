@@ -1,4 +1,3 @@
-MAINTAINER Dan Taylor
 ARG BRANCH="master"
 ARG COMMIT=""
 
