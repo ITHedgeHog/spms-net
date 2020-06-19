@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using SPMS.Web.Filter;
 using SPMS.Web.Models;
 using SPMS.Web.Policy;
 using SPMS.Web.Service;
@@ -139,7 +140,7 @@ namespace SPMS.Web
             services.AddTransient<IAuthorizationHandler,
                 AdministratorHandler>();
 
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddRazorRuntimeCompilation();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

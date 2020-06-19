@@ -9,6 +9,15 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     @RenderSection("Style", false)
+    
+    @if (Model.UseAnalytics)
+    {
+        @Html.Raw(Model.SiteAnalytics)
+    }
+    else
+    {
+        <!-- Analytics Omitted -->
+    }
 </head>
 <body>
     <header>
@@ -23,8 +32,7 @@
         <div class="container">
             &copy; 2020 - Beyond the Darkness RPG. <a href="http://www.getspms.net" target="_blank">Powered by <i>SPMS.Net</i></a> - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy & Disclaimer</a> <a asp-area="" asp-controller="Rules" asp-action="Index">Rules</a> @if (User.IsInRole("player"))
                                                                                                                                                                                                                                                                  {
-            <text>
-                [ <a asp-area="" asp-controller="Debug" asp-action="Index"> Debug </a>] </text>
+            <text>[<a asp-area="" asp-controller="Debug" asp-action="Index"> Debug </a>] </text>
                                                                                                                                                                                                                                                                  }
         </div>
     </footer>

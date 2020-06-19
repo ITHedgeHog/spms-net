@@ -52,9 +52,14 @@ namespace SPMS.Web.Service
             return (await GetGameAsync()).Disclaimer;
         }
 
-        public async Task<bool> GetReadonlyStatus()
+        public async Task<bool> GetReadonlyStatusAsync()
         {
             return (await GetGameAsync()).IsReadonly;
+        }
+
+        public async Task<string> GetAnalyticsAsyncTask()
+        {
+            return (await GetGameAsync()).SiteAnalytics;
         }
     }
 
@@ -63,6 +68,7 @@ namespace SPMS.Web.Service
         Task<string> GetGameNameAsync();
         Task<string> GetSiteTitleAsync();
         Task<string> GetSiteDisclaimerAsync();
-        Task<bool> GetReadonlyStatus();
+        Task<bool> GetReadonlyStatusAsync();
+        Task<string> GetAnalyticsAsyncTask();
     }
 }

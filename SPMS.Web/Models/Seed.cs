@@ -88,7 +88,15 @@ namespace SPMS.Web.Models
 
         public static void SeedBtd(SpmsContext context)
         {
-            var btdGame = new Game() { Name = StaticValues.DefaultGameName, Description = "BtD Simulation", SiteTitle = "Beyond the Darkness a Star Trek RPG", Disclaimer = "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>" };
+            var btdGame = new Game() { Name = StaticValues.DefaultGameName, Description = "BtD Simulation", SiteTitle = "Beyond the Darkness a Star Trek RPG", Disclaimer = "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>", SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src='://www.googletagmanager.com/gtag/js?id=UA-167297746-1'></script>
+                <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-167297746-1');
+                </script> "};
             if (!context.Game.Any(g => g.Name == StaticValues.DefaultGameName))
             {
                 context.Game.Add(btdGame);
@@ -104,6 +112,20 @@ namespace SPMS.Web.Models
             else
             {
                 btdGame = context.Game.First(g => g.Name == StaticValues.DefaultGameName);
+
+                // Ensure Analyitics is set.
+
+                btdGame.SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src='://www.googletagmanager.com/gtag/js?id=UA-167297746-1'></script>
+                <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'UA-167297746-1');
+                </script> ";
+
+                context.Update(btdGame);
+                context.SaveChanges();
             }
 
 

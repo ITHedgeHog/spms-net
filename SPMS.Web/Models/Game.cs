@@ -19,6 +19,7 @@ namespace SPMS.Web.Models
         [Required]
         public string Disclaimer { get; set; }
         public bool IsReadonly { get; set; }
+        public string SiteAnalytics { get; set; }
     }
 
     public class GameUrl {
