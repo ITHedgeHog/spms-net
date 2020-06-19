@@ -170,16 +170,14 @@ namespace SPMS.Web
             {
                 Seed.SeedBtd(context);
             }
-            if (env.IsDevelopment())
+            if (env.IsDevelopment() || Configuration.GetValue<bool>("ShowErrors"))
             {
-                app.UseDeveloperExceptionPage();;
+                app.UseDeveloperExceptionPage();
                 
             }
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                //app.UseHsts();
             }
 
             app.UseHttpsRedirection();
