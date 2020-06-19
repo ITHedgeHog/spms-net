@@ -23,7 +23,10 @@ namespace SPMS.Web.Mapper
                 .ForMember(x => x.Statuses, opt => opt.Ignore())
                 .ForMember(x => x.GameName, opt => opt.Ignore())
                 .ForMember(x => x.UseAnalytics, opt => opt.Ignore())
-                .ForMember(x => x.SiteAnalytics, opt => opt.Ignore());
+                .ForMember(x => x.SiteAnalytics, opt => opt.Ignore())
+                .ForMember(x => x.IsAdmin, opt => opt.Ignore())
+                .ForMember(x => x.IsPlayer, opt => opt.Ignore())
+                ;
 
             CreateMap<Biography, EditBiographyViewModel>()
                 .ForMember(x => x.Posting, opt => opt.MapFrom(y => y.Posting.Name))
@@ -37,7 +40,9 @@ namespace SPMS.Web.Mapper
                 .ForMember(x => x.SiteTitle, opt => opt.Ignore())
                 .ForMember(x => x.GameName, opt => opt.Ignore())
                 .ForMember(x => x.UseAnalytics, opt => opt.Ignore())
-                .ForMember(x => x.SiteAnalytics, opt => opt.Ignore());
+                .ForMember(x => x.SiteAnalytics, opt => opt.Ignore())
+                .ForMember(x => x.IsAdmin, opt => opt.Ignore())
+                .ForMember(x => x.IsPlayer, opt => opt.Ignore());
 
 
 
@@ -50,7 +55,9 @@ namespace SPMS.Web.Mapper
                 .ForMember(x => x.SiteTitle, opt => opt.Ignore())
                 .ForMember(x => x.GameName, opt => opt.Ignore())
                 .ForMember(x => x.UseAnalytics, opt => opt.Ignore())
-                .ForMember(x => x.SiteAnalytics, opt => opt.Ignore());
+                .ForMember(x => x.SiteAnalytics, opt => opt.Ignore())
+                .ForMember(x => x.IsAdmin, opt => opt.Ignore())
+                .ForMember(x => x.IsPlayer, opt => opt.Ignore());
 
         }
     }

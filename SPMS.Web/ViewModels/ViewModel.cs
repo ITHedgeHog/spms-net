@@ -19,7 +19,8 @@ namespace SPMS.Web.ViewModels
         public string SiteDisclaimer { get; set; }
         public string SiteAnalytics { get; set; }
 
-        public bool UseAnalytics { get; set; }        
-
+        public bool UseAnalytics { get; set; }
+        public bool IsAdmin { get; set; }
+        public bool IsPlayer { get; set; }
     }
 }
