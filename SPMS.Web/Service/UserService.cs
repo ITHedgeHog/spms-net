@@ -38,12 +38,17 @@ namespace SPMS.Web.Service
 
         public bool IsPlayer()
         {
+            if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
+                return false;
             var user = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).FirstOrDefault(x => x.AuthString == GetAuthId());
             return user != default(Player) && user.Roles.Any(u => u.PlayerRole.Name == StaticValues.PlayerRole);
         }
 
         public bool IsAdmin()
         {
+            if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
+                return false;
+
             var user = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).FirstOrDefault(x => x.AuthString == GetAuthId());
             return user != default(Player) && user.Roles.Any(u => u.PlayerRole.Name == StaticValues.AdminRole);
         }
