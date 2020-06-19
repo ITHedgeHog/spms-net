@@ -1,8 +1,9 @@
 using System;
+using SPMS.Web.ViewModels;
 
 namespace SPMS.Web.Models
 {
-    public class ErrorViewModel
+    public class ErrorViewModel : ViewModel
     {
         public string RequestId { get; set; }
 
