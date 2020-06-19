@@ -3,6 +3,13 @@
     "mssql1": {
       "type": "mssql",
       "connectionId": "SpmsContextSql"
+    },
+    "appInsights1": {
+      "type": "appInsights",
+      "connectionId": "APPINSIGHTS_INSTRUMENTATIONKEY"
+    },
+    "secrets1": {
+      "type": "secrets"
     }
   }
 }
