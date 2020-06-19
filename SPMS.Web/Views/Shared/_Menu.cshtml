@@ -25,6 +25,10 @@
                     <a class="nav-link text-dark" asp-area="" asp-controller="Story" asp-action="Index">The Story So Far</a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Application" asp-action="Index">Join us</a>
+                </li>
+
             </ul>
         </div>
         <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
@@ -47,11 +51,10 @@
                             }
                             else
                             {
-                                <text>Join game</text>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Application" asp-action="Index">How to join</a>
                             }
-                            @*<a class="dropdown-item" href="#">Another action</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Something else here</a>*@
+
+                            <div class="dropdown-divider"></div>
                             <a id="qsLogoutBtn" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                         </div>
                     </li>
