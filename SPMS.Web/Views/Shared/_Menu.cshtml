@@ -1,4 +1,5 @@
-﻿<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+﻿@model SPMS.Web.ViewModels.ViewModel
+<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Beyond the Darkness</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -40,15 +41,29 @@
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                             @* Show Application Link if not a player? *@
-                            <a asp-action="Index" asp-controller="My" class="dropdown-item">Characters</a>
+                            @if (Model.IsPlayer)
+                            {
+                                <a asp-area="" asp-action="Index" asp-controller="My" class="dropdown-item">Characters</a>
+                            }
+                            else
+                            {
+                                <text>Join game</text>
+                            }
                             @*<a class="dropdown-item" href="#">Another action</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something else here</a>*@
-                            <a id="qsLogoutBtn" class="dropdown-item" asp-controller="Account" asp-action="Logout">Logout</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Something else here</a>*@
+                            <a id="qsLogoutBtn" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
                         </div>
                     </li>
-
-
+                    @if (Model.IsAdmin)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownAdmin" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownAdmin">
+                                <a asp-area="Admin" asp-action="Index" asp-controller="Player" class="dropdown-item">Player Management</a>
+                            </div>
+                        </li>
+                    }
                 }
                 else
                 {
