@@ -21,9 +21,14 @@ namespace SPMS.Web.Service
 
         public string GetAuthId()
         {
-            return _httpContext.HttpContext.User.Claims
-                .FirstOrDefault(u => u.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
-                ?.Value;
+            if (_httpContext.HttpContext != null && _httpContext.HttpContext.User.Identity.IsAuthenticated)
+            {
+                return _httpContext.HttpContext.User.Claims
+                    .FirstOrDefault(u => u.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
+                    ?.Value;
+            }
+
+            return string.Empty;
         }
 
         public string GetName()
