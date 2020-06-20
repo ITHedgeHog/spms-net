@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SPMS.Web.ViewModels;
 
 namespace SPMS.Web.Controllers
 {
@@ -10,7 +11,8 @@ namespace SPMS.Web.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var vm = new ViewModel();
+            return View(vm);
         }
     }
 }
