@@ -173,31 +173,32 @@ namespace SPMS.Web.Models
                     PlayerId = context.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StatusId = 3
                 });
+
             context.SaveChanges();
 
-            var bioCount = context.Biography.Include(x => x.Posting)
-                .Count(b => b.Posting.Name == "Starbase Gamma");
-            if (bioCount <= 10)
-            {
-                for (var i = bioCount; i <= 10; i++)
-                {
-                    var rnd = new Random();
-                    context.Biography.Add(new Biography()
-                    {
-                        Firstname = "Random" + rnd.Next(),
-                        Surname = "Character" + rnd.Next(),
-                        Born = "Earth",
-                        Gender = "Female",
-                        Assignment = "Starbase Gamma",
-                        PostingId = context.Posting.First(p => p.Name == "Starbase Gamma").Id,
-                        Rank = "Admiral",
-                        DateOfBirth = "Sometime in 2332",
-                        PlayerId = context.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                        StatusId = 3
-                    });
-                }
-            }
-            context.SaveChanges();
+            //var bioCount = context.Biography.Include(x => x.Posting)
+            //    .Count(b => b.Posting.Name == "Starbase Gamma");
+            //if (bioCount <= 10)
+            //{
+            //    for (var i = bioCount; i <= 10; i++)
+            //    {
+            //        var rnd = new Random();
+            //        context.Biography.Add(new Biography()
+            //        {
+            //            Firstname = "Random" + rnd.Next(),
+            //            Surname = "Character" + rnd.Next(),
+            //            Born = "Earth",
+            //            Gender = "Female",
+            //            Assignment = "Starbase Gamma",
+            //            PostingId = context.Posting.First(p => p.Name == "Starbase Gamma").Id,
+            //            Rank = "Admiral",
+            //            DateOfBirth = "Sometime in 2332",
+            //            PlayerId = context.Player.First(p => p.DisplayName == "Dan Taylor").Id,
+            //            StatusId = 3
+            //        });
+            //    }
+            //}
+            //context.SaveChanges();
 
             // Series
             var series = new Series() { Title = "Series 1", GameId = btdGame.Id };
