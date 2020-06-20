@@ -185,7 +185,19 @@ namespace SPMS.Web
             services.AddTransient<IAuthorizationHandler,
                 AdministratorHandler>();
 
-            services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddRazorRuntimeCompilation();
+
+            // Profiler
+            services.AddMiniProfiler(options =>
+            {
+                // All of this is optional. You can simply call .AddMiniProfiler() for all defaults
+
+                // (Optional) Path to use for profiler URLs, default is /mini-profiler-resources
+                options.RouteBasePath = "/profiler";
+
+
+            }).AddEntityFramework();
+
+                services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddRazorRuntimeCompilation();
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
             
@@ -227,6 +239,7 @@ namespace SPMS.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
+            app.UseMiniProfiler();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
