@@ -23,7 +23,7 @@ spec:
       app: spms-0
   strategy:
     rollingUpdate:
-      maxSurge: 1
+      maxSurge: 5
       maxUnavailable: 1
   minReadySeconds: 5
   template:
