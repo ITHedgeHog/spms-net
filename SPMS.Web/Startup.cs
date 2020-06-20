@@ -1,6 +1,9 @@
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
+using Amazon.Runtime;
+using Amazon.S3;
+using AspNetCore.DataProtection.Aws.S3;
 using AutoMapper;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
@@ -9,12 +12,12 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
-using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
@@ -37,12 +40,36 @@ namespace SPMS.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", Configuration["AWS:AccessKey"]);
+            Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration["AWS:SecretKey"]);
+
             services.AddDbContext<SpmsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SpmsContextSql")));
 
             // using Microsoft.AspNetCore.DataProtection;
+            //services.AddDataProtection()
+            //    .PersistKeysToDbContext<SpmsContext>();
+
+            ///https://static-btd.ams3.digitaloceanspaces.com
+            ///
+
+            
+            var s3config = new AmazonS3Config()
+            {
+                
+                ServiceURL = "https://ams3.digitaloceanspaces.com"
+            };
+            // Configure your AWS SDK however you usually would do so e.g. IAM roles, environment variables
+            services.TryAddSingleton<IAmazonS3>(new AmazonS3Client(s3config)
+            {
+                
+            });
+
+            // Assumes a Configuration property set as IConfigurationRoot similar to ASP.NET docs
             services.AddDataProtection()
-                .PersistKeysToDbContext<SpmsContext>();
+                .SetApplicationName(Configuration.GetValue<string>("cluster-name")) // Not required by S3 storage but a requirement for server farms
+                .PersistKeysToAwsS3(Configuration.GetSection("S3Persistence"));
+
 
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -160,6 +187,8 @@ namespace SPMS.Web
 
             services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddRazorRuntimeCompilation();
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
