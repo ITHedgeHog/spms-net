@@ -23,11 +23,32 @@ namespace SPMS.Web.Controllers
             _userService = userService;
         }
 
-        public IActionResult Index()
+        public IActionResult Characters()
         {
-            var vm = new MyViewModel();
+            var vm = new MyCharactersViewModel
+            {
+                IsCreateCharacterEnabled = _userService.IsPlayer(),
+                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Active)
+            };
 
-            vm.IsCreateCharacterEnabled = _userService.IsPlayer();
+
+            var owner = _userService.GetAuthId();
+            var bios = _context.Biography.Include(b => b.Player).Where(x => x.Player.AuthString == owner);
+            foreach (var bio in bios)
+            {
+                vm.Characters.Add(bio.Id, bio.Firstname + " " + bio.Surname);
+            }
+
+            return View(vm);
+        }
+
+        public IActionResult Writing()
+        {
+            var vm = new MyWritingViewModel
+            {
+                IsCreateCharacterEnabled = _userService.IsPlayer(),
+                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Active)
+            };
 
             var owner = _userService.GetAuthId();
             var bios = _context.Biography.Include(b => b.Player).Where(x => x.Player.AuthString == owner);

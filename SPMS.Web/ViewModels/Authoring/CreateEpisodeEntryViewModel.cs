@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SPMS.Web.Models;
+﻿using SPMS.Web.Models;
 
 namespace SPMS.Web.ViewModels.Authoring
 {

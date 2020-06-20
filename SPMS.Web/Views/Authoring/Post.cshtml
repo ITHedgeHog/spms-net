@@ -1,0 +1,53 @@
+﻿@model SPMS.Web.ViewModels.Authoring.AuthorPostViewModel
+@{
+    ViewData["Title"] = "Manage Post";
+}
+
+<div class="container">
+    <h1>Manage Post Metadata for episode @Model.EpisodeId</h1>
+    
+    <p>Editing a post is a two part process, firstly you set up the metadata for a post. This defines things like the title, location and timeline the post exists in</p>
+
+    <form asp-action="ProcessPostData" method="post">
+
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="EpisodeId" />
+        <input type="hidden" asp-for="TypeId" value="1" />
+        <div class="form-group row">
+            <label asp-for="PostTitle" class="control-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="PostTitle" class="form-control" />
+                <span asp-validation-for="PostTitle" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="PostLocation" class="control-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="PostLocation" class="form-control" />
+                <span asp-validation-for="PostLocation" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="PostTimeline" class="control-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="PostTimeline" class="form-control" />
+                <span asp-validation-for="PostTimeline" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label asp-for="PostLocation" class="control-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="PostLocation" class="form-control" />
+                <span asp-validation-for="PostLocation" class="text-danger"></span>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" id="save" name="save">Save Changes</button>
+        <button type="submit" class="btn btn-primary" id="edit" name="edit">Edit Post</button>
+        <button type="submit" class="btn btn-primary disabled" disabled="disabled" id="publish" name="publish">Publish Post</button>
+    </form>
+
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

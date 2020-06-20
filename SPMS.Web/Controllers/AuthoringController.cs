@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Web.Models;
+using SPMS.Web.Service;
 using SPMS.Web.ViewModels.Authoring;
 
 namespace SPMS.Web.Controllers
@@ -15,13 +18,54 @@ namespace SPMS.Web.Controllers
     public class AuthoringController : Controller
     {
         private readonly SpmsContext _context;
+        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public AuthoringController(SpmsContext context)
+        public AuthoringController(SpmsContext context, IMapper mapper, IUserService userService)
         {
             _context = context;
+            _mapper = mapper;
+            _userService = userService;
         }
 
-       
+
+
+        [HttpGet("author/post/data")]
+        public IActionResult Post()
+        { 
+            // TODO: Find active episode 
+            var activeEpisode = _context.Episode.Include(e => e.Status).FirstOrDefault(e => e.Status.Name == StaticValues.Active);
+
+            if (activeEpisode == default(Episode))
+                return RedirectToAction("Writing", "My");
+
+            var vm = new AuthorPostViewModel(activeEpisode.Id);
+            vm.Authors.Add(_userService.GetId());
+
+
+            return View(vm);
+        }
+        [HttpGet("author/post/{id}/data")]
+        public IActionResult PostDataExists(int id)
+        {
+            var vm = _context.EpisodeEntry.ProjectTo<AuthorPostViewModel>(_mapper.ConfigurationProvider).FirstOrDefault(x => x.Id == id);
+            if (vm == default(AuthorPostViewModel))
+            {
+                return NotFound("Could not find post");
+            }
+
+            return View("Post", vm);
+        }
+
+        [HttpPost("author/post/data")]
+        public IActionResult ProcessPostData(AuthorPostViewModel model)
+        {
+            if (!ModelState.IsValid) return View("Post", model);
+            TempData["Message"] = "Yay it saved";
+            return RedirectToAction("Writing", "My");
+
+        }
+
         // GET: Authoring/Create
         public IActionResult Create()
         {
@@ -47,7 +91,7 @@ namespace SPMS.Web.Controllers
             if (!ModelState.IsValid) return View(episodeEntry);
             _context.Add(episodeEntry);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "My");
+            return RedirectToAction("Writing", "My");
         }
 
         // GET: Authoring/Edit/5
@@ -96,7 +140,7 @@ namespace SPMS.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Writing", "My");
             }
             return View(episodeEntry);
         }
