@@ -2,10 +2,14 @@ using System;
 using System.Reflection;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +40,9 @@ namespace SPMS.Web
             services.AddDbContext<SpmsContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("SpmsContextSql")));
 
+            // using Microsoft.AspNetCore.DataProtection;
+            services.AddDataProtection()
+                .PersistKeysToDbContext<SpmsContext>();
 
 
             services.Configure<CookiePolicyOptions>(options =>
@@ -111,6 +118,17 @@ namespace SPMS.Web
                         context.Response.Redirect(logoutUri);
                         context.HandleResponse();
 
+                        return Task.CompletedTask;
+                    },
+                    OnRemoteFailure = (ctx) =>
+                    {
+                        TelemetryConfiguration tc1 = TelemetryConfiguration.CreateDefault();
+                        tc1.InstrumentationKey = Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
+
+                        var client = new TelemetryClient(tc1);
+                        client.TrackException(ctx.Failure);
+                        //ai.
+                        // React to the error here. See the notes below.
                         return Task.CompletedTask;
                     }
                 };

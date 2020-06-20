@@ -2,13 +2,14 @@
 using System.Linq;
 using System.Security.Permissions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
 using SPMS.Web.Models;
 
 namespace SPMS.Web.Models
 {
-    public class SpmsContext : DbContext
+    public class SpmsContext : DbContext, IDataProtectionKeyContext
     {
         public SpmsContext(DbContextOptions<SpmsContext> options)
             : base(options)
@@ -41,5 +42,6 @@ namespace SPMS.Web.Models
         public DbSet<Posting> Posting { get; set; }
         public DbSet<Player> Player { get; set; }
         public DbSet<PlayerRole> PlayerRole { get; set; }
+        public DbSet<DataProtectionKey> DataProtectionKeys { get; }
     }
 }
