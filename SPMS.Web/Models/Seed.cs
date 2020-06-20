@@ -156,7 +156,6 @@ namespace SPMS.Web.Models
                     PostingId = context.Posting.First(p => p.Name == "USS Sovereign").Id,
                     Rank = "Captain",
                     DateOfBirth = "Sometime in 2351",
-                    Owner = "auth0|5ed6862a0889640b8ab94b9f",
                     PlayerId = context.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StatusId = 3
                 });
@@ -171,7 +170,6 @@ namespace SPMS.Web.Models
                     PostingId = context.Posting.First(p => p.Name == "Starbase Gamma").Id,
                     Rank = "Admiral",
                     DateOfBirth = "Sometime in 2332",
-                    Owner = "auth0|5ed6862a0889640b8ab94b9f",
                     PlayerId = context.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StatusId = 3
                 });

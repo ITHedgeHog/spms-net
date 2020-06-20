@@ -30,8 +30,6 @@ namespace SPMS.Web.ViewModels.Biography
 
         public int PostingId { get; set; }
         public string Posting { get; set; }
-
-        public string Owner { get; set; }
         public int PlayerId { get; set; }
         public string Player { get; set; }
         public string History { get; set; }

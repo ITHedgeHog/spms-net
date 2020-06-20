@@ -88,7 +88,6 @@ namespace SPMS.Web.Controllers
             {
                 var entity = _mapper.Map<Biography>(biography);
 
-                entity.Owner = User.Claims.First(u => u.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier").Value;
                 entity.PlayerId = _context.Player.First(x => x.AuthString == _userService.GetAuthId()).Id;
                 _context.Add(entity);
                 await _context.SaveChangesAsync();
@@ -111,7 +110,7 @@ namespace SPMS.Web.Controllers
                 .Include(b => b.Status)
                 .Where(x => x.Id == id).ProjectTo<EditBiographyViewModel>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
 
-            if (biography.Owner != _userService.GetAuthId()|| biography == default(EditBiographyViewModel))
+            if (biography.Player.AuthString != _userService.GetAuthId()|| biography == default(EditBiographyViewModel))
             {
                 return NotFound();
             }
