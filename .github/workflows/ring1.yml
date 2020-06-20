@@ -18,8 +18,12 @@ jobs:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save spms-cluster
-    - name: Update deployment file
+    - name: Update deployment file image
       run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/agile-h/spms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment1/deployment.yml
+    - name: Update deployment file COMMIT_BRANCH
+      run: BRANCH=$(echo $GITHUB_REF) && sed -i 's|<COMMIT_BRANCH>|'${BRANCH}'|' $GITHUB_WORKSPACE/config/deployment1/deployment.yml
+    - name: Update deployment file COMMIT_SHA
+      run: TAG=$(echo $GITHUB_SHA) && sed -i 's|<COMMIT_SHA>|'${TAG}'|' $GITHUB_WORKSPACE/config/deployment1/deployment.yml
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save spms-cluster
     - name: Deploy to DigitalOcean Kubernetes
