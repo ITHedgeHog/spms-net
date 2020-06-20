@@ -42,6 +42,10 @@ spec:
           value: "Production"
         - name: APPINSIGHTS_INSTRUMENTATIONKEY
           value: "75e7f794-a523-4f9c-9bab-8320be4c2046"
+        - name: COMMIT_BRANCH
+          value: <COMMIT_BRANCH>
+        - name: COMMIT_SHA
+          value: <COMMIT_SHA>
         resources:
           requests:
             cpu: 100m
