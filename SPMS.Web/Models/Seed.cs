@@ -152,8 +152,8 @@ namespace SPMS.Web.Models
                     Surname = "Brightstar",
                     Born = "Earth",
                     Gender = "Male",
-                    Assignment = "USS Sovereign",
-                    PostingId = context.Posting.First(p => p.Name == "USS Sovereign").Id,
+                    Assignment = "Starbase Gamma",
+                    PostingId = context.Posting.First(p => p.Name == "Starbase Gamma").Id,
                     Rank = "Captain",
                     DateOfBirth = "Sometime in 2351",
                     PlayerId = context.Player.First(p => p.DisplayName == "Dan Taylor").Id,
@@ -173,6 +173,7 @@ namespace SPMS.Web.Models
                     PlayerId = context.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StatusId = 3
                 });
+
             context.SaveChanges();
 
             //var bioCount = context.Biography.Include(x => x.Posting)
