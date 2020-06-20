@@ -35,7 +35,7 @@ jobs:
     - name: Update deployment file image
       run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/agile-h/spms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment0/deployment.yml
     - name: Update deployment file COMMIT_BRANCH
-      run: BRANCH=$(echo $GITHUB_BRANCH) && sed -i 's|<COMMIT_BRANCH>|'${BRANCH}'|' $GITHUB_WORKSPACE/config/deployment0/deployment.yml
+      run: BRANCH=$(echo $GITHUB_REF) && sed -i 's|<COMMIT_BRANCH>|'${BRANCH}'|' $GITHUB_WORKSPACE/config/deployment0/deployment.yml
     - name: Update deployment file COMMIT_SHA
       run: TAG=$(echo $GITHUB_SHA) && sed -i 's|<COMMIT_SHA>|'${TAG}'|' $GITHUB_WORKSPACE/config/deployment0/deployment.yml
     - name: Save DigitalOcean kubeconfig
