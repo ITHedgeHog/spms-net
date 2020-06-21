@@ -24,7 +24,7 @@ jobs:
       name: Checkut getspms-hosting
       with:
         repository: ITHedgeHog/getspms-hosting
-        ref: refs/heads/master
+        ref: main
         token:  ${{ secrets.PAC }}
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
