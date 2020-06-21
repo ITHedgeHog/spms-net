@@ -1,23 +1,26 @@
 version: '3.4'
 
 services:
-  database:
-    image:  postgres
-    container_name: pg_container
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: 123xyz12!
-    volumes:
-      - pgdata:/var/lib/postgresql/data
+  #database:
+  #  image:  postgres
+  #  container_name: pg_container
+  #  restart: always
+  #  environment:
+  #    POSTGRES_PASSWORD: 123xyz12!
+  #  volumes:
+  #    - pgdata:/var/lib/postgresql/data
 
   sql:
     container_name: sql
     image: "mcr.microsoft.com/mssql/server"
+    user: root
     environment:
       SA_PASSWORD: "123xyz12!"
       ACCEPT_EULA: "Y"
     ports:
       - 1433:1433
+    volumes:
+      - sqldata:/var/opt/mssql/data/
 
   spms.web:
     image: ${DOCKER_REGISTRY-}spmsweb
@@ -34,6 +37,9 @@ services:
     restart: always
     ports:
       - 8080:8080
+    depends_on:
+      - sql
 
 volumes:
   pgdata: {}
+  sqldata: {}
