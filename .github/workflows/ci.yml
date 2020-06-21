@@ -20,12 +20,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+      with:
+        path: spms
     - uses: actions/checkout@v2
       name: Checkut getspms-hosting
       with:
         repository: ITHedgeHog/getspms-hosting
         ref: main
         token:  ${{ secrets.PAC }}
+        path: hosting
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
@@ -33,7 +36,7 @@ jobs:
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save spms-cluster
     - name: Docker Build
-      run: docker build --build-arg COMMIT=$(echo $GITHUB_SHA) --build-arg BRANCH=$(echo $GITHUB_BRANCH) -t registry.digitalocean.com/agile-h/spms:$(echo $GITHUB_SHA | head -c7) . -f SPMS.Web/Dockerfile
+      run: docker build --build-arg COMMIT=$(echo $GITHUB_SHA) --build-arg BRANCH=$(echo $GITHUB_BRANCH) -t registry.digitalocean.com/agile-h/spms:$(echo $GITHUB_SHA | head -c7) spms/. -f spms/SPMS.Web/Dockerfile
     - name: Log in to DigitalOcean Container Registry with short-lived credentials
       run: doctl registry login --expiry-seconds 600
     - name: Push image to DigitalOcean Container Registry
@@ -41,14 +44,14 @@ jobs:
     - name: Update deployment file image
       run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/agile-h/spms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment0/deployment.yml
     - name: Update deployment file COMMIT_BRANCH
-      run: BRANCH=$(echo $GITHUB_REF) && sed -i 's|<COMMIT_BRANCH>|'${BRANCH}'|' $GITHUB_WORKSPACE/config/deployment0/deployment.yml
+      run: BRANCH=$(echo $GITHUB_REF) && sed -i 's|<COMMIT_BRANCH>|'${BRANCH}'|' $GITHUB_WORKSPACE/hosting/config/deployment0/deployment.yml
     - name: Update deployment file COMMIT_SHA
-      run: TAG=$(echo $GITHUB_SHA) && sed -i 's|<COMMIT_SHA>|'${TAG}'|' $GITHUB_WORKSPACE/config/deployment0/deployment.yml
+      run: TAG=$(echo $GITHUB_SHA) && sed -i 's|<COMMIT_SHA>|'${TAG}'|' $GITHUB_WORKSPACE/hosting/config/deployment0/deployment.yml
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save spms-cluster
     - name: Deploy to DigitalOcean Kubernetes
-      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment0/deployment.yml
+      run: kubectl apply -f $GITHUB_WORKSPACE/hosting/config/deployment0/deployment.yml
     - name: Configure Ingresses
-      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment0/sites/spms.yml
+      run: kubectl apply -f $GITHUB_WORKSPACE/hosting/config/deployment0/sites/spms.yml
     - name: Verify deployment
       run: kubectl rollout status deployment/spms-0
