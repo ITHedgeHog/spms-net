@@ -40,7 +40,7 @@ namespace SPMS.Web.Service
         {
             if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
                 return false;
-            var user = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).First(x => x.AuthString == GetAuthId());
+            var user = GetPlayer();
             return user.Roles.Any(u => u.PlayerRole.Name == StaticValues.PlayerRole);
         }
 
@@ -49,7 +49,7 @@ namespace SPMS.Web.Service
             if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
                 return false;
 
-            var user = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).FirstOrDefault(x => x.AuthString == GetAuthId());
+            var user = GetPlayer();
             return user != default(Player) && user.Roles.Any(u => u.PlayerRole.Name == StaticValues.AdminRole);
         }
 
@@ -58,14 +58,38 @@ namespace SPMS.Web.Service
             if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
                 return 0;
 
-            var user = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).FirstOrDefault(x => x.AuthString == GetAuthId());
+            var user = GetPlayer();
             return user?.Id ?? 0;
+        }
+
+        private Player GetPlayer()
+        {
+            var authId = GetAuthId();
+            if (!_context.Player.Any(x => x.AuthString == authId))
+            {
+                var player = new Player()
+                {
+                    DisplayName = "SPMS User",
+                    AuthString = authId
+                };
+
+                if(_context.Player.Count() == 0)
+                {
+                    foreach(var role in _context.PlayerRole)
+                    {
+                        player.Roles.Add(new PlayerRolePlayer() { PlayerRoleId = role.Id });
+                    }
+                }
+                _context.Player.Add(player);
+                _context.SaveChanges();
+            }
+
+            return _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).First(x => x.AuthString == authId);
         }
 
         public Player GetPlayerFromDatabase()
         {
-            return _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole)
-                .FirstOrDefault(x => x.AuthString == GetAuthId());
+            return GetPlayer();
         }
     };
     public interface IUserService
