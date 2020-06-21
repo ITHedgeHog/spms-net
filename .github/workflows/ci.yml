@@ -25,6 +25,7 @@ jobs:
       with:
         repository: ITHedgeHog/getspms-hosting
         ref: refs/heads/master
+        token:  ${{ secrets.PAT }}
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
