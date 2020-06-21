@@ -20,6 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
+      name: Checkut getspms-hosting
+      with:
+        name: ITHedgeHog/getspms-hosting
+        ref: refs/heads/master
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
