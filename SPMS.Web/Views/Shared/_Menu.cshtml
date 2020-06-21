@@ -47,7 +47,8 @@
                             @* Show Application Link if not a player? *@
                             @if (Model.IsPlayer)
                             {
-                                <a asp-area="" asp-action="Index" asp-controller="My" class="dropdown-item">Characters</a>
+                                <a asp-area="" asp-action="Writing" asp-controller="My" class="dropdown-item">Writing <span class="badge badge-light">0</span></a>
+                                <a asp-area="" asp-action="Characters" asp-controller="My" class="dropdown-item">Characters</a>
                             }
                             else
                             {

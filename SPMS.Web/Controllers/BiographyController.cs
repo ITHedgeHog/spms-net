@@ -153,7 +153,7 @@ namespace SPMS.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), "My");
+                return RedirectToAction("Characters", "My");
             }
 
             biography.Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();

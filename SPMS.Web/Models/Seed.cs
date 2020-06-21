@@ -22,32 +22,44 @@ namespace SPMS.Web.Models
                 context.PlayerRole.Add(new PlayerRole() { Name = StaticValues.PlayerRole });
 
             // Biography Status
-            if (!context.BiographyStatus.Any(n => n.Name == "Draft"))
-                context.BiographyStatus.Add(new BiographyStatus() { Name = "Draft" });
-            if (!context.BiographyStatus.Any(n => n.Name == "Pending"))
-                context.BiographyStatus.Add(new BiographyStatus() { Name = "Pending" });
-            if (!context.BiographyStatus.Any(n => n.Name == "Active"))
-                context.BiographyStatus.Add(new BiographyStatus() { Name = "Active" });
-            if (!context.BiographyStatus.Any(n => n.Name == "Archived"))
-                context.BiographyStatus.Add(new BiographyStatus() { Name = "Archived" });
+            if (!context.BiographyStatus.Any(n => n.Name == StaticValues.Draft))
+                context.BiographyStatus.Add(new BiographyStatus() { Name = StaticValues.Draft });
+            if (!context.BiographyStatus.Any(n => n.Name == StaticValues.Pending))
+                context.BiographyStatus.Add(new BiographyStatus() { Name = StaticValues.Pending });
+            if (!context.BiographyStatus.Any(n => n.Name == StaticValues.Active))
+                context.BiographyStatus.Add(new BiographyStatus() { Name = StaticValues.Active });
+            if (!context.BiographyStatus.Any(n => n.Name == StaticValues.Archived))
+                context.BiographyStatus.Add(new BiographyStatus() { Name = StaticValues.Archived });
 
             // Episode Status
-            if (!context.EpisodeStatus.Any(n => n.Name == "Draft"))
-                context.EpisodeStatus.Add(new EpisodeStatus() { Name = "Draft" });
-            if (!context.EpisodeStatus.Any(n => n.Name == "Pending"))
-                context.EpisodeStatus.Add(new EpisodeStatus() { Name = "Pending" });
-            if (!context.EpisodeStatus.Any(n => n.Name == "Active"))
-                context.EpisodeStatus.Add(new EpisodeStatus() { Name = "Active" });
-            if (!context.EpisodeStatus.Any(n => n.Name == "Archived"))
-                context.EpisodeStatus.Add(new EpisodeStatus() { Name = "Archived" });
+            if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Draft))
+                context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Draft });
+            if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Pending))
+                context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Pending });
+            if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Active))
+                context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Active });
+            if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Archived))
+                context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Archived });
 
             // EpisodeEntryType
             if (!context.EpisodeEntryType.Any(e => e.Name == StaticValues.Post))
                 context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.Post });
+            context.SaveChanges();
             if (!context.EpisodeEntryType.Any(e => e.Name == StaticValues.PersonalLog))
                 context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.PersonalLog });
             if (!context.EpisodeEntryType.Any(e => e.Name == StaticValues.Fiction))
                 context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.Fiction });
+
+            // Episode Status
+            if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Draft))
+                context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Draft });
+            if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Pending))
+                context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Pending });
+            if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Active))
+                context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Active });
+            if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Archived))
+                context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Archived });
+
 
             // Posting
             if (!context.Posting.Any(p => p.Name == "Undefined"))
@@ -173,7 +185,6 @@ namespace SPMS.Web.Models
                     PlayerId = context.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StatusId = 3
                 });
-
             context.SaveChanges();
 
             //var bioCount = context.Biography.Include(x => x.Posting)
@@ -209,7 +220,7 @@ namespace SPMS.Web.Models
 
             if (!context.Episode.Any(x => x.Title == "Prologue"))
             {
-                EpisodeStatus episodeStatus = context.EpisodeStatus.AsNoTracking().First(x => x.Name == "Active");
+                EpisodeStatus episodeStatus = context.EpisodeStatus.AsNoTracking().First(x => x.Name == StaticValues.Active);
                 context.Episode.Add(new Episode()
                 {
                     Title = "Prologue",

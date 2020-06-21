@@ -1,4 +1,4 @@
-﻿@model SPMS.Web.ViewModels.MyViewModel
+﻿@model SPMS.Web.ViewModels.MyCharactersViewModel
 
 @{
     ViewData["Title"] = "My Characters " + Model.SiteTitle;
@@ -25,7 +25,10 @@
         {
             <p class="btn btn-primary">Character Creation Disabled</p>
         }
+        @if (Model.Characters.Any() && Model.HasEpisode)
+        {
+            <a asp-action="Create" asp-controller="Authoring" asp-area="" class="btn btn-primary">Create New Post</a>
+        }
 
-        <a asp-action="Create" asp-controller="Authoring" asp-area="" class="btn btn-primary">Create New Post</a>
     </div>
 </div>

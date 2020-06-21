@@ -12,6 +12,7 @@
     <title>@ViewData["Title"] - @Model.SiteTitle</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+
     @RenderSection("Style", false)
 
     @if (Model.UseAnalytics)
@@ -22,6 +23,7 @@
     {
         <!-- Analytics Omitted -->
     }
+    <script src="https://kit.fontawesome.com/6bb2ef40e5.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header>
@@ -29,6 +31,12 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
+            @if (TempData.ContainsKey("message") && !string.IsNullOrEmpty(TempData["message"].ToString()))
+            {
+                <div class="alert alert-success" role="alert">
+                   @TempData["Message"]
+                </div>
+            }
             @RenderBody()
         </main>
     </div>
@@ -40,11 +48,7 @@
                 <text>[<a asp-area="" asp-controller="Debug" asp-action="Index"> Debug </a>] </text>
             }
         </div>
-    </footer>
-
-
-
-    <div class="disclaimer text-muted">
+    </footer>   <div class="disclaimer text-muted">
         <div class="container">
             @Html.Raw(Model.SiteDisclaimer)
         </div>

@@ -40,8 +40,8 @@ namespace SPMS.Web.Service
         {
             if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
                 return false;
-            var user = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).FirstOrDefault(x => x.AuthString == GetAuthId());
-            return user != default(Player) && user.Roles.Any(u => u.PlayerRole.Name == StaticValues.PlayerRole);
+            var user = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).First(x => x.AuthString == GetAuthId());
+            return user.Roles.Any(u => u.PlayerRole.Name == StaticValues.PlayerRole);
         }
 
         public bool IsAdmin()
@@ -52,6 +52,21 @@ namespace SPMS.Web.Service
             var user = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).FirstOrDefault(x => x.AuthString == GetAuthId());
             return user != default(Player) && user.Roles.Any(u => u.PlayerRole.Name == StaticValues.AdminRole);
         }
+
+        public int GetId()
+        {
+            if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
+                return 0;
+
+            var user = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).FirstOrDefault(x => x.AuthString == GetAuthId());
+            return user?.Id ?? 0;
+        }
+
+        public Player GetPlayerFromDatabase()
+        {
+            return _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole)
+                .FirstOrDefault(x => x.AuthString == GetAuthId());
+        }
     };
     public interface IUserService
     {
@@ -59,5 +74,7 @@ namespace SPMS.Web.Service
         string GetName();
         bool IsPlayer();
         bool IsAdmin();
+        int GetId();
+        Player GetPlayerFromDatabase();
     }
 }

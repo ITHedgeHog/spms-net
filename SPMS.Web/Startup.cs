@@ -53,16 +53,16 @@ namespace SPMS.Web
             ///https://static-btd.ams3.digitaloceanspaces.com
             ///
 
-            
+
             var s3config = new AmazonS3Config()
             {
-                
+
                 ServiceURL = "https://ams3.digitaloceanspaces.com"
             };
             // Configure your AWS SDK however you usually would do so e.g. IAM roles, environment variables
             services.TryAddSingleton<IAmazonS3>(new AmazonS3Client(s3config)
             {
-                
+
             });
 
             // Assumes a Configuration property set as IConfigurationRoot similar to ASP.NET docs
@@ -165,7 +165,7 @@ namespace SPMS.Web
             // Add AutoMapper
             services.AddAutoMapper(typeof(Startup));
 
-            
+
 
             // Add Services
             services.AddHttpContextAccessor();
@@ -181,9 +181,12 @@ namespace SPMS.Web
                     "Administrator", policy =>
                         policy.Requirements.Add(
                             new AdministratorRequirement()));
+                options.AddPolicy("Player", policy => policy.Requirements.Add(new PlayerRequirement()));
             });
-            services.AddTransient<IAuthorizationHandler,
-                AdministratorHandler>();
+
+
+            services.AddTransient<IAuthorizationHandler, AdministratorHandler>();
+            services.AddTransient<IAuthorizationHandler, PlayerPolicyHandler>();
 
 
             // Profiler
@@ -200,7 +203,7 @@ namespace SPMS.Web
                 services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddRazorRuntimeCompilation();
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -232,7 +235,7 @@ namespace SPMS.Web
             if (env.IsDevelopment() || Configuration.GetValue<bool>("ShowErrors"))
             {
                 app.UseDeveloperExceptionPage();
-                
+
             }
             else
             {
