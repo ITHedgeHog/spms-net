@@ -14,6 +14,8 @@ namespace SPMS.Web.Models
         public string AuthString { get; set; }
 
         public Collection<PlayerRolePlayer> Roles { get; set; }
+
+        public Collection<EpisodeEntryPlayer> EpisodeEntries { get; set; }
     }
 
     public class PlayerRolePlayer

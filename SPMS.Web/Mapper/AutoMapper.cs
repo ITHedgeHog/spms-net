@@ -19,7 +19,8 @@ namespace SPMS.Web.Mapper
             CreateMap<Player, PlayerViewModel>()
                 .ForMember(x => x.Roles, opt => opt.MapFrom(y => y.Roles.Select(z => new PlayerRoleViewModel(){ Id = z.PlayerRole.Id, Name = z.PlayerRole.Name})));
             CreateMap<PlayerViewModel, Player>()
-                .ForMember(p=>p.Roles, opt=>opt.Ignore());
+                .ForMember(p=>p.Roles, opt=>opt.Ignore())
+                .ForMember(p=>p.EpisodeEntries, o => o.Ignore());
             CreateMap<CreateBiographyViewModel, Biography>()
                 .ForMember(x=>x.Status, opt => opt.Ignore())
                 .ForMember(x => x.Player, opt=>opt.Ignore())

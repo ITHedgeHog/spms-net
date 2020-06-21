@@ -5,49 +5,151 @@
 
 <div class="container">
     <h1>Manage Post Metadata for episode @Model.EpisodeId</h1>
-    
+
     <p>Editing a post is a two part process, firstly you set up the metadata for a post. This defines things like the title, location and timeline the post exists in</p>
 
-    <form asp-action="ProcessPostData" method="post">
+    <form id="authorpost" asp-action="ProcessPostData" method="post">
 
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="EpisodeId" />
-        <input type="hidden" asp-for="TypeId" value="1" />
-        <div class="form-group row">
-            <label asp-for="PostTitle" class="control-label"></label>
-            <div class="col-sm-10">
-                <input asp-for="PostTitle" class="form-control" />
-                <span asp-validation-for="PostTitle" class="text-danger"></span>
+        @*<input type="hidden" asp-for="TypeId" value="1" />*@
+
+        <div class="row">
+            <div class="col-md-9">
+                <div class="form-group bg-light">
+                    <textarea asp-for="Content" class="form-control" placeholder="Begin your post here..." aria-describedby="ContentDescription" aria-multiline="true"></textarea>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <p id="ContentDescription" class="sr-only form-text text-muted">This textarea accepts Markdown format text</p>
+                </div>
+            </div>
+            <div class="col-md-3 bg-light">
+                <div class="form-group form-row">
+                    <a asp-area="" asp-controller="My" asp-action="Writing" class="btn  btn-outline-primary form-control" onclick="autoSave();">Close Editor</a>
+                </div>
+                <div class="form-group form-row">
+                    <button type="button" class="btn btn-outline-primary form-control" id="save" name="save" onclick="autoSave();"><span id="saving" class="fas fa-spinner fa-spin d-none" aria-hidden="true"></span> Save Draft</button>
+
+                    <p id="lastSave" class="text-muted d-none">Last saved at: <span id="lastSaveTime"></span></p>
+                    <hr />
+                </div>
+                <div class="form-group form-row">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control form-control-sm" aria-describedby="postTitle" placeholder="Post title" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                    <p id="postTitle" class="sr-only form-text text-muted">The plain text title of the post make it descriptive to match what you have written in the post.</p>
+                </div>
+                <div class="form-group form-row">
+                    <label asp-for="Location" class="control-label"></label>
+                    <input asp-for="Location" class="form-control form-control-sm" placeholder="Where the post takes place" />
+                    <span asp-validation-for="Location" class="text-danger"></span>
+                    <p id="postLocation" class="sr-only form-text text-muted">Where this post takes place.</p>
+                </div>
+                <div class="form-group form-row">
+                    <label asp-for="Timeline" class="control-label"></label>
+                    <input asp-for="Timeline" class="form-control form-control-sm" aria-describedby="postTimeline" placeholder="Timeline within the mission" />
+                    <span asp-validation-for="Timeline" class="text-danger"></span>
+                    <p id="postTimeline" class="sr-only form-text text-muted">When this post takes place within the mission timeline.</p>
+                </div>
+                <div class="form-group form-row">
+                    <label asp-for="TypeId" class="control-label"></label>
+                    <select asp-for="TypeId" asp-items="Model.PostTypes" class="form-control form-control-sm" aria-describedby="postType"></select>
+                    <span asp-validation-for="TypeId" class="text-danger"></span>
+                    <p id="postType" class="sr-only form-text text-muted">The type of post to create.</p>
+                </div>
+                <div class="form-group form-row">
+                    <label>Publish</label>
+                    <p class="form-control-plaintext">Immediately</p>
+                    <button type="submit" class="btn btn-primary disabled" disabled="disabled" id="publish" name="publish">Publish Post</button>
+                </div>
             </div>
         </div>
-        <div class="form-group row">
-            <label asp-for="PostLocation" class="control-label"></label>
-            <div class="col-sm-10">
-                <input asp-for="PostLocation" class="form-control" />
-                <span asp-validation-for="PostLocation" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="PostTimeline" class="control-label"></label>
-            <div class="col-sm-10">
-                <input asp-for="PostTimeline" class="form-control" />
-                <span asp-validation-for="PostTimeline" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label asp-for="PostLocation" class="control-label"></label>
-            <div class="col-sm-10">
-                <input asp-for="PostLocation" class="form-control" />
-                <span asp-validation-for="PostLocation" class="text-danger"></span>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-primary" id="save" name="save">Save Changes</button>
-        <button type="submit" class="btn btn-primary" id="edit" name="edit">Edit Post</button>
-        <button type="submit" class="btn btn-primary disabled" disabled="disabled" id="publish" name="publish">Publish Post</button>
     </form>
 
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script type="text/javascript" language="javascript">
+            jQuery.fn.extend({
+                autoHeight: function () {
+                    function autoHeight_(element) {
+                        return jQuery(element).css({
+                            'height': 'auto',
+                            'overflow-y': 'hidden'
+                        }).height(element.scrollHeight);
+                    }
+                    return this.each(function () {
+                        autoHeight_(this).on('input', function () {
+                            autoHeight_(this);
+                        });
+                    });
+                }
+            });
+            $('#Content').autoHeight();
+
+        function autoSave() {
+            var dirtyElements = $('#authorpost').find('[data-dirty=true]').add('[form=authorpost][data-dirty=true]');
+            var hiddenElements = $('#authorpost').find('[type=hidden]').add('[form=authorpost][type=hidden]');
+            var typeId = $('#authorpost').find('[select]').add('[form=authorpost][name="TypeId"]');
+
+            var elementsToPost = $.merge(dirtyElements, hiddenElements,typeId);
+
+            //console.log(hiddenElements);
+            if (dirtyElements.length > 0) {
+                $('#saving').toggleClass('d-none');
+                var data = elementsToPost.serialize();
+                $.post('post/autosave', data, function (data) {
+                    $('#Id').val(data);
+                    dirtyElements.attr('data-dirty', false);
+                    $('#lastSave').removeClass('d-none');
+                    //alert('data saved successfully');
+                    var today = new Date();
+                    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                    var time = (today.getHours() < 10 ? '0' : '') + today.getHours() + ":" + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes() + ":" + (today.getSeconds() < 10 ? '0' : '') + today.getSeconds();
+                    var dateTime = date + ' ' + time;
+                    $('#lastSaveTime').text(dateTime);
+                    $('#saving').toggleClass('d-none');
+                });
+            }
+        }
+
+            window.setInterval(function () {
+                var dirtyElements = $('#authorpost').find('[data-dirty=true]').add('[form=authorpost][data-dirty=true]');
+                var hiddenElements = $('#authorpost').find('[type=hidden]').add('[form=authorpost][type=hidden]');
+                var typeId = $('#authorpost').find('[name=TypeId]').add('[form=authorpost][name=TypeId]');
+
+                var elementsToPost = $.merge(dirtyElements, hiddenElements,typeId);
+
+                //console.log(hiddenElements);
+                if (dirtyElements.length > 0) {
+                    $('#saving').toggleClass('d-none');
+                    var data = elementsToPost.serialize();
+                    $.post('post/autosave', data, function (data) {
+                        $('#Id').val(data);
+                        dirtyElements.attr('data-dirty', false);
+                        $('#lastSave').removeClass('d-none');
+                        //alert('data saved successfully');
+                        var today = new Date();
+                        var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                        var time = (today.getHours() < 10 ? '0' : '') + today.getHours() + ":" + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes() + ":" + (today.getSeconds() < 10 ? '0' : '') + today.getSeconds();
+                        var dateTime = date + ' ' + time;
+                        $('#lastSaveTime').text(dateTime);
+                        $('#saving').toggleClass('d-none');
+                    });
+                }
+            }, 60000); // 60 seconds
+
+            $(function(){
+                var formElements = $('#authorpost')
+                    .find('input, select, textarea')
+                    .add('[form=authorpost]')
+                    .not(':disabled')
+                    .each(function(){
+                        $(this).attr('data-dirty', false).change(function(){
+                            $(this).attr('data-dirty', true);
+                        });
+                    });
+            });
+        </script>
 }

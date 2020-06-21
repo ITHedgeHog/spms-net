@@ -44,10 +44,22 @@ namespace SPMS.Web.Models
             // EpisodeEntryType
             if (!context.EpisodeEntryType.Any(e => e.Name == StaticValues.Post))
                 context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.Post });
+            context.SaveChanges();
             if (!context.EpisodeEntryType.Any(e => e.Name == StaticValues.PersonalLog))
                 context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.PersonalLog });
             if (!context.EpisodeEntryType.Any(e => e.Name == StaticValues.Fiction))
                 context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.Fiction });
+
+            // Episode Status
+            if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Draft))
+                context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Draft });
+            if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Pending))
+                context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Pending });
+            if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Active))
+                context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Active });
+            if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Archived))
+                context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Archived });
+
 
             // Posting
             if (!context.Posting.Any(p => p.Name == "Undefined"))
@@ -208,7 +220,7 @@ namespace SPMS.Web.Models
 
             if (!context.Episode.Any(x => x.Title == "Prologue"))
             {
-                EpisodeStatus episodeStatus = context.EpisodeStatus.AsNoTracking().First(x => x.Name == "Active");
+                EpisodeStatus episodeStatus = context.EpisodeStatus.AsNoTracking().First(x => x.Name == StaticValues.Active);
                 context.Episode.Add(new Episode()
                 {
                     Title = "Prologue",

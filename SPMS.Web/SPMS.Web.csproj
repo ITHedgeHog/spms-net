@@ -12,6 +12,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200620004044_AddDataProtectionKeys.cs" />
     <Compile Remove="Migrations\20200620004044_AddDataProtectionKeys.Designer.cs" />
+    <Compile Remove="Migrations\20200620225141_EpisodeEntryPlayer.cs" />
+    <Compile Remove="Migrations\20200620225141_EpisodeEntryPlayer.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

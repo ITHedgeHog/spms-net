@@ -27,6 +27,19 @@ namespace SPMS.Web.Models
                 .HasOne(bc => bc.PlayerRole)
                 .WithMany(c => c.PlayerRolePlayer)
                 .HasForeignKey(bc => bc.PlayerRoleId);
+
+
+
+            modelBuilder.Entity<EpisodeEntryPlayer>()
+                .HasKey(p => new { p.PlayerId, p.EpisodeEntryId });
+            modelBuilder.Entity<EpisodeEntryPlayer>()
+                .HasOne(p => p.Player)
+                .WithMany(p => p.EpisodeEntries)
+                .HasForeignKey(bc => bc.PlayerId);
+            modelBuilder.Entity<EpisodeEntryPlayer>()
+                .HasOne(bc => bc.EpisodeEntry)
+                .WithMany(c => c.EpisodeEntryPlayer)
+                .HasForeignKey(bc => bc.EpisodeEntryId);
         }
 
         public DbSet<SPMS.Web.Models.Biography> Biography { get; set; }
@@ -41,5 +54,6 @@ namespace SPMS.Web.Models
         public DbSet<Posting> Posting { get; set; }
         public DbSet<Player> Player { get; set; }
         public DbSet<PlayerRole> PlayerRole { get; set; }
+        public DbSet<EpisodeEntryStatus> EpisodeEntryStatus { get; set; }
     }
 }

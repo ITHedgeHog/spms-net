@@ -24,23 +24,17 @@ namespace SPMS.Web.Models
         [NotNull]
         public string Content { get; set; }
 
-        public Collection<Player> Players { get; set; }
+        public int EpisodeEntryStatusId { get; set; }
+        public EpisodeEntryStatus EpisodeEntryStatus { get; set; }
+
+        public Collection<EpisodeEntryPlayer> EpisodeEntryPlayer { get; set; }
 
         public int EpisodeEntryTypeId { get; set; }
 
         public EpisodeEntryType EpisodeEntryType { get; set; }
 
-        public Series Series { get; set; }
-        public int SeriesId { get; set; }
+        public int EpisodeId { get; set; }
+        public Episode Episode { get; set; }
 
     }
-
-        public class EpisodeEntryType
-        {
-            [Key]
-            public int Id { get; set; }
-
-            [MaxLength(150)]
-            public string Name { get; set; }
-        }
 }
