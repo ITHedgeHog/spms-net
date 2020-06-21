@@ -7,6 +7,12 @@ namespace SPMS.Web.Models
 {
     public class Player
     {
+        public Player()
+        {
+            Roles = new Collection<PlayerRolePlayer>();
+            EpisodeEntries = new Collection<EpisodeEntryPlayer>();
+        }
+
         public int Id { get; set; }
 
         public string DisplayName { get; set; }

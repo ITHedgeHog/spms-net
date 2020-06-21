@@ -7,6 +7,11 @@ a.navbar-brand {
   word-break: break-all;
 }
 
+.navbar-image {
+    height:25px;
+    width:25px;
+}
+
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;

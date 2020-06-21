@@ -88,14 +88,14 @@ namespace SPMS.Web.Models
             context.SaveChanges();
 
 
-            if (!context.Player.Any(p => p.DisplayName == "Test Monkey"))
-                context.Player.Add(new Player() { AuthString = "google-oauth2|112524236910874285641", DisplayName = "Test Monkey" });
-            foreach (var role in roles.Where(role => dan.Roles.All(r => r.PlayerRoleId != role.Id) && role.Name == StaticValues.PlayerRole))
-            {
-                dan.Roles.Add(new PlayerRolePlayer() { PlayerId = dan.Id, PlayerRoleId = role.Id });
-            }
+            //if (!context.Player.Any(p => p.DisplayName == "Test Monkey"))
+            //    context.Player.Add(new Player() { AuthString = "google-oauth2|112524236910874285641", DisplayName = "Test Monkey" });
+            //foreach (var role in roles.Where(role => dan.Roles.All(r => r.PlayerRoleId != role.Id) && role.Name == StaticValues.PlayerRole))
+            //{
+            //    dan.Roles.Add(new PlayerRolePlayer() { PlayerId = dan.Id, PlayerRoleId = role.Id });
+            //}
 
-            context.SaveChanges();
+            //context.SaveChanges();
         }
 
         public static void SeedBtd(SpmsContext context)
