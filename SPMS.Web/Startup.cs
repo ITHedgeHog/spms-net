@@ -5,7 +5,6 @@ using Amazon.Runtime;
 using Amazon.S3;
 using AspNetCore.DataProtection.Aws.S3;
 using AutoMapper;
-using MarkdownSharp;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -27,6 +26,7 @@ using SPMS.Web.Filter;
 using SPMS.Web.Models;
 using SPMS.Web.Policy;
 using SPMS.Web.Service;
+using Westwind.AspNetCore.Markdown;
 
 namespace SPMS.Web
 {
@@ -179,8 +179,9 @@ namespace SPMS.Web
             services.AddTransient<IGameService, GameService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IStoryService, StoryService>();
-            services.AddTransient<IMarkdownService, MarkdownService>();
+            ///services.AddTransient<IMarkdownService, MarkdownService>();
             services.AddTransient<IAuthoringService, AuthoringService>();
+           
 
 
 
@@ -210,7 +211,9 @@ namespace SPMS.Web
 
             }).AddEntityFramework();
 
-                services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddRazorRuntimeCompilation();
+            services.AddMarkdown();
+
+            services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddRazorRuntimeCompilation().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
             services.AddFeatureManagement();
 
@@ -255,6 +258,7 @@ namespace SPMS.Web
 
             app.UseMiniProfiler();
             app.UseHttpsRedirection();
+            app.UseMarkdown();
             app.UseStaticFiles();
 
             app.UseRouting();

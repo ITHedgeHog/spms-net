@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
 using SPMS.Web.ViewModels;
+using SPMS.Web.ViewModels.Story;
 
 namespace SPMS.Web.Controllers
 {

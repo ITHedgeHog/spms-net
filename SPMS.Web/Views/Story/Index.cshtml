@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-sm-12">
             <h2>@Model.CurrentSeries.Title</h2>
-            @Html.Raw(Model.CurrentSeries.Description)
+            <markdown>@Model.CurrentSeries.Description</markdown>
         </div>
     </div>
     <div class="row">
@@ -23,7 +23,9 @@
         }
         <div class="col-sm-12 @columnMdClass">
             <h2>@Model.CurrentEpisode.Title</h2>
-            @Html.Raw(Model.CurrentEpisode.Description)
+            <markdown>
+                @Model.CurrentEpisode.Description
+            </markdown>
         </div>
         @if(hasBanner)
         {
@@ -31,6 +33,24 @@
                 <img src="https://dummyimage.com/120x240/000000/fff.gif&text=Episode+One" alt="Episode Banner" />
             </div>
         }
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            @foreach(var post in Model.CurrentEpisode.Story)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h4>@post.Title</h4>
+                        <p>@post.Location  @post.Timeline</p>
+                    </div>
+                    <div class="card-body">
+                        <markdown>
+                            @post.Content
+                        </markdown>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </div>
 

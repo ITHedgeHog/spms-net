@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography.Xml;
 using AutoMapper;
 using SPMS.Web.Models;
-using SPMS.Web.ViewModels;
 using SPMS.Web.ViewModels.Authoring;
+using SPMS.Web.ViewModels.Story;
 
 namespace SPMS.Web.Mapper
 {
@@ -50,7 +49,7 @@ namespace SPMS.Web.Mapper
                 .ForMember(X => X.EpisodeEntry, o => o.Ignore());
 
             CreateMap<EpisodeEntry, PostViewModel>()
-                .ForMember(x => x.Authors, o => o.MapFrom(x => x.EpisodeEntryPlayer.Select(y => y.Player.DisplayName)));
+                .ForMember(x => x.Authors, o => o.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel() { Id = y.PlayerId, Name = y.Player.DisplayName })));
         }
     }
 

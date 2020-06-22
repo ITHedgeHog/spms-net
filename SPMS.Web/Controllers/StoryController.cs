@@ -12,19 +12,16 @@ namespace SPMS.Web.Controllers
     public class StoryController : Controller
     {
         private readonly IStoryService _storyService;
-        private readonly IMarkdownService _markdown;
+       
 
-        public StoryController(IStoryService storyService, IMarkdownService markdown)
+        public StoryController(IStoryService storyService)
         {
             _storyService = storyService;
-            _markdown = markdown;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var vm = new SeriesOverviewViewModel();
-            vm.CurrentSeries = new SeriesViewModel() { Id = 1, Title = "Series One: Beyond the Darkness", Description = _markdown.Render("**Markdown** *Content*") };
-            vm.CurrentEpisode = new EpisodeViewModel() { Id = 1, Title = "Episode 1 - Discovery", Description = _markdown.Render("**The crew** of Starbase Gamma begin to unravel the mysteries of the *Gamma Quadrant*."), Banner = "https://dummyimage.com/120x240/000000/fff.gif&text=Episode+One"};
+            var vm = await _storyService.GetOverview(); 
             return View(vm);
         }
 

@@ -1,7 +1,4 @@
-﻿using MarkdownSharp;
-using System.Runtime.Intrinsics.X86;
-
-namespace SPMS.Web.ViewModels
+﻿namespace SPMS.Web.ViewModels
 {
     public class ViewModel
     {
