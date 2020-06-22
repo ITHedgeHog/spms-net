@@ -104,7 +104,7 @@ namespace SPMS.Web.Service
         {
             if (_context.EpisodeEntry.Any(x => x.Id == model.Id))
             {
-                var entity = await _context.EpisodeEntry.FirstOrDefaultAsync(e => e.Id == model.Id);
+                var entity = await _context.EpisodeEntry.Include(e => e.EpisodeEntryPlayer).Include(e => e.EpisodeEntryStatus).Include(e => e.EpisodeEntryType).FirstOrDefaultAsync(e => e.Id == model.Id);
                 _mapper.Map(model, entity);
                 entity.UpdatedAt = DateTime.UtcNow;
                 HandleSubmit(entity, model);
