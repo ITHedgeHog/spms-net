@@ -33,7 +33,11 @@ namespace SPMS.Web.Service
 
         public string GetName()
         {
-            return _httpContext.HttpContext.User.Identity.Name;
+
+            if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
+                return null;
+            var user = GetPlayer();
+            return user.DisplayName;
         }
 
         public bool IsPlayer()
@@ -69,7 +73,7 @@ namespace SPMS.Web.Service
             {
                 var player = new Player()
                 {
-                    DisplayName = "SPMS User",
+                    DisplayName = _httpContext.HttpContext.User.Identity.Name,
                     AuthString = authId
                 };
 
