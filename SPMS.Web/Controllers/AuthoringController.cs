@@ -21,73 +21,51 @@ namespace SPMS.Web.Controllers
         private readonly SpmsContext _context;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private readonly IAuthoringService _authoringService;
 
-        public AuthoringController(SpmsContext context, IMapper mapper, IUserService userService)
+        public AuthoringController(SpmsContext context, IMapper mapper, IUserService userService, IAuthoringService authoringService)
         {
             _context = context;
             _mapper = mapper;
             _userService = userService;
+            _authoringService = authoringService;
         }
 
 
 
         [HttpGet("author/post/{id?}")]
-        public IActionResult Post(int? id)
+        public async Task<IActionResult> Post(int? id)
         {
-            AuthorPostViewModel vm;
-            if (id.HasValue)
+            if(!(await _authoringService.HasActiveEpisode()))
             {
-                vm = _context.EpisodeEntry.ProjectTo<AuthorPostViewModel>(_mapper.ConfigurationProvider).FirstOrDefault(x => x.Id == id);
-                if (vm == default(AuthorPostViewModel))
-                {
-                    return NotFound("Could not find post");
-                }
-                vm.Statuses = _context.EpisodeEntryStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Name == StaticValues.Draft));
-                vm.TypeId = _context.EpisodeEntryType.First(x => x.Name == StaticValues.Post).Id;
-                vm.PostTypes =
-                    _context.EpisodeEntryType.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Id == vm.TypeId)).ToList();
-
-                return View("Post", vm);
+                TempData["message"] = "No active episode";
+                return RedirectToAction("Writing", "My");
             }
 
-            // TODO: Find active episode 
-            var activeEpisode = _context.Episode.Include(e => e.Status).FirstOrDefault(e => e.Status.Name == StaticValues.Active);
-
-            if (activeEpisode == default(Episode))
+            if(id.HasValue && !(await _authoringService.PostExists(id.Value)))
+            {
+                TempData["message"] = "Post does not exist";
                 return RedirectToAction("Writing", "My");
+            }
+            
+            if (id.HasValue)
+            {
+               
 
-            vm = new AuthorPostViewModel(activeEpisode.Id);
-            vm.Authors.Add(_userService.GetId());
-            vm.Statuses = _context.EpisodeEntryStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Name == StaticValues.Draft));
-            vm.TypeId = _context.EpisodeEntryType.First(x => x.Name == StaticValues.Post).Id;
-            vm.PostTypes =
-                _context.EpisodeEntryType.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Id == vm.TypeId)).ToList();
+                return View(await _authoringService.GetPost(id.Value));
+            }
 
 
-            return View(vm);
+            return View(await _authoringService.NewPost());
         }
 
 
         [HttpPost("author/post")]
-        public IActionResult ProcessPostData(AuthorPostViewModel model)
+        public async Task<IActionResult> ProcessPostData(AuthorPostViewModel model)
         {
             if (!ModelState.IsValid) return View("Post", model);
 
-            if (_context.EpisodeEntry.Any(x => x.Id == model.Id))
-            {
-
-                var post = _context.EpisodeEntry.FirstOrDefault(e => e.Id == model.Id);
-
-                //TODO: Update Model
-                var b = 2;
-            }
-            else
-            {
-                var entity = _mapper.Map<EpisodeEntry>(model);
-                _context.EpisodeEntry.Add(entity);
-                _context.SaveChanges();
-                model.Id = entity.Id;
-            }
+            var id = await _authoringService.SavePostAsync(model);
 
             TempData["Message"] = "Yay it saved";
             return RedirectToAction("Writing", "My");
@@ -95,7 +73,7 @@ namespace SPMS.Web.Controllers
         }
 
         [HttpPost("author/post/autosave")]
-        public IActionResult ProcessAutoSave(AuthorPostViewModel model)
+        public async Task<IActionResult> ProcessAutoSave(AuthorPostViewModel model)
         {
             if (string.IsNullOrEmpty(model.Title))
             {
@@ -113,31 +91,7 @@ namespace SPMS.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                if (_context.EpisodeEntry.Any(x => x.Id == model.Id))
-                {
-
-                    var post = _context.EpisodeEntry.FirstOrDefault(e => e.Id == model.Id);
-
-                    //TODO: Update Model
-                    var b = 2;
-                }
-                else
-                {
-                    var entity = _mapper.Map<EpisodeEntry>(model);
-                    var pId = _userService.GetId();
-
-                    if (entity.EpisodeEntryTypeId == 0)
-                    {
-                        entity.EpisodeEntryTypeId =
-                            _context.EpisodeEntryType.First(x => x.Name == StaticValues.Post).Id;
-                    }
-                    _context.EpisodeEntry.Add(entity);
-                    _context.SaveChanges();
-                    entity.EpisodeEntryPlayer = new Collection<EpisodeEntryPlayer> { new EpisodeEntryPlayer() { EpisodeEntryId = entity.Id, PlayerId = pId } };
-                    _context.SaveChanges();
-
-                    model.Id = entity.Id;
-                }
+                model.Id = await _authoringService.SavePostAsync(model);
             }
             return Ok(model.Id);
         }

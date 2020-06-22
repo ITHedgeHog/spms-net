@@ -61,10 +61,16 @@ namespace SPMS.Web.Service
         {
             return (await GetGameAsync()).SiteAnalytics;
         }
+
+        public async Task<int> GetGameIdAsync()
+        {
+            return (await GetGameAsync()).Id;
+        }
     }
 
     public interface IGameService
     {
+        Task<int> GetGameIdAsync();
         Task<string> GetGameNameAsync();
         Task<string> GetSiteTitleAsync();
         Task<string> GetSiteDisclaimerAsync();
