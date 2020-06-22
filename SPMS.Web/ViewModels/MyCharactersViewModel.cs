@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SPMS.Web.ViewModels.Story;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,11 +38,4 @@ namespace SPMS.Web.ViewModels
         public List<PostViewModel> PendingPosts { get; set; }
     }
 
-    public class PostViewModel
-    {
-        public int Id { get; set; }
-        public string Title { get; set; }
-
-        public List<string> Authors { get; set; }
-    }
 }

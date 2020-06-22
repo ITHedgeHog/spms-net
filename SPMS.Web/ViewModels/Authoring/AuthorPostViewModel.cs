@@ -1,25 +1,47 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SPMS.Web.ViewModels.Authoring
 {
+    public class AuthorViewModel
+    {
+
+        public AuthorViewModel()
+        {
+
+        }
+        public AuthorViewModel(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public int Id { get; set; }
+        public string Name { get; set; }
+    }
+
     public class AuthorPostViewModel : ViewModel
     {
+        
         public AuthorPostViewModel(in int activeEpisodeId)
         {
             EpisodeId = activeEpisodeId;
-            Authors = new List<int>();
+            Authors = new List<AuthorViewModel>();
             PostTypes = new List<SelectListItem>();
+            Statuses = new List<SelectListItem>();
         }
 
         public AuthorPostViewModel()
         {
-            Authors = new List<int>();
+            Authors = new List<AuthorViewModel>();
+            PostTypes = new List<SelectListItem>();
+            Statuses = new List<SelectListItem>();
         }
 
-        public List<int> Authors { get; set; }
+        public List<AuthorViewModel> Authors { get; set; }
         [Display(Name = "Post Type")]
 
         public int TypeId { get; set; }
@@ -46,6 +68,9 @@ namespace SPMS.Web.ViewModels.Authoring
 
         public int Id { get; set; }
         public int StatusId { get; set; }
-        public IQueryable<SelectListItem> Statuses { get; set; }
+        public List<SelectListItem> Statuses { get; set; }
+
+        public string submitpost { get; set; }
+        public DateTime? PostAt { get; internal set; }
     }
 }

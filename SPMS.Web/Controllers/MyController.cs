@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
 using SPMS.Web.ViewModels;
+using SPMS.Web.ViewModels.Story;
 
 namespace SPMS.Web.Controllers
 {
@@ -55,17 +56,11 @@ namespace SPMS.Web.Controllers
             };
 
             var owner = _userService.GetAuthId();
-
-            var posts = _context.EpisodeEntry
-                .Include(e => e.EpisodeEntryType)
-                .Include(e => e.Episode)
-                .Include(p => p.EpisodeEntryPlayer).ThenInclude(p => p.Player)
-                .ToList();
             vm.DraftPosts = _context.EpisodeEntry
                 .Include(e => e.EpisodeEntryType)
                 .Include(e => e.Episode)
                 .Include(p => p.EpisodeEntryPlayer).ThenInclude(p=>p.Player)
-                .Where(e => e.EpisodeEntryType.Name == StaticValues.Post )
+                .Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Draft)
                 .ProjectTo<PostViewModel>(_mapper.ConfigurationProvider).ToList();
             vm.PendingPosts = _context.EpisodeEntry
                 .Include(e => e.EpisodeEntryType)

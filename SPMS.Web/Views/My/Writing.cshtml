@@ -7,25 +7,29 @@
 <div class="row">
     
     <div class="col-10">
-        <h1>Draft Posts</h1>
-        
-        <ul>
-            @*@foreach (var character in Model.Characters)
-            {
-                <li><a asp-action="Details" asp-controller="Biography" asp-area="" asp-route-id="@character.Key">@character.Value</a> [<a asp-action="Edit" asp-controller="Biography" asp-route-id="@character.Key">Edit</a>]</li>
-            }*@
-            
-            @foreach (var post in Model.DraftPosts)
-            {
-                <li>@post.Title</li>
-            }
-        </ul>
-        
-        
-        <h1>Unread Posts</h1>
-        <ul>
+        <div class="row">
+            <div class="col-6">
+                <h1>Draft Posts</h1>
+                <p>Resume your draft posts</p>
+                <ul class="list-group">
 
-        </ul>
+                    @foreach (var post in Model.DraftPosts)
+                    {
+                    <li class="list-group-item"><span class="fab fa-firstdraft"></span> <a asp-action="post" asp-controller="authoring" asp-route-id="@post.Id">Continue editing post titled: @post.Title</a><div class="small text-right">Last updated @@ <i>datetime</i> by <i>player</i></div></li>
+                    }
+                </ul>
+            </div>
+            <div class="col-6">
+                <h1>Scheduled Posts</h1>
+                <p>These posts are scheduled to go live at a future time.</p>
+                <ul class="list-group">
+                    @foreach (var post in Model.PendingPosts)
+                    {
+                        <li class="list-group-item"><a asp-action="post" asp-controller="authoring" asp-id="post.Id">@post.Title</a> <div class="small text-right">scheduled for <i>datetime</i></div></li>
+                    }
+                </ul>
+            </div>
+        </div>
     </div>
     <div class="col-2">
         @if (Model.Characters.Any() && Model.HasEpisode)

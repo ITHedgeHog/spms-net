@@ -7,12 +7,17 @@ namespace SPMS.Web.Models
 {
     public class EpisodeEntry
     {
+        public EpisodeEntry()
+        {
+            EpisodeEntryPlayer = new Collection<EpisodeEntryPlayer>();
+        }
+
+
         [Key]
         public int Id { get; set; }
         [NotNull, MaxLength(200)]
         public string Title { get; set; }
 
-        public DateTime CreatedAt { get; set; }
 
         [NotNull, MaxLength(200)]
         public string Location { get; set; }
@@ -35,6 +40,9 @@ namespace SPMS.Web.Models
 
         public int EpisodeId { get; set; }
         public Episode Episode { get; set; }
+        public DateTime? PublishedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
 
+        public DateTime CreatedAt { get; set; }
     }
 }
