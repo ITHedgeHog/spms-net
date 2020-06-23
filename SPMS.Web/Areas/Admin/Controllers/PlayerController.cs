@@ -14,7 +14,7 @@ using SPMS.Web.ViewModels.Biography;
 
 namespace SPMS.Web.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area("admin")]
     [Authorize(Policy = "Administrator")]
     public class PlayerController : Controller
     {
