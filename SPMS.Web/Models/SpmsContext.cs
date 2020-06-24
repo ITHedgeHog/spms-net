@@ -15,6 +15,10 @@ namespace SPMS.Web.Models
         {
         }
 
+        public SpmsContext()
+        {
+            
+        }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //modelBuilder.Entity<PlayerConnection>().HasNoKey();

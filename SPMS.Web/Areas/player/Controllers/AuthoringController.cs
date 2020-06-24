@@ -38,7 +38,7 @@ namespace SPMS.Web.Controllers
         [HttpGet("player/author/post/{id?}")]
         public async Task<IActionResult> Post(int? id)
         {
-            if(!(await _authoringService.HasActiveEpisode()))
+            if(!(await _authoringService.HasActiveEpisodeAsync()))
             {
                 TempData["message"] = "No active episode";
                 return RedirectToAction("Writing", "My");
