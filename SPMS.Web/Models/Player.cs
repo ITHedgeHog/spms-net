@@ -29,15 +29,4 @@ namespace SPMS.Web.Models
         public ICollection<PlayerConnection> Connections { get; set; }
         public string Email { get; set; }
     }
-
-    public class PlayerConnection
-    {
-        [Key]
-        public string ConnectionId { get; set; }
-        public string UserAgent { get; set; }
-        public bool Connected { get; set; }
-        public int PlayerId { get; set; }
-        public Player Player { get; set; }
-
-    }
 }

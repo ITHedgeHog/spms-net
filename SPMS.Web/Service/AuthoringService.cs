@@ -49,7 +49,7 @@ namespace SPMS.Web.Service
         public async Task<bool> HasActiveEpisode()
         {
             var gameId = await _gameService.GetGameIdAsync();
-            var exists = await _context.EpisodeEntry.Include(e => e.Episode).ThenInclude(e => e.Series).ThenInclude(s => s.Game).AnyAsync(x => x.EpisodeEntryStatus.Name == StaticValues.Active && x.Episode.Series.Game.Id == gameId);
+            var exists = await _context.Episode.Include(e => e.Status).Include(e => e.Series).ThenInclude(s => s.Game).AnyAsync(x => x.Status.Name == StaticValues.Active && x.Series.Game.Id == gameId);
             return exists;
         }
 
