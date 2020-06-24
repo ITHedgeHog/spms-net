@@ -28,7 +28,8 @@ namespace SPMS.Web.Mapper
                 .ForMember(x => x.StatusId, o => o.MapFrom(y => y.EpisodeEntryStatusId))
                 .ForMember(x => x.Statuses, o => o.Ignore())
                 .ForMember(x => x.submitpost, o => o.Ignore())
-                .ForMember(x => x.PostAt, o => o.Ignore());
+                .ForMember(x => x.PostAt, o => o.Ignore())
+                .ForMember(x => x.gravatar, o => o.Ignore());
 
 
             CreateMap<AuthorPostViewModel, EpisodeEntry>()

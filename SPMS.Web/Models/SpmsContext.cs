@@ -17,6 +17,11 @@ namespace SPMS.Web.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //modelBuilder.Entity<PlayerConnection>().HasNoKey();
+
+            modelBuilder.Entity<Player>()
+                .HasMany(x => x.Connections);
+
             modelBuilder.Entity<PlayerRolePlayer>()
                 .HasKey(p => new {p.PlayerId, p.PlayerRoleId});
             modelBuilder.Entity<PlayerRolePlayer>()
@@ -53,6 +58,7 @@ namespace SPMS.Web.Models
         public DbSet<EpisodeEntryType> EpisodeEntryType { get; set; }
         public DbSet<Posting> Posting { get; set; }
         public DbSet<Player> Player { get; set; }
+        public DbSet<PlayerConnection> PlayerConnection { get; set; }
         public DbSet<PlayerRole> PlayerRole { get; set; }
         public DbSet<EpisodeEntryStatus> EpisodeEntryStatus { get; set; }
     }

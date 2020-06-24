@@ -45,24 +45,9 @@ namespace SPMS.Web.Filter
                     model.UseAnalytics = _useAnalytics;
                     model.IsAdmin = _userService.IsAdmin();
                     model.IsPlayer = _userService.IsPlayer();
+                    model.gravatar = await _userService.GetEmailAsync();
                 }
             }
         }
-
-        public override void OnActionExecuted(ActionExecutedContext filterContext)
-        {
-            //if (filterContext.Controller is Controller controller)
-            //{
-            //    var model = controller.ViewData.Model;
-            //    ((ViewModel) model).GameName = await _gameService.GetGameNameAsync(),
-            //    ((ViewModel) model).SiteTitle = await _gameService.GetSiteTitleAsync(),
-            //    (model as ViewModel).SiteDisclaimer = await _gameService.GetSiteDisclaimerAsync(),
-            //    (model as ViewModel).IsReadOnly = await _gameService.GetReadonlyStatusAsync(),
-            //    (model as ViewModel).SiteAnalytics = await _gameService.GetAnalyticsAsyncTask()
-            //}
-
-            base.OnActionExecuted(filterContext);
-        }
-
     }
 }

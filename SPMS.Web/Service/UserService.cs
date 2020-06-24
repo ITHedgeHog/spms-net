@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -65,21 +67,61 @@ namespace SPMS.Web.Service
             var user = GetPlayer();
             return user?.Id ?? 0;
         }
+        
+        private async Task<Player> GetPlayerAsync()
+        {
+            var authId = GetAuthId();
+
+            if (!await _context.Player.AnyAsync(x => x.AuthString == authId))
+            {
+                var entity = new Player()
+                {
+                    DisplayName = _httpContext.HttpContext.User.Identity.Name,
+                    AuthString = authId,
+                    Email = _httpContext.HttpContext.User.Claims.First(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value
+                };
+
+                if (!await _context.Player.AnyAsync())
+                {
+                    foreach (var role in _context.PlayerRole)
+                    {
+                        entity.Roles.Add(new PlayerRolePlayer() { PlayerRoleId = role.Id });
+                    }
+                }
+                await _context.Player.AddAsync(entity);
+                await _context.SaveChangesAsync();
+            }
+
+            var player = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole)
+                .First(x => x.AuthString == authId);
+
+            //TODO: Remove this fix
+            if (string.IsNullOrEmpty(player.Email))
+            {
+                player.Email = _httpContext.HttpContext.User.Claims.First(x =>
+                    x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+                await _context.SaveChangesAsync();
+            }
+
+            return player;
+        }
 
         private Player GetPlayer()
         {
             var authId = GetAuthId();
+
             if (!_context.Player.Any(x => x.AuthString == authId))
             {
                 var player = new Player()
                 {
                     DisplayName = _httpContext.HttpContext.User.Identity.Name,
-                    AuthString = authId
+                    AuthString = authId,
+                    Email = _httpContext.HttpContext.User.Claims.First(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value
                 };
 
-                if(_context.Player.Count() == 0)
+                if (!_context.Player.Any())
                 {
-                    foreach(var role in _context.PlayerRole)
+                    foreach (var role in _context.PlayerRole)
                     {
                         player.Roles.Add(new PlayerRolePlayer() { PlayerRoleId = role.Id });
                     }
@@ -95,6 +137,26 @@ namespace SPMS.Web.Service
         {
             return GetPlayer();
         }
+
+        public async Task<string> GetEmailAsync()
+        {
+            var player = await GetPlayerAsync();
+
+            return player.Email;
+        }
+
+        public async Task<string> GetGravatarHash()
+        {
+            var player = await GetPlayerAsync();
+            var tmpSource = Encoding.ASCII.GetBytes(player.Email);
+            var tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
+            var hash = new StringBuilder();
+            for (int i = 0; i < tmpHash.Length; i++)
+            {
+                hash.Append(tmpHash[i].ToString("X2"));
+            }
+            return hash.ToString();
+        }
     };
     public interface IUserService
     {
@@ -104,5 +166,7 @@ namespace SPMS.Web.Service
         bool IsAdmin();
         int GetId();
         Player GetPlayerFromDatabase();
+        Task<string> GetEmailAsync();
+        Task<string> GetGravatarHash();
     }
 }

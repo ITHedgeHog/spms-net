@@ -46,11 +46,8 @@
                     @if (Model.IsPlayer)
                     {
                         <li class="nav-item">
-                            @{
-                                var avatar = User.Claims.First(x => x.Type == "picture").Value;
-                            }
-
-                            <a class="nav-link text-dark" asp-area="player" asp-controller="PlayerDashboard" asp-action="Index"><img src="@avatar" alt="@User.Identity.Name avatar and menu" class="navbar-image" /> Player Dashboard</a>
+                           
+                            <a class="nav-link text-dark" asp-area="player" asp-controller="PlayerDashboard" asp-action="Index"><img gravatar-email="@Model.gravatar" alt="@User.Identity.Name avatar and menu" class="navbar-image" /> Player Dashboard</a>
                         </li>
                     }
                     @if (Model.IsAdmin)
