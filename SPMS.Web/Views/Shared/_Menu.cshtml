@@ -31,34 +31,28 @@
                         <a class="nav-link text-dark" asp-area="" asp-controller="Application" asp-action="Index">Join us</a>
                     </li>
                 }
+                else
+                {
+                    <li class="nav-item">
+
+                    </li>
+                }
             </ul>
         </div>
         <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
             <ul class="navbar-nav flex-grow-1">
                 @if (User.Identity.IsAuthenticated)
                 {
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    @if (Model.IsPlayer)
+                    {
+                        <li class="nav-item">
                             @{
                                 var avatar = User.Claims.First(x => x.Type == "picture").Value;
                             }
-                            <img src="@avatar" alt="@User.Identity.Name avatar and menu" class="navbar-image"/> Account
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            @if (Model.IsPlayer)
-                            {
-                                <a asp-area="" asp-action="Writing" asp-controller="My" class="dropdown-item">Writing <span class="badge badge-light">0</span></a>
-                                <a asp-area="" asp-action="Characters" asp-controller="My" class="dropdown-item">Characters</a>
-                            }
-                            else
-                            {
-                                <a class="dropdown-item" asp-area="" asp-controller="Application" asp-action="Index">How to join</a>
-                            }
 
-                            <div class="dropdown-divider"></div>
-                            <a id="qsLogoutBtn" class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
-                        </div>
-                    </li>
+                            <a class="nav-link text-dark" asp-area="player" asp-controller="PlayerDashboard" asp-action="Index"><img src="@avatar" alt="@User.Identity.Name avatar and menu" class="navbar-image" /> Player Dashboard</a>
+                        </li>
+                    }
                     @if (Model.IsAdmin)
                     {
                         <li class="nav-item dropdown">
@@ -68,6 +62,12 @@
                             </div>
                         </li>
                     }
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Logout
+                        </a>
+                    </li>
                 }
                 else
                 {

@@ -49,9 +49,10 @@ namespace SPMS.Web.Mapper
                 .ForMember(X => X.EpisodeEntry, o => o.Ignore());
 
             CreateMap<EpisodeEntry, PostViewModel>()
-                .ForMember(x => x.Authors, o => o.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel() { Id = y.PlayerId, Name = y.Player.DisplayName })));
+                .ForMember(x => x.Authors, o => o.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel() { Id = y.PlayerId, Name = y.Player.DisplayName })))
+                .ForMember(x => x.LastAuthor, o => o.Ignore());
         }
     }
 
-    
+
 }

@@ -29,6 +29,7 @@ services:
       dockerfile: SPMS.Web/Dockerfile
     depends_on:
       - sql
+      - redis
     
 
   adminer:
@@ -39,7 +40,21 @@ services:
       - 8080:8080
     depends_on:
       - sql
+  
+  redis:
+    image: "redis:alpine"
+    user: root
+    command: redis-server --requirepass 123xyz12!
+    ports:
+     - "6379:6379"
+    volumes:
+      - redisdata:/var/lib/redis
+      - redisconf:/usr/local/etc/redis/redis.conf
+    environment:
+     - REDIS_REPLICATION_MODE=master
 
 volumes:
   pgdata: {}
   sqldata: {}
+  redisdata: {}
+  redisconf: {}

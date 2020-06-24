@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using Amazon.Runtime;
@@ -22,10 +23,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using SPMS.Web.Areas.player.Hubs;
 using SPMS.Web.Filter;
 using SPMS.Web.Models;
 using SPMS.Web.Policy;
 using SPMS.Web.Service;
+using StackExchange.Redis;
 using Westwind.AspNetCore.Markdown;
 
 namespace SPMS.Web
@@ -181,7 +184,7 @@ namespace SPMS.Web
             services.AddTransient<IStoryService, StoryService>();
             ///services.AddTransient<IMarkdownService, MarkdownService>();
             services.AddTransient<IAuthoringService, AuthoringService>();
-           
+
 
 
 
@@ -216,6 +219,35 @@ namespace SPMS.Web
             services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddRazorRuntimeCompilation().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
             services.AddFeatureManagement();
+
+
+            services.AddSignalR()
+                .AddMessagePackProtocol()
+                .AddStackExchangeRedis(o =>
+                {
+                    o.ConnectionFactory = async writer =>
+                    {
+                        var config = new ConfigurationOptions
+                        {
+                            AbortOnConnectFail = false
+                        };
+                        config.ChannelPrefix = "SPMS"; // TODO Link to Tenant Here.
+                        config.EndPoints.Add(IPAddress.Loopback, 0);
+                        config.SetDefaultPorts();
+                        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+                        connection.ConnectionFailed += (_, e) =>
+                        {
+                            Console.WriteLine("Connection to Redis failed.");
+                        };
+
+                        if (!connection.IsConnected)
+                        {
+                            Console.WriteLine("Did not connect to Redis.");
+                        }
+
+                        return connection;
+                    };
+                });
 
 
         }
@@ -276,6 +308,7 @@ namespace SPMS.Web
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapHub<AuthoringHub>("/authoringHub");
             });
             app.UseAzureAppConfiguration();
         }

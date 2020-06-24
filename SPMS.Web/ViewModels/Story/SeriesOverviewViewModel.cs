@@ -54,6 +54,8 @@ namespace SPMS.Web.ViewModels.Story
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime PublishedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+        public string LastAuthor { get; set; }
         public List<AuthorViewModel> Authors { get; set; }
 
     }
