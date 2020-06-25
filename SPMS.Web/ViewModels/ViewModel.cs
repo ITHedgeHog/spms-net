@@ -8,6 +8,7 @@
             UseAnalytics = false;
         }
 
+        public string gravatar { get; set; }
         
         public bool IsReadOnly { get; set; }
 

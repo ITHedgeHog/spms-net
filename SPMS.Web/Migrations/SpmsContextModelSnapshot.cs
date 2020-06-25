@@ -315,9 +315,36 @@ namespace SPMS.Web.Migrations
                     b.Property<string>("DisplayName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.ToTable("Player");
+                });
+
+            modelBuilder.Entity("SPMS.Web.Models.PlayerConnection", b =>
+                {
+                    b.Property<string>("ConnectionId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("Connected")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("ConnectedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PlayerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserAgent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ConnectionId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("PlayerConnection");
                 });
 
             modelBuilder.Entity("SPMS.Web.Models.PlayerRole", b =>
@@ -460,6 +487,15 @@ namespace SPMS.Web.Migrations
                     b.HasOne("SPMS.Web.Models.Game", "Game")
                         .WithMany("Url")
                         .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("SPMS.Web.Models.PlayerConnection", b =>
+                {
+                    b.HasOne("SPMS.Web.Models.Player", "Player")
+                        .WithMany("Connections")
+                        .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

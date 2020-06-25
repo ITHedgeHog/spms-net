@@ -38,18 +38,19 @@ namespace SPMS.Web.Service
                 await _context.EpisodeEntryType.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Id == vm.TypeId)).ToListAsync();
 
 
-            if (!vm.Authors.Any(x => x.Name == _userService.GetName()))
+            if (vm.Authors.All(x => x.Name != _userService.GetName()))
             {
-                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName()));
+                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName(), await _userService.GetEmailAsync()));
             }
 
             return vm;
         }
 
-        public async Task<bool> HasActiveEpisode()
+        public async Task<bool> HasActiveEpisodeAsync()
         {
             var gameId = await _gameService.GetGameIdAsync();
-            return await _context.EpisodeEntry.Include(e => e.Episode).ThenInclude(e => e.Series).ThenInclude(s => s.Game).AnyAsync(x => x.EpisodeEntryStatus.Name == StaticValues.Active && x.Episode.Series.Game.Id == gameId);
+            var exists = await _context.Episode.Include(e => e.Status).Include(e => e.Series).ThenInclude(s => s.Game).AnyAsync(x => x.Status.Name == StaticValues.Active && x.Series.Game.Id == gameId);
+            return exists;
         }
 
         public async Task<AuthorPostViewModel> NewPost()
@@ -66,9 +67,9 @@ namespace SPMS.Web.Service
             vm.PostTypes =
                 await _context.EpisodeEntryType.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Id == vm.TypeId)).ToListAsync();
 
-            if (!vm.Authors.Any(x => x.Name == _userService.GetName()))
+            if (vm.Authors.All(x => x.Name != _userService.GetName()))
             {
-                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName()));
+                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName(), await _userService.GetEmailAsync()));
             }
 
             return vm;
@@ -114,8 +115,8 @@ namespace SPMS.Web.Service
             {
                
                 var pId = _userService.GetId();
-                if (!model.Authors.Any(x => x.Id == pId))
-                    model.Authors.Add(new AuthorViewModel(pId, _userService.GetName()));
+                if (model.Authors.All(x => x.Id != pId))
+                    model.Authors.Add(new AuthorViewModel(pId, _userService.GetName(), await _userService.GetEmailAsync()));
 
                 var entity = _mapper.Map<EpisodeEntry>(model);
                 entity.CreatedAt = DateTime.UtcNow;
@@ -142,7 +143,7 @@ namespace SPMS.Web.Service
 
     public interface IAuthoringService
     {
-        Task<bool> HasActiveEpisode();
+        Task<bool> HasActiveEpisodeAsync();
         Task<bool> PostExists(int id);
         Task<AuthorPostViewModel> NewPost();
         Task<AuthorPostViewModel> GetPost(int id);

@@ -11,7 +11,7 @@ namespace SPMS.Web.Service
     public class GameService : IGameService
     {
         private readonly IHttpContextAccessor _httpContext;
-        private SpmsContext _context;
+        private readonly SpmsContext _context;
 
         public GameService(SpmsContext context, IHttpContextAccessor httpContext)
         {
@@ -34,7 +34,8 @@ namespace SPMS.Web.Service
             }
             // Return Btd if nothing matches
 
-            return await _context.Game.FirstAsync(g => g.Name == StaticValues.DefaultGameName);
+            var g = await _context.Game.FirstAsync(g => g.Name == StaticValues.DefaultGameName);
+            return g;
         }
 
         public async Task<string> GetGameNameAsync()

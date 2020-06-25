@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace SPMS.Web.Models
 {
@@ -9,36 +10,23 @@ namespace SPMS.Web.Models
     {
         public Player()
         {
-            Roles = new Collection<PlayerRolePlayer>();
-            EpisodeEntries = new Collection<EpisodeEntryPlayer>();
+            Roles = new List<PlayerRolePlayer>();
+            EpisodeEntries = new List<EpisodeEntryPlayer>();
+            Connections = new List<PlayerConnection>();
         }
 
+        [Key]
         public int Id { get; set; }
 
         public string DisplayName { get; set; }
 
         public string AuthString { get; set; }
 
-        public Collection<PlayerRolePlayer> Roles { get; set; }
+        public ICollection<PlayerRolePlayer> Roles { get; set; }
 
-        public Collection<EpisodeEntryPlayer> EpisodeEntries { get; set; }
-    }
+        public ICollection<EpisodeEntryPlayer> EpisodeEntries { get; set; }
 
-    public class PlayerRolePlayer
-    {
-        [Key]
-        public int PlayerId { get; set; }
-        public Player Player { get; set; }
-        [Key]
-        public int PlayerRoleId { get; set; }
-        public PlayerRole PlayerRole { get; set; }
-    }
-
-    public class PlayerRole
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<PlayerRolePlayer> PlayerRolePlayer { get; set; }
-
+        public ICollection<PlayerConnection> Connections { get; set; }
+        public string Email { get; set; }
     }
 }

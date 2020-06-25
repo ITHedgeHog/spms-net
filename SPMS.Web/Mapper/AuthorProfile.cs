@@ -23,12 +23,13 @@ namespace SPMS.Web.Mapper
                 .ForMember(x => x.PostTypes, opt => opt.Ignore())
                 .ForMember(x => x.TypeId, opt => opt.Ignore())
                 .ForMember(x => x.Episode, opt => opt.MapFrom(x => x.Episode.Title))
-                .ForMember(x => x.Authors, opt => opt.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel(y.Player.Id, y.Player.DisplayName))))
+                .ForMember(x => x.Authors, opt => opt.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel(y.Player.Id, y.Player.DisplayName, y.Player.Email))))
                 .ForMember(x => x.EpisodeId, opt => opt.MapFrom(x => x.EpisodeId))
                 .ForMember(x => x.StatusId, o => o.MapFrom(y => y.EpisodeEntryStatusId))
                 .ForMember(x => x.Statuses, o => o.Ignore())
                 .ForMember(x => x.submitpost, o => o.Ignore())
-                .ForMember(x => x.PostAt, o => o.Ignore());
+                .ForMember(x => x.PostAt, o => o.Ignore())
+                .ForMember(x => x.gravatar, o => o.Ignore());
 
 
             CreateMap<AuthorPostViewModel, EpisodeEntry>()
@@ -49,9 +50,10 @@ namespace SPMS.Web.Mapper
                 .ForMember(X => X.EpisodeEntry, o => o.Ignore());
 
             CreateMap<EpisodeEntry, PostViewModel>()
-                .ForMember(x => x.Authors, o => o.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel() { Id = y.PlayerId, Name = y.Player.DisplayName })));
+                .ForMember(x => x.Authors, o => o.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel() { Id = y.PlayerId, Name = y.Player.DisplayName })))
+                .ForMember(x => x.LastAuthor, o => o.Ignore());
         }
     }
 
-    
+
 }

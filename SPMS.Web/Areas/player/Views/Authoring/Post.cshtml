@@ -1,0 +1,243 @@
+﻿@model SPMS.Web.ViewModels.Authoring.AuthorPostViewModel
+@{
+    ViewData["Title"] = "Manage Post";
+}
+
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Author post</h1>
+
+        <div class="float-right">
+            <a asp-area="player" asp-controller="My" asp-action="Writing" class="btn btn-outline-secondary" onclick="autoSave();">
+                <i class="fas fa-times-circle"></i>
+                Close Editor
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+
+            <p>A post is an integral part of simming, this is where the action takes place. You can invite others to edit this post with you or you can write on your own.</p>
+
+            <p>
+                <button class="btn btn-light" type="button" data-toggle="collapse" data-target="#missionNotes" aria-expanded="false" aria-controls="missionNotes">
+                    Episode @Model.EpisodeId notes
+                </button>
+            </p>
+            <div class="collapse" id="missionNotes">
+                <div class="card card-body">
+                    Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <form id="authorpost" asp-action="ProcessPostData" method="post" class="form-row">
+
+        <input type="hidden" asp-for="Id" data-autosave="true" />
+        <input type="hidden" asp-for="EpisodeId" data-autosave="true" />
+        <input type="hidden" asp-for="StatusId" data-autosave="true" />
+        <div id="authorList">
+            @foreach (var author in Model.Authors)
+            {
+                var index = Guid.NewGuid();
+                <input type="hidden" name="Authors.Index" value="@index" data-autosave="true" />
+                <input type="hidden" name="Authors[@index].Id" value="@author.Id" data-autosave="true" />
+                <input type="hidden" name="Authors[@index].Name" value="@author.Name" data-autosave="true" />
+            }
+        </div>
+
+        <div class="col-sm-12 col-md-9">
+            <div class="form-group bg-light">
+                <textarea asp-for="Content" class="form-control" placeholder="Begin your post here..." aria-describedby="ContentDescription" aria-multiline="true"></textarea>
+                <span asp-validation-for="Title" class="text-danger"></span>
+                <p id="ContentDescription" class="sr-only form-text text-muted">This textarea accepts Markdown format text</p>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-3 bg-light">
+            <div>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <button type="button" class="btn btn-outline-primary form-control" id="save" name="save" onclick="autoSave();"><span id="saving" class="fas fa-spinner fa-spin d-none" aria-hidden="true"></span> Save Draft</button>
+                    </li>
+                    <li id="lastSave" class="list-group-item list-group-item-info  d-none">
+                        <div class="text-muted text-center small">Last saved at: <span id="lastSaveTime"></span></div>
+                    </li>
+                </ul>
+            </div>
+            <hr />
+
+            <div class="accordion" id="managePost">
+                <div class="card">
+                    <div class="card-header" id="manageAuthors">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#authorCollapse" aria-expanded="true" aria-controls="authorCollapse">
+                                Currently Editing
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="authorCollapse" class="collapse show" aria-labelledby="manageAuthors" data-parent="#managePost">
+                        <div class="card-body">
+                            <ul class="list-group">
+                                @foreach (var author in Model.Authors)
+                                {
+                                    <li class="list-group-item">
+                                        <div class="blobs-container"><img gravatar-email="@author.Email" gravatar-size="20" alt="@author.Name is currently active"/> @author.Name
+                                            <div id="author-@author.Id" class="blob d-none"> </div></div> </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="manageMetaData">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#metaDataCollapse" aria-expanded="true" aria-controls="metaDataCollapse">
+                                Meta Data
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="metaDataCollapse" class="collapse show" aria-labelledby="manageMetaData" data-parent="#managePost">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label asp-for="Title" class="control-label"></label>
+                                <input asp-for="Title" class="form-control form-control-sm" aria-describedby="postTitle" placeholder="Post title" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                                <p id="postTitle" class="sr-only form-text text-muted">The plain text title of the post make it descriptive to match what you have written in the post.</p>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Location" class="control-label"></label>
+                                <input asp-for="Location" class="form-control form-control-sm" placeholder="Where the post takes place" />
+                                <span asp-validation-for="Location" class="text-danger"></span>
+                                <p id="postLocation" class="sr-only form-text text-muted">Where this post takes place.</p>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Timeline" class="control-label"></label>
+                                <input asp-for="Timeline" class="form-control form-control-sm" aria-describedby="postTimeline" placeholder="Timeline within the mission" />
+                                <span asp-validation-for="Timeline" class="text-danger"></span>
+                                <p id="postTimeline" class="sr-only form-text text-muted">When this post takes place within the mission timeline.</p>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="TypeId" class="control-label"></label>
+                                <select asp-for="TypeId" asp-items="Model.PostTypes" class="form-control form-control-sm" aria-describedby="postType" data-autosave="true"></select>
+                                <span asp-validation-for="TypeId" class="text-danger"></span>
+                                <p id="postType" class="sr-only form-text text-muted">The type of post to create.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="schedulePost">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#scheduleCollapse" aria-expanded="false" aria-controls="scheduleCollapse">
+                                Schedule Post
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="scheduleCollapse" class="collapse hide" aria-labelledby="schedulePost" data-parent="#managePost">
+                        <div class="card-body">
+                            <p>Add Date Picker</p>
+                            <button name="submitpost" value="schedule" class="btn btn-primary">Schedule Post</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="postPost">
+                        <h2 class="mb-0">
+                            <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#postCollapse" aria-expanded="false" aria-controls="postCollapse">
+                                Publish Post
+                            </button>
+                        </h2>
+                    </div>
+
+                    <div id="postCollapse" class="collapse hide" aria-labelledby="postPost" data-parent="#managePost">
+                        <div class="card-body">
+                            <p class="alert alert-warning">Clicking this button will publish your post without further warning.</p>
+                            <button name="submitpost" value="publish" class="btn btn-danger">Publish Immediately</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</main>
+
+@section Style {
+    <link href="~/css/simplemde.min.css" rel="stylesheet" />
+    <link href="~/css/pulse.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/simplemde.min.js"></script>
+    <script src="~/js/authoring.js"></script>
+
+
+
+    <script type="text/javascript" language="javascript">
+
+        //var simplemde;
+        //jQuery.fn.extend({
+        //    autoHeight: function () {
+        //        function autoHeight_(element) {
+        //            return jQuery(element).css({
+        //                'height': 'auto',
+        //                'overflow-y': 'hidden'
+        //            }).height(element.scrollHeight);
+        //        }
+        //        return this.each(function () {
+        //            autoHeight_(this).on('input', function () {
+        //                autoHeight_(this);
+        //            });
+        //        });
+        //    }
+        //});
+        //$('#Content').autoHeight();
+
+
+
+        window.setInterval(function () {
+            var dirtyElements = $('#authorpost').find('[data-dirty=true]').add('[form=authorpost][data-dirty=true]');
+            var autosaveElements = $('#authorpost').find('[data-autosave=true]').add('[form=authorpost][data-autosave=true]');
+
+            var elementsToPost = $.merge(dirtyElements, autosaveElements);
+
+            //console.log(hiddenElements);
+            if (dirtyElements.length > 0) {
+                $('#saving').toggleClass('d-none');
+                var data = elementsToPost.serialize() + '&Content=' + simplemde.value();
+                console.log(data);
+                $.post('/player/author/post/autosave', data, function (data) {
+                    $('#Id').val(data);
+                    dirtyElements.attr('data-dirty', false);
+                    $('#lastSave').removeClass('d-none');
+                    //alert('data saved successfully');
+                    var today = new Date();
+                    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+                    var time = (today.getHours() < 10 ? '0' : '') + today.getHours() + ":" + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes() + ":" + (today.getSeconds() < 10 ? '0' : '') + today.getSeconds();
+                    var dateTime = date + ' ' + time;
+                    $('#lastSaveTime').text(dateTime);
+                    $('#saving').toggleClass('d-none');
+                });
+            }
+        }, 60000); // 60 seconds
+
+        $(function () {
+            var formElements = $('#authorpost')
+                .find('input, select, textarea')
+                .add('[form=authorpost]')
+                .not(':disabled')
+                .each(function () {
+                    $(this).attr('data-dirty', false).change(function () {
+                        $(this).attr('data-dirty', true);
+                    });
+                });
+        });
+    </script>
+}
