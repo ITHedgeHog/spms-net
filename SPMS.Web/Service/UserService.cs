@@ -157,6 +157,11 @@ namespace SPMS.Web.Service
             }
             return hash.ToString();
         }
+
+        public bool IsAuthenticated()
+        {
+            return _httpContext.HttpContext.User.Identity.IsAuthenticated;
+        }
     };
     public interface IUserService
     {
@@ -168,5 +173,6 @@ namespace SPMS.Web.Service
         Player GetPlayerFromDatabase();
         Task<string> GetEmailAsync();
         Task<string> GetGravatarHash();
+        bool IsAuthenticated();
     }
 }

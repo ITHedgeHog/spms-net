@@ -43,9 +43,13 @@ namespace SPMS.Web.Filter
                     model.IsReadOnly = await _gameService.GetReadonlyStatusAsync();
                     model.SiteAnalytics = await _gameService.GetAnalyticsAsyncTask();
                     model.UseAnalytics = _useAnalytics;
-                    model.IsAdmin = _userService.IsAdmin();
-                    model.IsPlayer = _userService.IsPlayer();
-                    model.gravatar = await _userService.GetEmailAsync();
+                    if (_userService.IsAuthenticated())
+                    {
+                        model.IsAdmin = _userService.IsAdmin();
+                        model.IsPlayer = _userService.IsPlayer();
+                        model.gravatar = await _userService.GetEmailAsync();
+                    }
+
                 }
             }
         }
