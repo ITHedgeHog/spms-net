@@ -226,26 +226,34 @@ namespace SPMS.Web
                 {
                     o.ConnectionFactory = async writer =>
                     {
-                        var config = new ConfigurationOptions
-                        {
-                            AbortOnConnectFail = false
-                        };
                         var cnx = Configuration.GetConnectionString("Redis");
-                        config.ChannelPrefix = "SPMS"; // TODO Link to Tenant Here.
-                        config.EndPoints.Add(Configuration.GetConnectionString("Redis"));
-                        config.SetDefaultPorts();
-                        var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
-                        connection.ConnectionFailed += (_, e) =>
+                        try
                         {
-                            Console.WriteLine("Connection to Redis failed.");
-                        };
+                            var config = ConfigurationOptions.Parse(cnx);
+                            config.AbortOnConnectFail = false;
+                            config.AllowAdmin = false;
+                            config.ChannelPrefix = "SPMS"; // TODO Link to Tenant Here.
+                            config.SetDefaultPorts();   
+                            var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
+                            connection.ConnectionFailed += (_, e) =>
+                            {
+                                Console.WriteLine("Connection to Redis failed.");
+                            };
 
-                        if (!connection.IsConnected)
+                            if (!connection.IsConnected)
+                            {
+                                Console.WriteLine("Did not connect to Redis. ");
+                            }
+                            return connection;
+                        }
+                        catch (Exception ex)
                         {
-                            Console.WriteLine("Did not connect to Redis.");
+                            var i = 1;
+
+                            return null;
                         }
 
-                        return connection;
+                      
                     };
                 });
 
