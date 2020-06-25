@@ -1,4 +1,6 @@
-﻿@using System.Collections
+﻿@inject IConfiguration Configuration
+@using System.Collections
+@using Microsoft.Extensions.Configuration
 @{
     ViewData["Title"] = "Debug Variables";
 }
@@ -11,6 +13,7 @@
     }
 </ul>
 
+<h1>Environment Variables</h1>
 <ul>
 
     @{
@@ -20,5 +23,14 @@
             <li>@e.Key - @e.Value</li>
         }
 
+    }
+</ul>
+
+<h1>Configuration Variables</h1>
+<ul>
+    @foreach (var cfg in Configuration.AsEnumerable())
+    {
+        
+        <li>@cfg.Key - @cfg.Value</li>
     }
 </ul>
