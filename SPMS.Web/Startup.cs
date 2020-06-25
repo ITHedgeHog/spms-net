@@ -220,8 +220,7 @@ namespace SPMS.Web
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
             services.AddFeatureManagement();
 
-
-            services.AddSignalR()
+            services.AddSignalR(o => o.EnableDetailedErrors = true)
                 .AddMessagePackProtocol()
                 .AddStackExchangeRedis(o =>
                 {
@@ -231,8 +230,9 @@ namespace SPMS.Web
                         {
                             AbortOnConnectFail = false
                         };
+                        var cnx = Configuration.GetConnectionString("Redis");
                         config.ChannelPrefix = "SPMS"; // TODO Link to Tenant Here.
-                        config.EndPoints.Add(IPAddress.Loopback, 0);
+                        config.EndPoints.Add(Configuration.GetConnectionString("Redis"));
                         config.SetDefaultPorts();
                         var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
                         connection.ConnectionFailed += (_, e) =>

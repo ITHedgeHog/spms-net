@@ -7,25 +7,26 @@ using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Web.Models;
+using SPMS.Web.TagHelper;
 
 namespace SPMS.Web.Areas.player.Hubs
 {
     public class AuthoringHub : Hub
     {
-        private readonly SpmsContext _context;
+        private readonly SpmsContext _db;
 
         public AuthoringHub(SpmsContext context)
         {
-            _context = context;
+            _db = context;
         }
 
         public override async Task OnConnectedAsync()
         {
             var name = Context.User.Identity.Name;
 
-            var user = _context.Player
+            var user = _db.Player
                 .Include(u => u.Connections)
-                .SingleOrDefault(u => u.DisplayName == name);
+                .SingleOrDefault(u => u.DisplayName == name || u.Email == name);
 
             if (user == null)
             {
@@ -47,7 +48,7 @@ namespace SPMS.Web.Areas.player.Hubs
                 UserAgent = Context.GetHttpContext().Request.Headers["User-Agent"],
                 Connected = true
             });
-            await _context.SaveChangesAsync();
+            await _db.SaveChangesAsync();
             await base.OnConnectedAsync();
 
         }
@@ -55,12 +56,12 @@ namespace SPMS.Web.Areas.player.Hubs
         public override async Task OnDisconnectedAsync(Exception exception)
         {
 
-            var connection = await _context.PlayerConnection.FindAsync(Context.ConnectionId);
+            var connection = await _db.PlayerConnection.FindAsync(Context.ConnectionId);
             if (connection != null)
             {
                 connection.Connected = false;
-                await _context.SaveChangesAsync();
-                await Groups.RemoveFromGroupAsync(Context.ConnectionId, "group1");
+                await _db.SaveChangesAsync();
+                //await Groups.RemoveFromGroupAsync(Context.ConnectionId, "group1");
             }
             await base.OnDisconnectedAsync(exception);
         }
@@ -68,11 +69,22 @@ namespace SPMS.Web.Areas.player.Hubs
         public async Task JoinGroup(string groupName)
         {
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
+
+            var user =
+                await _db.Player.Include(p => p.Connections).FirstOrDefaultAsync(p =>
+                    p.Connections.Any(x => x.ConnectionId == Context.ConnectionId));
+            
+            await Clients.Group(groupName).SendAsync("AddPlayer", user.Id.ToString());
         }
 
         public async Task LeaveGroup(string groupName)
         {
             await this.Groups.RemoveFromGroupAsync(this.Context.ConnectionId, groupName);
+            var user =
+                await _db.Player.Include(p => p.Connections).FirstOrDefaultAsync(p =>
+                    p.Connections.Any(x => x.ConnectionId == Context.ConnectionId));
+
+            await Clients.Group(groupName).SendAsync("RemovePlayer", user.Id.ToString());
         }
 
 

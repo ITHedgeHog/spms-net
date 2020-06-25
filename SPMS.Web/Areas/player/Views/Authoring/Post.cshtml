@@ -9,10 +9,10 @@
         <h1 class="h2">Author post</h1>
 
         <div class="float-right">
-                <a asp-area="player" asp-controller="My" asp-action="Writing" class="btn btn-outline-secondary" onclick="autoSave();">
-                    <i class="fas fa-times-circle"></i>
-                    Close Editor
-                </a>
+            <a asp-area="player" asp-controller="My" asp-action="Writing" class="btn btn-outline-secondary" onclick="autoSave();">
+                <i class="fas fa-times-circle"></i>
+                Close Editor
+            </a>
         </div>
     </div>
     <div class="row">
@@ -74,20 +74,20 @@
                     <div class="card-header" id="manageAuthors">
                         <h2 class="mb-0">
                             <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#authorCollapse" aria-expanded="true" aria-controls="authorCollapse">
-                                Manage Authors
+                                Currently Editing
                             </button>
                         </h2>
                     </div>
 
                     <div id="authorCollapse" class="collapse show" aria-labelledby="manageAuthors" data-parent="#managePost">
                         <div class="card-body">
-                            <p>Invite other authors</p>
                             <ul class="list-group">
                                 @foreach (var author in Model.Authors)
                                 {
-                                    <li class="list-group-item">@author.Name</li>
+                                    <li class="list-group-item">
+                                        <div class="blobs-container"><img gravatar-email="@author.Email" gravatar-size="0" alt="@author.Name is currently active"/> @author.Name
+                                            <div id="author-@author.Id" class="blob d-none"> </div></div> </li>
                                 }
-                                <li class="list-group-item list-group-item-action d-none"><button class="btn btn-secondary disabled" disabled="disabled">Invite author</button></li>
                             </ul>
                         </div>
                     </div>
@@ -169,6 +169,7 @@
 
 @section Style {
     <link href="~/css/simplemde.min.css" rel="stylesheet" />
+    <link href="~/css/pulse.css" rel="stylesheet" />
 }
 
 @section Scripts {
@@ -177,7 +178,7 @@
     <script src="~/js/simplemde.min.js"></script>
     <script src="~/js/authoring.js"></script>
 
-    
+
 
     <script type="text/javascript" language="javascript">
 
@@ -199,7 +200,7 @@
         //});
         //$('#Content').autoHeight();
 
-       
+
 
         window.setInterval(function () {
             var dirtyElements = $('#authorpost').find('[data-dirty=true]').add('[form=authorpost][data-dirty=true]');

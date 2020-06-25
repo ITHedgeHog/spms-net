@@ -38,9 +38,9 @@ namespace SPMS.Web.Service
                 await _context.EpisodeEntryType.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Id == vm.TypeId)).ToListAsync();
 
 
-            if (!vm.Authors.Any(x => x.Name == _userService.GetName()))
+            if (vm.Authors.All(x => x.Name != _userService.GetName()))
             {
-                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName()));
+                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName(), await _userService.GetEmailAsync()));
             }
 
             return vm;
@@ -69,7 +69,7 @@ namespace SPMS.Web.Service
 
             if (vm.Authors.All(x => x.Name != _userService.GetName()))
             {
-                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName()));
+                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName(), await _userService.GetEmailAsync()));
             }
 
             return vm;
@@ -115,8 +115,8 @@ namespace SPMS.Web.Service
             {
                
                 var pId = _userService.GetId();
-                if (!model.Authors.Any(x => x.Id == pId))
-                    model.Authors.Add(new AuthorViewModel(pId, _userService.GetName()));
+                if (model.Authors.All(x => x.Id != pId))
+                    model.Authors.Add(new AuthorViewModel(pId, _userService.GetName(), await _userService.GetEmailAsync()));
 
                 var entity = _mapper.Map<EpisodeEntry>(model);
                 entity.CreatedAt = DateTime.UtcNow;

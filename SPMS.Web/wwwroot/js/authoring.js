@@ -20,7 +20,11 @@ simplemde.codemirror.on("click", function (stuff) {
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/authoringHub")
     .build();
-connection.start().error(function (err) { console.error(err) });
+connection.start().then(function() {
+    console.log('Started');
+    var channel = "authoring-" + $("#Id").val();
+    connection.invoke("JoinGroup", channel).catch((err) => { console.error(err)});
+}).catch(function (err) { console.error(err) });
 
 connection.on("ReceiveText", (text) => {
     //editor.value = text;
@@ -31,6 +35,16 @@ connection.on("ReceiveText", (text) => {
     simplemde.value(text);
     simplemde.focus();
 });
+
+connection.on("AddPlayer",
+    (text) => {
+        $('#author-' + text).removeClass("d-none");
+    });
+
+connection.on("RemovePlayer",
+    (text) => {
+        $('#author-' + text).addClass("d-none");
+    });
 
 function change() {
     connection.invoke("SendMessage", simplemde.value()).catch(err => console.error(err));
@@ -62,9 +76,7 @@ function autoSave() {
 
 function backToWritingPortal() {
     autoSave();
-
-    connection.server.leaveGroup($("#Id").val());
+    var channel = "authoring-" + $("#Id").val();
+    connection.server.leaveGroup(channel);
 }
 
-
-connection.client.joinGroup($("#Id").val());
