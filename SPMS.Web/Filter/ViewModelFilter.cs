@@ -50,6 +50,19 @@ namespace SPMS.Web.Filter
                         model.gravatar = await _userService.GetEmailAsync();
                     }
 
+                    var sha = Environment.GetEnvironmentVariable("COMMIT_SHA");
+                    if (!string.IsNullOrEmpty(sha))
+                    {
+                        var last = 7;
+                        if (sha.Length < 7)
+                        {
+                            last = sha.Length;
+                        }
+                        model.CommitShaLink = "https://github.com/ITHedgeHog/getspms/commit/" + sha.Substring(0, last);
+                        model.CommitSha = sha.Substring(0, last);
+                    }
+
+                    var i = 1;
                 }
             }
         }

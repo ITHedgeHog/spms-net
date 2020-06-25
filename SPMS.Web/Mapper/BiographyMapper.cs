@@ -27,7 +27,8 @@ namespace SPMS.Web.Mapper
                 .ForMember(x => x.IsAdmin, opt => opt.Ignore())
                 .ForMember(x => x.IsPlayer, opt => opt.Ignore())
                 .ForMember(x => x.gravatar, o => o.Ignore())
-                ;
+                .ForMember(x => x.CommitSha, o => o.Ignore())
+                .ForMember(x => x.CommitShaLink, o => o.Ignore());
 
             CreateMap<Biography, EditBiographyViewModel>()
                 .ForMember(x => x.Posting, opt => opt.MapFrom(y => y.Posting.Name))
@@ -44,7 +45,9 @@ namespace SPMS.Web.Mapper
                 .ForMember(x => x.SiteAnalytics, opt => opt.Ignore())
                 .ForMember(x => x.IsAdmin, opt => opt.Ignore())
                 .ForMember(x => x.IsPlayer, opt => opt.Ignore())
-                .ForMember(x => x.gravatar, o => o.Ignore());
+                .ForMember(x => x.gravatar, o => o.Ignore())
+                .ForMember(x => x.CommitSha, o => o.Ignore())
+                .ForMember(x => x.CommitShaLink, o => o.Ignore());
 
 
 
@@ -60,7 +63,9 @@ namespace SPMS.Web.Mapper
                 .ForMember(x => x.SiteAnalytics, opt => opt.Ignore())
                 .ForMember(x => x.IsAdmin, opt => opt.Ignore())
                 .ForMember(x => x.IsPlayer, opt => opt.Ignore())
-                .ForMember(x => x.gravatar, o => o.Ignore());
+                .ForMember(x => x.gravatar, o => o.Ignore())
+                .ForMember(x => x.CommitSha, o => o.Ignore())
+                .ForMember(x => x.CommitShaLink, o => o.Ignore());
 
         }
     }

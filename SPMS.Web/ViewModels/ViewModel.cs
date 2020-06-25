@@ -22,5 +22,7 @@
         public bool UseAnalytics { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsPlayer { get; set; }
+        public string CommitShaLink { get; set; }
+        public string CommitSha { get; set; }
     }
 }

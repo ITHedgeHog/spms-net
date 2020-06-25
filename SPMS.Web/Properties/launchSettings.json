@@ -29,6 +29,9 @@
       "commandName": "Docker",
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "environmentVariables": {
+        "COMMIT_SHA": "localhost"
+      },
       "publishAllPorts": true,
       "useSSL": true
     }
