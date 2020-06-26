@@ -6,25 +6,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SPMS.Web.ViewModels.Authoring
 {
-    public class AuthorViewModel
-    {
-
-        public AuthorViewModel()
-        {
-
-        }
-        public AuthorViewModel(int id, string name, string email)
-        {
-            Id = id;
-            Name = name;
-            Email = email;
-        }
-
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Email { get; set; }
-    }
-
     public class AuthorPostViewModel : ViewModel
     {
         
@@ -34,6 +15,8 @@ namespace SPMS.Web.ViewModels.Authoring
             Authors = new List<AuthorViewModel>();
             PostTypes = new List<SelectListItem>();
             Statuses = new List<SelectListItem>();
+            Title = "Default title";
+            Content = "Default content";
         }
 
         public AuthorPostViewModel()

@@ -54,7 +54,9 @@ namespace SPMS.Web
 
 
             services.AddDbContext<SpmsContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("SpmsContextSql")));
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("SpmsContextSql"));
+            },ServiceLifetime.Transient);
 
             // using Microsoft.AspNetCore.DataProtection;
             //services.AddDataProtection()
@@ -233,7 +235,7 @@ namespace SPMS.Web
                             config.AbortOnConnectFail = false;
                             config.AllowAdmin = false;
                             config.ChannelPrefix = "SPMS"; // TODO Link to Tenant Here.
-                            config.SetDefaultPorts();   
+                            config.SetDefaultPorts();
                             var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
                             connection.ConnectionFailed += (_, e) =>
                             {
@@ -253,7 +255,7 @@ namespace SPMS.Web
                             return null;
                         }
 
-                      
+
                     };
                 });
 
