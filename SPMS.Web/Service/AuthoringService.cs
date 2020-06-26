@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using SPMS.Web.Areas.player.ViewModels;
 
 namespace SPMS.Web.Service
 {
@@ -60,6 +61,7 @@ namespace SPMS.Web.Service
             var activeEpisodeId = await  _context.Episode.Include(e => e.Status).CountAsync(e => e.Status.Name == StaticValues.Active || e.Status.Name == StaticValues.Archived);
 
             vm = new AuthorPostViewModel(activeEpisodeId);
+
             //vm.Authors.Add(_userService.GetId());
             vm.Statuses = await _context.EpisodeEntryStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Name == StaticValues.Draft)).ToListAsync();
             vm.StatusId = int.Parse(vm.Statuses.First(x => x.Text == StaticValues.Draft).Value);
@@ -109,7 +111,7 @@ namespace SPMS.Web.Service
                 _mapper.Map(model, entity);
                 entity.UpdatedAt = DateTime.UtcNow;
                 HandleSubmit(entity, model);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             else
             {
@@ -130,14 +132,44 @@ namespace SPMS.Web.Service
                 }
                 
 
-                _context.EpisodeEntry.Add(entity);
-                _context.SaveChanges();
+                await _context.EpisodeEntry.AddAsync(entity);
+                await _context.SaveChangesAsync();
                
 
                 model.Id = entity.Id;
             }
 
             return model.Id;
+        }
+
+        public async Task<List<AuthorToInviteViewModel>> GetAuthorsAsync(int id)
+        {
+            var post = await _context.EpisodeEntry.Include(p => p.EpisodeEntryPlayer).FirstAsync(x => x.Id == id);
+
+            var authors = await _context.Player.Include(x => x.EpisodeEntries).ProjectTo<AuthorToInviteViewModel>(_mapper.ConfigurationProvider)
+                .ToListAsync();
+
+            foreach (var a in authors.Where(a => post.EpisodeEntryPlayer.Any(x => x.PlayerId == a.Id)))
+            {
+                a.IsSelected = true;
+            }
+
+
+            return authors;
+        }
+
+        public async Task UpdateAuthors(InviteAuthorViewModel model)
+        {
+            var post = await _context.EpisodeEntry.Include(x => x.EpisodeEntryPlayer).FirstAsync(x => x.Id == model.Id);
+
+            post.EpisodeEntryPlayer.Clear();
+            foreach (var author in model.Authors.Where(x => x.IsSelected))
+            {
+                post.EpisodeEntryPlayer.Add(new EpisodeEntryPlayer() {EpisodeEntryId = post.Id, PlayerId = author.Id});
+
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 
@@ -148,5 +180,7 @@ namespace SPMS.Web.Service
         Task<AuthorPostViewModel> NewPost();
         Task<AuthorPostViewModel> GetPost(int id);
         Task<int> SavePostAsync(AuthorPostViewModel model);
+        Task<List<AuthorToInviteViewModel>> GetAuthorsAsync(int id);
+        Task UpdateAuthors(InviteAuthorViewModel model);
     }
 }

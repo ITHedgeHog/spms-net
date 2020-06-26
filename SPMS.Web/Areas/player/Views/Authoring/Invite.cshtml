@@ -1,0 +1,49 @@
+﻿@model SPMS.Web.Areas.player.ViewModels.InviteAuthorViewModel
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Invite to edit</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <p>Invite other players to edit your post as a joint post.</p>
+
+            <form asp-action="ProcessInvite" method="post">
+                <input type="hidden" asp-for="@Model.Id"/>
+                <h3 id="postAuthors">Which authors are involved?</h3>
+                <ul class="list-group">
+                    @for (var tabindex = 0;
+                        tabindex < Model.Authors.Count(); tabindex++)
+                    {
+                        <li class="list-group-item">
+                            <div class="checkbox">
+                                @Html.HiddenFor(x => x.Authors[tabindex].Id)
+                                @Html.CheckBoxFor(x => x.Authors[tabindex].IsSelected)
+                                @{
+                                    var labelFor = "Authors_" + tabindex + "__IsSelected";
+                                }
+                                <label for="@labelFor">@Model.Authors[tabindex].Name can edit</label>
+                            </div>
+                        </li>
+                    }
+                </ul>
+
+                <button type="submit" class="btn btn-primary" name="nextaction" value="save">Save and go back to portal</button>
+                <button type="submit" class="btn btn-primary" name="nextaction" value="edit">Save and continue editing</button>
+            </form>
+        </div>
+    </div>
+
+</main>
+
+@section Style {
+    <style>
+        [role="switch"][aria-checked="true"] :first-child,
+        [role="switch"][aria-checked="false"] :last-child {
+            background: #000;
+            color: #fff;
+        }
+    </style>
+}

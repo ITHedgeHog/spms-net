@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
+using SPMS.Web.Areas.player.ViewModels;
 using SPMS.Web.Models;
 using SPMS.Web.ViewModels.Authoring;
 using SPMS.Web.ViewModels.Story;
@@ -54,6 +55,10 @@ namespace SPMS.Web.Mapper
             CreateMap<EpisodeEntry, PostViewModel>()
                 .ForMember(x => x.Authors, o => o.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel() { Id = y.PlayerId, Name = y.Player.DisplayName })))
                 .ForMember(x => x.LastAuthor, o => o.Ignore());
+
+            CreateMap<Player, AuthorToInviteViewModel>()
+                .ForMember(x => x.IsSelected, o => o.Ignore())
+                .ForMember(x=>x.Name, o => o.MapFrom(y =>y.DisplayName));
         }
     }
 
