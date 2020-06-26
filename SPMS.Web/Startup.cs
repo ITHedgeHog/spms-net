@@ -66,13 +66,12 @@ namespace SPMS.Web
             ///
 
 
-            var s3config = new AmazonS3Config()
+            var s3Config = new AmazonS3Config()
             {
-
                 ServiceURL = "https://ams3.digitaloceanspaces.com"
             };
             // Configure your AWS SDK however you usually would do so e.g. IAM roles, environment variables
-            services.TryAddSingleton<IAmazonS3>(new AmazonS3Client(s3config)
+            services.TryAddSingleton<IAmazonS3>(new AmazonS3Client(s3Config)
             {
 
             });
@@ -235,11 +234,19 @@ namespace SPMS.Web
                             config.AbortOnConnectFail = false;
                             config.AllowAdmin = false;
                             config.ChannelPrefix = "SPMS"; // TODO Link to Tenant Here.
-                            config.SetDefaultPorts();
+                            config.SetDefaultPorts();   
+                            config.ReconnectRetryPolicy = new ExponentialRetry(5000);
+                            config.ConnectRetry = 5;
+                            config.Ssl = true;
                             var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
                             connection.ConnectionFailed += (_, e) =>
                             {
-                                Console.WriteLine("Connection to Redis failed.");
+                                TelemetryConfiguration tc1 = TelemetryConfiguration.CreateDefault();
+                                tc1.InstrumentationKey = Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
+
+                                var client = new TelemetryClient(tc1);
+                                client.TrackException(e.Exception);
+                                //ai.
                             };
 
                             if (!connection.IsConnected)
@@ -250,7 +257,12 @@ namespace SPMS.Web
                         }
                         catch (Exception ex)
                         {
-                            var i = 1;
+                            TelemetryConfiguration tc1 = TelemetryConfiguration.CreateDefault();
+                            tc1.InstrumentationKey = Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
+
+                            var client = new TelemetryClient(tc1);
+                            client.TrackException(ex);
+                            //ai.
 
                             return null;
                         }
