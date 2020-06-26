@@ -271,6 +271,8 @@ namespace SPMS.Web
                     };
                 });
 
+            services.AddApplicationInsightsTelemetry();
+
 
         }
 

@@ -5,7 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
+using Microsoft.AspNet.SignalR.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SPMS.Web.Models;
 using SPMS.Web.TagHelper;
 
@@ -14,33 +16,28 @@ namespace SPMS.Web.Areas.player.Hubs
     public class AuthoringHub : Hub
     {
         private readonly SpmsContext _db;
+        private readonly ILogger<AuthoringHub> _logger;
 
-        public AuthoringHub(SpmsContext context)
+        public AuthoringHub(SpmsContext context, ILogger<AuthoringHub> logger)
         {
             _db = context;
+            _logger = logger;
         }
 
         public override async Task OnConnectedAsync()
         {
             var name = Context.User.Identity.Name;
+            _logger.LogInformation($"Connections name {name}");
 
+            var userCount =  _db.Player
+                .Include(u => u.Connections)
+                .Count(u => u.DisplayName == name || u.Email == name);
+            _logger.LogInformation($"Number of matching results {userCount} for {name}");
             var user = _db.Player
                 .Include(u => u.Connections)
                 .SingleOrDefault(u => u.DisplayName == name || u.Email == name);
 
-            if (user == null)
-            {
-                await base.OnConnectedAsync();
-                return;
-
-                // This should never happen.
-                //user = new Player
-                //{
-                //    DisplayName = name,
-                //    Connections = new List<PlayerConnection>()
-                //};
-                //await _context.Player.AddAsync(user);
-            }
+            _logger.LogInformation($"User found {user.Id} - {user.DisplayName} - {user.Email} - {user.AuthString}");
 
             user.Connections.Add(new PlayerConnection()
             {
@@ -48,6 +45,7 @@ namespace SPMS.Web.Areas.player.Hubs
                 UserAgent = Context.GetHttpContext().Request.Headers["User-Agent"],
                 Connected = true
             });
+            _logger.LogInformation($"Add connection {Context.ConnectionId} - {Context.GetHttpContext().Request.Headers["User-Agent"]}");
             await _db.SaveChangesAsync();
             await base.OnConnectedAsync();
 
@@ -70,11 +68,12 @@ namespace SPMS.Web.Areas.player.Hubs
         {
             await this.Groups.AddToGroupAsync(this.Context.ConnectionId, groupName);
 
-            var user =
-                await _db.Player.Include(p => p.Connections).FirstOrDefaultAsync(p =>
-                    p.Connections.Any(x => x.ConnectionId == Context.ConnectionId));
-            
-            await Clients.Group(groupName).SendAsync("AddPlayer", user.Id.ToString());
+            var playerConnection = await _db.PlayerConnection.Include(x => x.Player)
+                .FirstOrDefaultAsync(x => x.ConnectionId == Context.ConnectionId);
+
+            _logger.LogInformation($"Finding player associated with Connection {Context.ConnectionId} - User Id {playerConnection.PlayerId}");
+
+            await Clients.Group(groupName).SendAsync("AddPlayer", playerConnection.PlayerId.ToString());
         }
 
         public async Task LeaveGroup(string groupName)
@@ -88,11 +87,10 @@ namespace SPMS.Web.Areas.player.Hubs
         }
 
 
-        public async Task SendMessage(string msg)
+        public async Task SendMessage(string msg, string groupName)
         {
-            //await Clients.All.SendAsync("RecieveMessage", user, msg);
-
-            await Clients.OthersInGroup("group1").SendAsync("ReceiveText", msg);
+            _logger.LogInformation($"Sending to group {groupName}");
+            await Clients.OthersInGroup(groupName).SendAsync("ReceiveText", msg);
         }
     }
 }

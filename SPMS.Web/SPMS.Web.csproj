@@ -45,6 +45,7 @@
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.1" />
     <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.2.1" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
+    <PackageReference Include="SignalR.AppInsights" Version="1.0.1" />
     <PackageReference Include="SimpleBase" Version="3.0.1" />
     <PackageReference Include="Sodium.Core" Version="1.2.3" />
     <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
