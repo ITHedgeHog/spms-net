@@ -1,34 +1,34 @@
 ﻿@model SPMS.Web.ViewModels.MyCharactersViewModel
 
 @{
-    ViewData["Title"] = "My Characters " + Model.SiteTitle;
+    ViewData["Title"] = "Character Portal " + Model.SiteTitle;
 }
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Character Portal</h1>
+    </div>
 
-<div class="row">
-    
-    <div class="col-10">
-        <h1>My Characters</h1>
-        
-        <ul>
-            @foreach (var character in Model.Characters)
+    <div class="row">
+
+        <div class="col-10">
+            <h1>My Characters</h1>
+
+            <ul>
+                @foreach (var character in Model.Characters)
+                {
+                    <li><a asp-action="Details" asp-controller="Biography" asp-area="" asp-route-id="@character.Key">@character.Value</a> [<a asp-action="Edit" asp-controller="Biography" asp-route-id="@character.Key">Edit</a>]</li>
+                }
+            </ul>
+        </div>
+        <div class="col-2">
+            @if (Model.IsCreateCharacterEnabled)
             {
-            <li><a asp-action="Details" asp-controller="Biography" asp-area="" asp-route-id="@character.Key">@character.Value</a> [<a asp-action="Edit" asp-controller="Biography" asp-route-id="@character.Key">Edit</a>]</li>
+                <a asp-action="Create" asp-controller="Biography" asp-area="" class="btn btn-primary">Create New Character</a>
             }
-        </ul>
+            else
+            {
+                <p class="btn btn-primary">Character Creation Disabled</p>
+            }
+        </div>
     </div>
-    <div class="col-2">
-        @if (Model.IsCreateCharacterEnabled)
-        {
-            <a asp-action="Create" asp-controller="Biography" asp-area="" class="btn btn-primary">Create New Character</a>
-        }
-        else
-        {
-            <p class="btn btn-primary">Character Creation Disabled</p>
-        }
-        @if (Model.Characters.Any() && Model.HasEpisode)
-        {
-            <a asp-action="Create" asp-controller="Authoring" asp-area="" class="btn btn-primary">Create New Post</a>
-        }
-
-    </div>
-</div>
+</main>
