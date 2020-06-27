@@ -27,5 +27,10 @@ jobs:
       with:
         # SDK version to use. Examples: 2.2.104, 3.1, 3.1.x
         dotnet-version: 3.1.x
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v1.4.2
+    - name: Restore Node Packages
+      run: npm install
+      working-directory: SPMS.Web\
     - run: dotnet build SPMS.sln
     
