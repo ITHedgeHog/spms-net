@@ -17,7 +17,7 @@ using SPMS.Web.ViewModels.Biography;
 
 namespace SPMS.Web.Controllers
 {
-    [Authorize(Roles = "player")]
+    [Authorize(Policy = "Player")]
     public class BiographyController : Controller
     {
         private readonly SpmsContext _context;

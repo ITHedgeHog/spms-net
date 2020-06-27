@@ -18,7 +18,7 @@ using SPMS.Web.ViewModels.Authoring;
 
 namespace SPMS.Web.Controllers
 {
-    [Authorize(Roles = StaticValues.PlayerRole)]
+    [Authorize(Policy = "Player")]
     [Area("player")]
     public class AuthoringController : Controller
     {
