@@ -31,6 +31,6 @@ jobs:
       uses: actions/setup-node@v1.4.2
     - name: Restore Node Packages
       run: npm install
-      working-directory: SPMS.Web\
+      working-directory: $GITHUB_WORKSPACE/SPMS.Web/
     - run: dotnet build SPMS.sln
     
