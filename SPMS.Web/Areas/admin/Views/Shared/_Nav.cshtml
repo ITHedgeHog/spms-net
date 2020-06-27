@@ -2,23 +2,23 @@
     <div class="sidebar-sticky pt-3">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link active" href="#">
+                <a class="nav-link active" asp-area="admin" asp-controller="Dashboard" asp-action="Index">
                     <i class="fas fa-house-user"></i>
                     Dashboard <span class="sr-only">(current)</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="player" asp-action="Writing" asp-controller="My" class="nav-link">
-                    <i class="fas fa-chalkboard"></i>
-                    Writing
+                <a asp-area="admin" asp-action="Index" asp-controller="Player" class="nav-link">
+                    <i class="fas fa-user-shield"></i>
+                    Users &amp; Roles
                 </a>
             </li>
-            <li class="nav-item">
+            @*<li class="nav-item">
                 <a asp-area="player" asp-action="Characters" asp-controller="My" class="nav-link">
                     <i class="far fa-address-card"></i>
                     Characters
                 </a>
-            </li>
+            </li>*@
             @*<li class="nav-item">
                 <a class="nav-link" href="#">
                     <span data-feather="users"></span>

@@ -1,9 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿
 using Microsoft.AspNetCore.Mvc;
 using SPMS.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace SPMS.Web.Areas.admin.Controllers
 {
+    [Authorize(Policy = "Administrator")]
     [Area("admin")]
     public class DashboardController : Controller
     {
