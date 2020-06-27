@@ -48,12 +48,15 @@ connection.on("RemovePlayer",
         $('#author-' + text).addClass("d-none");
     });
 
-connection.on("disconnected", function () {
-    setTimeout(function () {
-        connection.start().then(function () {
-            connection.invoke("JoinGroup", getChannel()).catch((err) => { console.error(err) });
-        }).catch(function (err) { console.error(err) });
-    }, 5000); // Restart connection after 5 seconds.
+connection.on("disconnected",
+    function() {
+        setTimeout(function() {
+                connection.start().then(function() {
+                    connection.invoke("JoinGroup", getChannel()).catch((err) => { console.error(err) });
+                }).catch(function(err) { console.error(err) });
+            },
+            5000);
+    }); // Restart connection after 5 seconds.
 
 function change() {
     connection.invoke("SendMessage", simplemde.value(), getChannel()).catch(err => console.error(err));
