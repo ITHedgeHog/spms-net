@@ -1,41 +1,63 @@
 ﻿@model SPMS.Web.Areas.Admin.ViewModels.PlayerListViewModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Users & Roles";
 }
 
-<h1>Index</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                NAme
-            </th>
-            <th>
-                Auth String
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Players) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DisplayName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AuthString)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Admin Dashboard</h1>
+    </div>
+
+    @*<p>
+            <a asp-action="Create">Create New</a>
+        </p>*@
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Players)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DisplayName)
+                    </td>
+                    <td>
+                        <!-- Email -->
+                    </td>
+                    <td>
+                        <ul>
+                            @foreach (var role in item.Roles)
+                            {
+
+                                <li>@role.Name</li>
+                            }
+                        </ul>
+                    </td>
+                    <td>
+                        <form method="post" asp-action="SwitchPlayerRole">
+                            <input type="hidden" name="Id" value="@item.Id" />
+                            <button type="submit" name="action">Toggle Player Role</button>
+                        </form>
+                        <form method="post" asp-action="SwitchAdminRole">
+                            <input type="hidden" name="Id" value="@item.Id" />
+                            <button type="submit" name="action">Toggle Admin Role</button>
+                        </form>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</main>

@@ -162,5 +162,49 @@ namespace SPMS.Web.Areas.Admin.Controllers
         {
             return _context.Player.Any(e => e.Id == id);
         }
+
+        [HttpPost("admin/user/switch/player/role")]
+        public async Task<IActionResult> SwitchPlayerRole(int id)
+        {
+            var role = await _context.PlayerRole.FirstAsync(x => x.Name == StaticValues.PlayerRole);
+
+            var player = await _context.Player.Include(x => x.Roles).FirstAsync(x => x.Id == id);
+
+            if (player.Roles.All(x => x.PlayerRoleId != role.Id))
+            {
+                TempData["message"] = "Role added";
+                player.Roles.Add(new PlayerRolePlayer(){PlayerId = player.Id, PlayerRoleId = role.Id});
+            }
+            else
+            {
+                TempData["message"] = "Role removed";
+                player.Roles.Remove(player.Roles.First(x => x.PlayerRoleId == role.Id));
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost("admin/user/switch/admin/role")]
+        public async Task<IActionResult> SwitchAdminRole(int id)
+        {
+            var role = await _context.PlayerRole.FirstAsync(x => x.Name == StaticValues.AdminRole);
+
+            var player = await _context.Player.Include(x => x.Roles).FirstAsync(x => x.Id == id);
+
+            if (player.Roles.All(x => x.PlayerRoleId != role.Id))
+            {
+                TempData["message"] = "Role added";
+                player.Roles.Add(new PlayerRolePlayer() { PlayerId = player.Id, PlayerRoleId = role.Id });
+            }
+            else
+            {
+                TempData["message"] = "Role removed";
+                player.Roles.Remove(player.Roles.First(x => x.PlayerRoleId == role.Id));
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 }
