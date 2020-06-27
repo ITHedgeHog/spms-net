@@ -9,6 +9,7 @@ using Microsoft.AspNet.SignalR.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SPMS.Web.Models;
+using SPMS.Web.Service;
 using SPMS.Web.TagHelper;
 
 namespace SPMS.Web.Areas.player.Hubs
@@ -17,25 +18,27 @@ namespace SPMS.Web.Areas.player.Hubs
     {
         private readonly SpmsContext _db;
         private readonly ILogger<AuthoringHub> _logger;
+        private readonly IUserService _userService;
 
-        public AuthoringHub(SpmsContext context, ILogger<AuthoringHub> logger)
+        public AuthoringHub(SpmsContext context, ILogger<AuthoringHub> logger, IUserService userService)
         {
             _db = context;
             _logger = logger;
+            _userService = userService;
         }
 
         public override async Task OnConnectedAsync()
         {
-            var name = Context.User.Identity.Name;
+            var name = await _userService.GetEmailAsync();
             _logger.LogInformation($"Connections name {name}");
 
             var userCount =  _db.Player
                 .Include(u => u.Connections)
-                .Count(u => u.DisplayName == name || u.Email == name);
+                .Count(u => u.Email == name);
             _logger.LogInformation($"Number of matching results {userCount} for {name}");
             var user = _db.Player
                 .Include(u => u.Connections)
-                .SingleOrDefault(u => u.DisplayName == name || u.Email == name);
+                .SingleOrDefault(u => u.Email == name);
 
             _logger.LogInformation($"User found {user.Id} - {user.DisplayName} - {user.Email} - {user.AuthString}");
 
