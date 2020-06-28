@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SPMS.Application.ViewModels;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
-using SPMS.Web.ViewModels;
 
 namespace SPMS.Web.Controllers
 {

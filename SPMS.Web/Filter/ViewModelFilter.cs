@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
+using SPMS.Application.ViewModels;
 using SPMS.Web.Service;
-using SPMS.Web.ViewModels;
 
 namespace SPMS.Web.Filter
 {

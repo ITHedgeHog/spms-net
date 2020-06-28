@@ -10,10 +10,10 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using SPMS.Application.ViewModels;
+using SPMS.Application.ViewModels.Biography;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
-using SPMS.Web.ViewModels;
-using SPMS.Web.ViewModels.Biography;
 
 namespace SPMS.Web.Controllers
 {

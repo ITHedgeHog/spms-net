@@ -3,12 +3,12 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Web.Models;
-using SPMS.Web.ViewModels.Authoring;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using SPMS.Application.ViewModels.Authoring;
 using SPMS.Web.Areas.player.ViewModels;
 
 namespace SPMS.Web.Service

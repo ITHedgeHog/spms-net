@@ -10,13 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20200620004044_AddDataProtectionKeys.cs" />
-    <Compile Remove="Migrations\20200620004044_AddDataProtectionKeys.Designer.cs" />
-    <Compile Remove="Migrations\20200620225141_EpisodeEntryPlayer.cs" />
-    <Compile Remove="Migrations\20200620225141_EpisodeEntryPlayer.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AspNetCore.DataProtection.Aws.S3" Version="2.2.0" />
     <PackageReference Include="Automapper" Version="9.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
@@ -55,9 +48,11 @@
   <ItemGroup>
     <Folder Include="Areas\admin\Data\" />
     <Folder Include="Areas\admin\Models\" />
+    <Folder Include="Areas\admin\ViewModels\" />
     <Folder Include="Areas\player\Data\" />
     <Folder Include="Areas\player\Models\" />
     <Folder Include="Areas\player\Mapper\" />
+    <Folder Include="Areas\player\ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -98,6 +93,12 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\SPMS.Common\SPMS.Common.csproj" />
+    <ProjectReference Include="..\src\SPMS.Infrastructure\SPMS.Infrastructure.csproj" />
+    <ProjectReference Include="..\src\SPMS.Persistence\SPMS.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

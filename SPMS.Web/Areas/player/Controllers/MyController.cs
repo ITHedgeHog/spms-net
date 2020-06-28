@@ -7,10 +7,10 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SPMS.Application.ViewModels;
+using SPMS.Application.ViewModels.Story;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
-using SPMS.Web.ViewModels;
-using SPMS.Web.ViewModels.Story;
 
 namespace SPMS.Web.Controllers
 {

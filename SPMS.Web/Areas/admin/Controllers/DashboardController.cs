@@ -1,8 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
-using SPMS.Web.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using SPMS.Application.ViewModels;
 
 namespace SPMS.Web.Areas.admin.Controllers
 {

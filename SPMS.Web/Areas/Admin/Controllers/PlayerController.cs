@@ -8,9 +8,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SPMS.Application.ViewModels.Biography;
 using SPMS.Web.Areas.Admin.ViewModels;
 using SPMS.Web.Models;
-using SPMS.Web.ViewModels.Biography;
 
 namespace SPMS.Web.Areas.Admin.Controllers
 {

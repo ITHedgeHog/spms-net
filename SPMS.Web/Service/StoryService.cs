@@ -2,11 +2,11 @@
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Web.Models;
-using SPMS.Web.ViewModels.Story;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using SPMS.Application.ViewModels.Story;
 
 namespace SPMS.Web.Service
 {

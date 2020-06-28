@@ -52,12 +52,8 @@ namespace SPMS.Web
             Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration["AWS:SecretKey"]);
 
 
-
-            services.AddDbContext<SpmsContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("SpmsContextSql"));
-            },ServiceLifetime.Transient);
-
+            SPMS.Persistence.DependencyInjection.AddPersistence(services, Configuration);
+            
             // using Microsoft.AspNetCore.DataProtection;
             //services.AddDataProtection()
             //    .PersistKeysToDbContext<SpmsContext>();
@@ -277,10 +273,8 @@ namespace SPMS.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SpmsContext context, IMapper mapper)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            mapper.ConfigurationProvider.AssertConfigurationIsValid();
-
             app.Use((httpContext, next) =>
             {
                 if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
@@ -291,17 +285,18 @@ namespace SPMS.Web
             });
 
 
+            //TODO: Convert this to a Mediator Command
             //context.Database.EnsureDeleted();
-            if (Configuration.GetValue<bool>("MigrateAndSeed"))
-            {
-                context.Database.Migrate();
-                Seed.SeedDefaults(context);
-            }
+            //if (Configuration.GetValue<bool>("MigrateAndSeed"))
+            //{
+            //    context.Database.Migrate();
+            //    Seed.SeedDefaults(context);
+            //}
 
-            if (Configuration.GetValue<bool>("SeedBtd"))
-            {
-                Seed.SeedBtd(context);
-            }
+            //if (Configuration.GetValue<bool>("SeedBtd"))
+            //{
+            //    Seed.SeedBtd(context);
+            //}
             if (env.IsDevelopment() || Configuration.GetValue<bool>("ShowErrors"))
             {
                 app.UseDeveloperExceptionPage();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -10,11 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.ViewModels;
+using SPMS.Application.ViewModels.Authoring;
+using SPMS.Persistence;
 using SPMS.Web.Areas.player.ViewModels;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
-using SPMS.Web.ViewModels;
-using SPMS.Web.ViewModels.Authoring;
 
 namespace SPMS.Web.Controllers
 {
@@ -22,7 +25,7 @@ namespace SPMS.Web.Controllers
     [Area("player")]
     public class AuthoringController : Controller
     {
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly IAuthoringService _authoringService;
@@ -159,11 +162,11 @@ namespace SPMS.Web.Controllers
         // POST: Authoring/Delete/5
         [HttpPost("player/authoring/{id}/delete/confirmed")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken cancellationToken)
         {
             var episodeEntry = await _context.EpisodeEntry.FindAsync(id);
             _context.EpisodeEntry.Remove(episodeEntry);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return RedirectToAction("Writing", "My");
         }
     }

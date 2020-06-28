@@ -71,7 +71,7 @@ function autoSave() {
     //console.log(hiddenElements);
     if (dirtyElements.length > 0) {
         $('#saving').toggleClass('d-none');
-        var data = elementsToPost.serialize() + '&Content=' + simplemde.value();
+        var data = elementsToPost.serialize() + encodeURI('&Content=' + simplemde.value());
         $.post('/player/author/post/autosave', data, function (data) {
             $('#Id').val(data);
             dirtyElements.attr('data-dirty', false);
