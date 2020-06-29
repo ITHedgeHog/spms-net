@@ -9,12 +9,13 @@ namespace SPMS.Persistence
     public abstract class DesignTimeDbContextFactoryBase<TContext> :
         IDesignTimeDbContextFactory<TContext> where TContext : DbContext
     {
-        private const string ConnectionStringName = "NorthwindDatabase";
+        private const string ConnectionStringName = "ISpmsContextSql";
         private const string AspNetCoreEnvironment = "ASPNETCORE_ENVIRONMENT";
 
         public TContext CreateDbContext(string[] args)
         {
-            var basePath = Directory.GetCurrentDirectory() + string.Format("{0}..{0}WebUI", Path.DirectorySeparatorChar);
+            Console.WriteLine(Directory.GetCurrentDirectory());
+            var basePath = Directory.GetCurrentDirectory() + string.Format("{0}..{0}..{0}SPMS.Web", Path.DirectorySeparatorChar);
             return Create(basePath, Environment.GetEnvironmentVariable(AspNetCoreEnvironment));
         }
 

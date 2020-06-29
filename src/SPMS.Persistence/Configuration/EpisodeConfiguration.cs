@@ -12,6 +12,8 @@ namespace SPMS.Persistence.Configuration
             builder.Property(e => e.Id).UseIdentityColumn().HasColumnName("Id");
 
             builder.Property(x => x.Title).HasMaxLength(255);
+           builder.Property(x => x.StatusId).IsRequired();
+           builder.Property(x => x.SeriesId).IsRequired();
         }
     }
 }

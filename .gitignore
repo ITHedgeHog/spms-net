@@ -342,3 +342,4 @@ healthchecksdb
 /SPMS.Web/appsettings.Development.json
 /SPMS.Web/appsettings.Production1.json
 /docker-compose.override.yml
+/.vscode
