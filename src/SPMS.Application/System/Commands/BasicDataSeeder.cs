@@ -12,7 +12,7 @@ using SPMS.Domain.Models;
 
 namespace SPMS.Application.System.Commands
 {
-    
+
 
 
     public class BasicDataSeeder
@@ -35,6 +35,8 @@ namespace SPMS.Application.System.Commands
 
             SeedDefaults(_db);
             SeedBtd(_db);
+
+            await SeedBeyondTheDarknessAsync(_db, cancellationToken);
         }
 
         public async Task SeedPlayerRoleAsync(ISpmsContext db, CancellationToken cancellationToken)
@@ -48,10 +50,165 @@ namespace SPMS.Application.System.Commands
             await db.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task SeedBeyondTheDarknessAsync(ISpmsContext db, CancellationToken cancellationToken)
+        {
+            var btdGame = new Game() { Name = StaticValues.DefaultGameName, Description = "BtD Simulation", SiteTitle = "Beyond the Darkness a Star Trek RPG", Disclaimer = "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>", SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src='https://www.googletagmanager.com/gtag/js?id=UA-167297746-1'></script>
+                <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+
+            gtag('config', 'UA-167297746-1');
+                </script> " };
+            if (!db.Game.Any(g => g.Name == StaticValues.DefaultGameName))
+            {
+                await db.Game.AddAsync(btdGame, cancellationToken);
+
+                await db.SaveChangesAsync(cancellationToken);
+
+                // Add Game URL's
+
+                await db.GameUrl.AddAsync(new GameUrl() { GameId = btdGame.Id, Url = "www.beyond-the-darkness.com" }, cancellationToken);
+                await db.GameUrl.AddAsync(new GameUrl() { GameId = btdGame.Id, Url = "spms0.beyond-the-darkness.com" }, cancellationToken);
+                await db.GameUrl.AddAsync(new GameUrl() { GameId = btdGame.Id, Url = "btd.beyond-the-darkness.com" }, cancellationToken);
+            }
+            else
+            {
+                btdGame = await db.Game.FirstAsync(g => g.Name == StaticValues.DefaultGameName, cancellationToken: cancellationToken);
+
+                // Ensure Analyitics is set.
+
+                btdGame.SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src='https://www.googletagmanager.com/gtag/js?id=UA-167297746-1'></script>
+                <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'UA-167297746-1');
+                </script> ";
+
+                db.Game.Update(btdGame);
+                
+            }
+
+            await db.SaveChangesAsync(cancellationToken);
+
+
+            // Add Biographies
+
+            // Character
+            if (!await db.Biography.AnyAsync(b => b.Firstname == "Marcus" && b.Surname == "Brightstar", cancellationToken: cancellationToken))
+                await db.Biography.AddAsync(new Biography()
+                {
+                    Firstname = "Marcus",
+                    Surname = "Brightstar",
+                    Born = "Earth",
+                    Gender = "Male",
+                    Assignment = "Starbase Gamma",
+                    PostingId = db.Posting.First(p => p.Name == "Starbase Gamma").Id,
+                    Rank = "Captain",
+                    DateOfBirth = "Sometime in 2351",
+                    PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
+                    StatusId = 3
+                }, cancellationToken);
+            if (!db.Biography.Any(b => b.Firstname == "Jessica" && b.Surname == "Darkly"))
+                await db.Biography.AddAsync(new Biography()
+                {
+                    Firstname = "Jessica",
+                    Surname = "Darkly",
+                    Born = "Earth",
+                    Gender = "Female",
+                    Assignment = "Starbase Gamma",
+                    PostingId = db.Posting.First(p => p.Name == "Starbase Gamma").Id,
+                    Rank = "Admiral",
+                    DateOfBirth = "Sometime in 2332",
+                    PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
+                    StatusId = 3
+                }, cancellationToken);
+            if (!db.Biography.Any(b => b.Firstname == "Nigel" && b.Surname == "Adisa"))
+                await db.Biography.AddAsync(new Biography()
+                {
+                    Firstname = "Nigel",
+                    Surname = "Adisa",
+                    Born = "Earth",
+                    Gender = "Male",
+                    Assignment = "Starbase Gamma",
+                    PostingId = db.Posting.First(p => p.Name == "Starbase Gamma").Id,
+                    Rank = "Lieutenant",
+                    DateOfBirth = "",
+                    PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
+                    StatusId = 3,
+                    History = @"
+        A black male of African/British decent, 6'0 in height and weighing in at 196 pounds. He has short cropped black hair and usually wears a short beard.
+
+General Overview		Doctor Adisa, a specialist in neurology possesses a seemingly easygoing manner which he generally uses to mask his borderline OCD issues. He is very witty however his humor can sometimes become overly Sharp. His hobbies include playing various jazz instruments, long distance running, chess, and baking.
+
+
+
+Personal History		graduated from Oxford University, attended st. George's medical University and graduated in the top 5% of his class.
+
+Married at the age of 22, and divorced at the age of 30, the union producing one child, a daughter.
+
+He enrolled in Starfleet directly after graduating the University against his father's wishes. who vehemently opposes Starfleet policies."
+                }, cancellationToken);
+
+            if (!db.Biography.Any(b => b.Firstname == "Vars" && b.Surname == "Qiratt"))
+                await db.Biography.AddAsync(new Biography()
+                {
+                    Firstname = "Vars",
+                    Surname = "Qirat",
+                    Born = "Bolia",
+                    Species = "Bolian",
+                    Gender = "Male",
+                    Assignment = "",
+                    PostingId = db.Posting.First(p => p.Name == "Starbase Gamma").Id,
+                    Rank = "Lieutenant Commander",
+                    DateOfBirth = "",
+                    PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
+                    StatusId = 3,
+                    History = @"Vars is best described as carrying extra weight. A rotund Bolian Male with puffy facial features and a noticeable double chin. His height is on the slightly shorter side, coming in at around 5\'9
+
+                    Vars is a vibrant individual living up to the term, \'Jolly Fat Man\'. He has a distinctive laugh that can be considered quite obnoxious, not helped by his flavorful personality. Wearing his emotions like a badge on his sleeve, Vars rarely shy\'s away from expressing his opinion. To the same extent, a withdrawn Vars is often the sign of an insecurity or fear.\n\nHe keeps with him a Hair piece that he wears on \'special occasions\' or on Thursdays. Part of his quirky nature.
+
+                    2383 - Current - USS Ronald Reagan - Chief of Operations(Lt Cmdr)\n2383(Late) - USS Ronald Reagan - Acting Chief of Operations(Lt Cmdr)\n2383(Early) - USS Ronald Reagan - Assistant Chief of Engineering / Acting Chief of Operations(Lt)\n2380 - 2382 - USS Midway - Assistant Chief of Engineering(Lt)\n2379 - USS Midway - Supervising Engineering Officer(Lt JG)\n2376 - 2378 - Starbase 386 - Star Ship Maintenance Engineering Team Lead(Lt JG)\n2374 - 2375 - USS Gettysburg - Engineering Officer / Trainee Supervisor(Lt JG)\n2372 - 2373 - USS Melbourne - Engineering Officer(Ens / Lt JG)\n2368 - 2371 - USS Galloway - Engineering Officer(Ens)\n2363 - 2367 - Starfleet Academy - Officer Cadet[Engineering Stream]"
+                }, cancellationToken);
+
+
+            // Series
+            var series = new Series() { Title = "Series 1", GameId = btdGame.Id };
+            if (!db.Series.Any(x => x.Title == "Series 1"))
+            {
+                await db.Series.AddAsync(series, cancellationToken);
+
+                await db.SaveChangesAsync(cancellationToken);
+            }
+            else
+            {
+                series = await _db.Series.FirstAsync(x => x.Title == "Series 1" && x.GameId == btdGame.Id,
+                    cancellationToken: cancellationToken);
+            }
+
+            if (!await db.Episode.AnyAsync(x => x.Title == "Prologue", cancellationToken: cancellationToken))
+            {
+                EpisodeStatus episodeStatus = await db.EpisodeStatus.AsNoTracking().FirstAsync(x => x.Name == StaticValues.Active, cancellationToken: cancellationToken);
+                await db.Episode.AddAsync(new Episode()
+                {
+                    Title = "Prologue",
+                    SeriesId = series.Id,
+                    StatusId = episodeStatus.Id
+                }, cancellationToken);
+
+                await db.SaveChangesAsync(cancellationToken);
+            }
+
+
+        }
+
 
         public static void SeedDefaults(ISpmsContext context)
         {
-            
+
 
             // Biography Status
             if (!context.BiographyStatus.Any(n => n.Name == StaticValues.Draft))
@@ -132,45 +289,7 @@ namespace SPMS.Application.System.Commands
 
         public static void SeedBtd(ISpmsContext context)
         {
-            var btdGame = new Game() { Name = StaticValues.DefaultGameName, Description = "BtD Simulation", SiteTitle = "Beyond the Darkness a Star Trek RPG", Disclaimer = "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>", SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src='https://www.googletagmanager.com/gtag/js?id=UA-167297746-1'></script>
-                <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
 
-            gtag('config', 'UA-167297746-1');
-                </script> " };
-            if (!context.Game.Any(g => g.Name == StaticValues.DefaultGameName))
-            {
-                context.Game.Add(btdGame);
-
-                context.SaveChanges();
-
-                // Add Game URL's
-
-                context.GameUrl.Add(new GameUrl() { GameId = btdGame.Id, Url = "www.beyond-the-darkness.com" });
-                context.GameUrl.Add(new GameUrl() { GameId = btdGame.Id, Url = "spms0.beyond-the-darkness.com" });
-                context.GameUrl.Add(new GameUrl() { GameId = btdGame.Id, Url = "btd.beyond-the-darkness.com" });
-            }
-            else
-            {
-                btdGame = context.Game.First(g => g.Name == StaticValues.DefaultGameName);
-
-                // Ensure Analyitics is set.
-
-                btdGame.SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src='https://www.googletagmanager.com/gtag/js?id=UA-167297746-1'></script>
-                <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', 'UA-167297746-1');
-                </script> ";
-
-                context.Game.Update(btdGame);
-                context.SaveChanges();
-            }
 
 
 
@@ -188,35 +307,7 @@ namespace SPMS.Application.System.Commands
             }
 
 
-            // Character
-            if (!context.Biography.Any(b => b.Firstname == "Marcus" && b.Surname == "Brightstar"))
-                context.Biography.Add(new Biography()
-                {
-                    Firstname = "Marcus",
-                    Surname = "Brightstar",
-                    Born = "Earth",
-                    Gender = "Male",
-                    Assignment = "Starbase Gamma",
-                    PostingId = context.Posting.First(p => p.Name == "Starbase Gamma").Id,
-                    Rank = "Captain",
-                    DateOfBirth = "Sometime in 2351",
-                    PlayerId = context.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                    StatusId = 3
-                });
-            if (!context.Biography.Any(b => b.Firstname == "Jessica" && b.Surname == "Darkly"))
-                context.Biography.Add(new Biography()
-                {
-                    Firstname = "Jessica",
-                    Surname = "Darkly",
-                    Born = "Earth",
-                    Gender = "Female",
-                    Assignment = "Starbase Gamma",
-                    PostingId = context.Posting.First(p => p.Name == "Starbase Gamma").Id,
-                    Rank = "Admiral",
-                    DateOfBirth = "Sometime in 2332",
-                    PlayerId = context.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                    StatusId = 3
-                });
+            
             context.SaveChanges();
 
             //var bioCount = context.Biography.Include(x => x.Posting)
@@ -242,26 +333,6 @@ namespace SPMS.Application.System.Commands
             //    }
             //}
             //context.SaveChanges();
-
-            // Series
-            var series = new Series() { Title = "Series 1", GameId = btdGame.Id };
-            if (!context.Series.Any(x => x.Title == "Series 1"))
-                context.Series.Add(series);
-
-            context.SaveChanges();
-
-            if (!context.Episode.Any(x => x.Title == "Prologue"))
-            {
-                EpisodeStatus episodeStatus = context.EpisodeStatus.AsNoTracking().First(x => x.Name == StaticValues.Active);
-                context.Episode.Add(new Episode()
-                {
-                    Title = "Prologue",
-                    SeriesId = series.Id,
-                    StatusId = episodeStatus.Id
-                });
-            }
-
-            context.SaveChanges();
         }
     }
 }
