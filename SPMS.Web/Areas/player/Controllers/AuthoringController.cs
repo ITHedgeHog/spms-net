@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -10,11 +11,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Services;
+using SPMS.Application.ViewModels;
+using SPMS.Application.ViewModels.Authoring;
+using SPMS.Persistence;
 using SPMS.Web.Areas.player.ViewModels;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
-using SPMS.Web.ViewModels;
-using SPMS.Web.ViewModels.Authoring;
 
 namespace SPMS.Web.Controllers
 {
@@ -22,12 +26,12 @@ namespace SPMS.Web.Controllers
     [Area("player")]
     public class AuthoringController : Controller
     {
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly IAuthoringService _authoringService;
 
-        public AuthoringController(SpmsContext context, IMapper mapper, IUserService userService, IAuthoringService authoringService)
+        public AuthoringController(ISpmsContext context, IMapper mapper, IUserService userService, IAuthoringService authoringService)
         {
             _context = context;
             _mapper = mapper;
@@ -37,7 +41,7 @@ namespace SPMS.Web.Controllers
 
 
         [HttpPost("player/author/post/new")]
-        public async Task<IActionResult> NewPost()
+        public async Task<IActionResult> NewPost(CancellationToken cancellationToken)
         {
             if (!(await _authoringService.HasActiveEpisodeAsync()))
             {
@@ -45,15 +49,15 @@ namespace SPMS.Web.Controllers
                 return RedirectToAction("Writing", "My");
             }
 
-            var vm = await _authoringService.NewPost();
+            var vm = await _authoringService.NewPost(cancellationToken);
 
-            var id = await _authoringService.SavePostAsync(vm);
+            var id = await _authoringService.SavePostAsync(vm, cancellationToken);
 
             return RedirectToAction("Post", new { Id = id });
         }
 
         [HttpGet("player/author/post/{id}/invite")]
-        public async Task<IActionResult> Invite(int id)
+        public async Task<IActionResult> Invite(int id, CancellationToken cancellationToken)
         {
 
             if (!await _authoringService.PostExists(id))
@@ -64,19 +68,19 @@ namespace SPMS.Web.Controllers
 
             var vm = new InviteAuthorViewModel();
             //var post = _authoringService.GetPost(id);
-            vm.Authors = await _authoringService.GetAuthorsAsync(id);
+            vm.Authors = await _authoringService.GetAuthorsAsync(id, cancellationToken);
 
             return View(vm);
         }
 
         [HttpPost("player/author/post/invite/process")]
-        public async Task<IActionResult> ProcessInvite(InviteAuthorViewModel model)
+        public async Task<IActionResult> ProcessInvite(InviteAuthorViewModel model, CancellationToken token)
         {
             if (ModelState.IsValid)
             {
                 //TODO: Need to notify users of the JP. This is where we use mediatr
 
-                await _authoringService.UpdateAuthors(model);
+                await _authoringService.UpdateAuthors(model, token);
 
                 if (model.nextaction.Equals("save"))
                 {
@@ -90,7 +94,7 @@ namespace SPMS.Web.Controllers
         }
 
         [HttpGet("player/author/post/{id}")]
-        public async Task<IActionResult> Post(int? id)
+        public async Task<IActionResult> Post(int? id, CancellationToken cancellationToken)
         {
             if (!(await _authoringService.HasActiveEpisodeAsync()))
             {
@@ -108,20 +112,20 @@ namespace SPMS.Web.Controllers
             {
 
 
-                return View(await _authoringService.GetPost(id.Value));
+                return View(await _authoringService.GetPost(id.Value, cancellationToken));
             }
 
 
-            return View(await _authoringService.NewPost());
+            return View(await _authoringService.NewPost(cancellationToken));
         }
 
 
         [HttpPost("player/author/post")]
-        public async Task<IActionResult> ProcessPostData(AuthorPostViewModel model)
+        public async Task<IActionResult> ProcessPostData(AuthorPostViewModel model, CancellationToken token)
         {
             if (!ModelState.IsValid) return View("Post", model);
 
-            var id = await _authoringService.SavePostAsync(model);
+            var id = await _authoringService.SavePostAsync(model, token);
 
             TempData["Message"] = "Yay it saved";
             return RedirectToAction("Writing", "My");
@@ -129,11 +133,11 @@ namespace SPMS.Web.Controllers
         }
 
         [HttpPost("player/author/post/autosave")]
-        public async Task<IActionResult> ProcessAutoSave(AuthorPostViewModel model)
+        public async Task<IActionResult> ProcessAutoSave(AuthorPostViewModel model, CancellationToken token)
         {
             if (ModelState.IsValid)
             {
-                model.Id = await _authoringService.SavePostAsync(model);
+                model.Id = await _authoringService.SavePostAsync(model, token);
             }
             return Ok(model.Id);
         }
@@ -159,11 +163,11 @@ namespace SPMS.Web.Controllers
         // POST: Authoring/Delete/5
         [HttpPost("player/authoring/{id}/delete/confirmed")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken cancellationToken)
         {
             var episodeEntry = await _context.EpisodeEntry.FindAsync(id);
             _context.EpisodeEntry.Remove(episodeEntry);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
             return RedirectToAction("Writing", "My");
         }
     }

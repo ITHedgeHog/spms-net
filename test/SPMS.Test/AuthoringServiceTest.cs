@@ -1,10 +1,9 @@
-using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using Moq;
-using SPMS.Web.Mapper;
-using SPMS.Web.Models;
-using SPMS.Web.Service;
+using SPMS.Application.Common.Mappings;
+using SPMS.Application.Services;
+using SPMS.Persistence;
 using Xunit;
 
 namespace SPMS.Test

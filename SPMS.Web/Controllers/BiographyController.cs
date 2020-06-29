@@ -1,30 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.Differencing;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using SPMS.Web.Models;
-using SPMS.Web.Service;
-using SPMS.Web.ViewModels;
-using SPMS.Web.ViewModels.Biography;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Services;
+using SPMS.Application.ViewModels;
+using SPMS.Application.ViewModels.Biography;
+using SPMS.Domain.Models;
 
 namespace SPMS.Web.Controllers
 {
     [Authorize(Policy = "Player")]
     public class BiographyController : Controller
     {
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
 
-        public BiographyController(SpmsContext context, IMapper mapper, IUserService userService)
+        public BiographyController(ISpmsContext context, IMapper mapper, IUserService userService)
         {
             _context = context;
             _mapper = mapper;
@@ -77,7 +75,7 @@ namespace SPMS.Web.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,StatusId")] CreateBiographyViewModel biography)
+        public async Task<IActionResult> Create(CancellationToken token, [Bind("Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,StatusId")] CreateBiographyViewModel biography)
         {
             var vm = new CreateBiographyViewModel
             {
@@ -89,8 +87,8 @@ namespace SPMS.Web.Controllers
                 var entity = _mapper.Map<Biography>(biography);
 
                 entity.PlayerId = _context.Player.First(x => x.AuthString == _userService.GetAuthId()).Id;
-                _context.Add(entity);
-                await _context.SaveChangesAsync();
+                await _context.Biography.AddAsync(entity, token);
+                await _context.SaveChangesAsync(token);
                 return RedirectToAction(nameof(Index));
             }
             return View(biography);
@@ -127,7 +125,7 @@ namespace SPMS.Web.Controllers
         
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,PlayerId,History,StatusId")] EditBiographyViewModel biography)
+        public async Task<IActionResult> Edit(CancellationToken token, int id, [Bind("Id,Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,PlayerId,History,StatusId")] EditBiographyViewModel biography)
         {
             if (id != biography.Id)
             {
@@ -139,8 +137,8 @@ namespace SPMS.Web.Controllers
                 try
                 {
                     var entity = _mapper.Map<Biography>(biography);
-                    _context.Update(entity);
-                    await _context.SaveChangesAsync();
+                    _context.Biography.Update(entity);
+                    await _context.SaveChangesAsync(token);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -182,11 +180,11 @@ namespace SPMS.Web.Controllers
         // POST: Biography/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken token)
         {
             var biography = await _context.Biography.FindAsync(id);
             _context.Biography.Remove(biography);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
             return RedirectToAction(nameof(Index));
         }
 

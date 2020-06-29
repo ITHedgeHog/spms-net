@@ -1,4 +1,4 @@
-﻿@model SPMS.Web.ViewModels.Authoring.AuthorPostViewModel
+﻿@model SPMS.Application.ViewModels.Authoring.AuthorPostViewModel
 @{
     ViewData["Title"] = "Manage Post";
 }
@@ -142,7 +142,7 @@
                     <div id="scheduleCollapse" class="collapse hide" aria-labelledby="schedulePost" data-parent="#managePost">
                         <div class="card-body">
                             <p>Add Date Picker</p>
-                            <button name="submitpost" value="schedule" class="btn btn-primary">Schedule Post</button>
+                            <button name="submitpost" value="schedule" class="btn btn-primary disabled" disabled="disabled">Schedule Post</button>
                         </div>
                     </div>
                 </div>
@@ -211,7 +211,7 @@
             //console.log(hiddenElements);
             if (dirtyElements.length > 0) {
                 $('#saving').toggleClass('d-none');
-                var data = elementsToPost.serialize() + '&Content=' + simplemde.value();
+                var data = elementsToPost.serialize() + encodeURI('&Content=' + simplemde.value());
                 console.log(data);
                 $.post('/player/author/post/autosave', data, function (data) {
                     $('#Id').val(data);

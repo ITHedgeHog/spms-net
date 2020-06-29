@@ -51,20 +51,10 @@ namespace SPMS.Web
             Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", Configuration["AWS:AccessKey"]);
             Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration["AWS:SecretKey"]);
 
-
-
-            services.AddDbContext<SpmsContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("SpmsContextSql"));
-            },ServiceLifetime.Transient);
-
-            // using Microsoft.AspNetCore.DataProtection;
-            //services.AddDataProtection()
-            //    .PersistKeysToDbContext<SpmsContext>();
-
-            ///https://static-btd.ams3.digitaloceanspaces.com
-            ///
-
+            SPMS.Application.DependencyInjection.AddApplication(services);
+            SPMS.Infrastructure.DependencyInjection.AddInfrastructure(services, Configuration);
+            SPMS.Persistence.DependencyInjection.AddPersistence(services, Configuration);
+            
 
             var s3Config = new AmazonS3Config()
             {
@@ -180,11 +170,7 @@ namespace SPMS.Web
 
             // Add Services
             services.AddHttpContextAccessor();
-            services.AddTransient<IGameService, GameService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IStoryService, StoryService>();
-            ///services.AddTransient<IMarkdownService, MarkdownService>();
-            services.AddTransient<IAuthoringService, AuthoringService>();
+            
 
 
 
@@ -277,10 +263,8 @@ namespace SPMS.Web
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SpmsContext context, IMapper mapper)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            mapper.ConfigurationProvider.AssertConfigurationIsValid();
-
             app.Use((httpContext, next) =>
             {
                 if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
@@ -291,17 +275,18 @@ namespace SPMS.Web
             });
 
 
+            //TODO: Convert this to a Mediator Command
             //context.Database.EnsureDeleted();
-            if (Configuration.GetValue<bool>("MigrateAndSeed"))
-            {
-                context.Database.Migrate();
-                Seed.SeedDefaults(context);
-            }
+            //if (Configuration.GetValue<bool>("MigrateAndSeed"))
+            //{
+            //    context.Database.Migrate();
+            //    Seed.SeedDefaults(context);
+            //}
 
-            if (Configuration.GetValue<bool>("SeedBtd"))
-            {
-                Seed.SeedBtd(context);
-            }
+            //if (Configuration.GetValue<bool>("SeedBtd"))
+            //{
+            //    Seed.SeedBtd(context);
+            //}
             if (env.IsDevelopment() || Configuration.GetValue<bool>("ShowErrors"))
             {
                 app.UseDeveloperExceptionPage();

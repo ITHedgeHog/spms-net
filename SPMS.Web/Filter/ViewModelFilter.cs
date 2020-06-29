@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
+using SPMS.Application.Services;
+using SPMS.Application.ViewModels;
 using SPMS.Web.Service;
-using SPMS.Web.ViewModels;
 
 namespace SPMS.Web.Filter
 {
@@ -47,7 +49,7 @@ namespace SPMS.Web.Filter
                     {
                         model.IsAdmin = _userService.IsAdmin();
                         model.IsPlayer = _userService.IsPlayer();
-                        model.gravatar = await _userService.GetEmailAsync();
+                        model.gravatar = await _userService.GetEmailAsync(CancellationToken.None);
                     }
 
                     var sha = Environment.GetEnvironmentVariable("COMMIT_SHA");

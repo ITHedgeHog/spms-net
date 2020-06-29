@@ -7,10 +7,12 @@ using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Services;
+using SPMS.Application.ViewModels;
+using SPMS.Application.ViewModels.Story;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
-using SPMS.Web.ViewModels;
-using SPMS.Web.ViewModels.Story;
 
 namespace SPMS.Web.Controllers
 {
@@ -18,11 +20,11 @@ namespace SPMS.Web.Controllers
     [Area("player")]
     public class MyController : Controller
     {
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
-        public MyController(SpmsContext context, IUserService userService, IMapper mapper)
+        public MyController(ISpmsContext context, IUserService userService, IMapper mapper)
         {
             _context = context;
             _userService = userService;
