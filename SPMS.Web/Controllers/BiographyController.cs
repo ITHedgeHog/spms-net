@@ -52,7 +52,7 @@ namespace SPMS.Web.Controllers
                 return NotFound();
             }
 
-            var biography = await _context.Biography.Include(x => x.Player).Include(x=>x.Status).Include(x => x.Posting).ProjectTo<BiographyViewModel>(_mapper.ConfigurationProvider)
+            var biography = await _context.Biography.Include(x => x.Player).Include(x=>x.State).Include(x => x.Posting).ProjectTo<BiographyViewModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (biography == null)
             {
@@ -66,7 +66,7 @@ namespace SPMS.Web.Controllers
         {
             var vm = new CreateBiographyViewModel { Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList(),
             
-            Statuses = _context.BiographyStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString()))};
+            Statuses = _context.BiographyState.Select(x => new SelectListItem(x.Name, x.Id.ToString()))};
             return View(vm);
         }
 
@@ -80,7 +80,7 @@ namespace SPMS.Web.Controllers
             var vm = new CreateBiographyViewModel
             {
                 Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList(),
-                Statuses = _context.BiographyStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString()))
+                Statuses = _context.BiographyState.Select(x => new SelectListItem(x.Name, x.Id.ToString()))
             };
             if (ModelState.IsValid)
             {
@@ -94,7 +94,7 @@ namespace SPMS.Web.Controllers
             return View(biography);
         }
 
-        // GET: Biography/Edit/5
+        [HttpGet("player/biography/{id}/edit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -105,7 +105,7 @@ namespace SPMS.Web.Controllers
             //EditBiographyViewModel biography = new EditBiographyViewModel() { }; ;
                 
             var biography = await _context.Biography.Include(b => b.Player).Include(b => b.Posting)
-                .Include(b => b.Status)
+                .Include(b => b.State)
                 .Where(x => x.Id == id).ProjectTo<EditBiographyViewModel>(_mapper.ConfigurationProvider).FirstOrDefaultAsync();
 
             if (biography.Player.AuthString != _userService.GetAuthId()|| biography == default(EditBiographyViewModel))
@@ -114,7 +114,7 @@ namespace SPMS.Web.Controllers
             }
 
             biography.Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
-            biography.Statuses = _context.BiographyStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
+            biography.Statuses = _context.BiographyState.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
       
             return View(biography);
         }
@@ -123,9 +123,9 @@ namespace SPMS.Web.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         
-        [HttpPost]
+        [HttpPost()]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(CancellationToken token, int id, [Bind("Id,Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,PlayerId,History,StatusId")] EditBiographyViewModel biography)
+        public async Task<IActionResult> ProcessEdit(CancellationToken token, int id, [Bind("Id,Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,PlayerId,History,StatusId")] EditBiographyViewModel biography)
         {
             if (id != biography.Id)
             {
@@ -151,12 +151,12 @@ namespace SPMS.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Characters", "My");
+                return RedirectToAction("Characters", "My", new { area = "player"});
             }
 
             biography.Postings = _context.Posting.Select(x => new SelectListItem(x.Name, x.Id.ToString())).ToList();
 
-            return View(biography);
+            return View("Edit", biography);
         }
 
         // GET: Biography/Delete/5

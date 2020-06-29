@@ -98,7 +98,7 @@
   <ItemGroup>
     <ProjectReference Include="..\src\SPMS.Common\SPMS.Common.csproj" />
     <ProjectReference Include="..\src\SPMS.Infrastructure\SPMS.Infrastructure.csproj" />
-    <ProjectReference Include="..\src\SPMS.Persistence\SPMS.Persistence.csproj" />
+    <ProjectReference Include="..\src\SPMS.Persistence.PostgreSQL\SPMS.Persistence.PostgreSQL.csproj" />
   </ItemGroup>
 
 </Project>

@@ -99,7 +99,7 @@ namespace SPMS.Persistence.Migrations
                     b.ToTable("Biography");
                 });
 
-            modelBuilder.Entity("SPMS.Domain.Models.BiographyStatus", b =>
+            modelBuilder.Entity("SPMS.Domain.Models.BiographyState", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,7 +114,7 @@ namespace SPMS.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BiographyStatus");
+                    b.ToTable("BiographyState");
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.Episode", b =>
@@ -463,7 +463,7 @@ namespace SPMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SPMS.Domain.Models.BiographyStatus", "Status")
+                    b.HasOne("SPMS.Domain.Models.BiographyState", "State")
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -476,7 +476,7 @@ namespace SPMS.Persistence.Migrations
                         .WithMany("Episodes")
                         .HasForeignKey("SeriesId");
 
-                    b.HasOne("SPMS.Domain.Models.EpisodeStatus", "Status")
+                    b.HasOne("SPMS.Domain.Models.EpisodeStatus", "State")
                         .WithMany()
                         .HasForeignKey("StatusId");
                 });

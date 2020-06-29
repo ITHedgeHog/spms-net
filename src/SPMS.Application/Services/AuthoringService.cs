@@ -53,7 +53,7 @@ namespace SPMS.Application.Services
         public async Task<bool> HasActiveEpisodeAsync()
         {
             var gameId = await _gameService.GetGameIdAsync();
-            var exists = await _context.Episode.Include(e => e.Status).Include(e => e.Series).ThenInclude(s => s.Game).AnyAsync(x => x.Status.Name == StaticValues.Active && x.Series.Game.Id == gameId);
+            var exists = await _context.Episode.Include(e => e.Status).Include(e => e.Series).ThenInclude(s => s.Game).AnyAsync(x => x.Status.Name == StaticValues.Published && x.Series.Game.Id == gameId);
             return exists;
         }
 
@@ -61,7 +61,7 @@ namespace SPMS.Application.Services
         {
             var vm = new AuthorPostViewModel();
             // TODO: Find active episode 
-            var activeEpisodeId = await  _context.Episode.Include(e => e.Status).CountAsync(e => e.Status.Name == StaticValues.Active || e.Status.Name == StaticValues.Archived);
+            var activeEpisodeId = await  _context.Episode.Include(e => e.Status).CountAsync(e => e.Status.Name == StaticValues.Published || e.Status.Name == StaticValues.Archived);
 
             vm = new AuthorPostViewModel(activeEpisodeId);
 
@@ -96,7 +96,7 @@ namespace SPMS.Application.Services
             if(submitValue.Equals("publish"))
             {
                 entity.PublishedAt = DateTime.UtcNow;
-                entity.EpisodeEntryStatusId = _context.EpisodeEntryStatus.First(x => x.Name == StaticValues.Active).Id;
+                entity.EpisodeEntryStatusId = _context.EpisodeEntryStatus.First(x => x.Name == StaticValues.Published).Id;
             }
 
             if (submitValue.Equals("schedule"))

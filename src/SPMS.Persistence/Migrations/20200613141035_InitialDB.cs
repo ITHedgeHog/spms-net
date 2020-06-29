@@ -7,7 +7,7 @@ namespace SPMS.Persistence.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "BiographyStatus",
+                name: "BiographyState",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -48,7 +48,7 @@ namespace SPMS.Persistence.Migrations
                     table.ForeignKey(
                         name: "FK_Biography_BiographyStatus_StatusId",
                         column: x => x.StatusId,
-                        principalTable: "BiographyStatus",
+                        principalTable: "BiographyState",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -65,7 +65,7 @@ namespace SPMS.Persistence.Migrations
                 name: "Biography");
 
             migrationBuilder.DropTable(
-                name: "BiographyStatus");
+                name: "BiographyState");
         }
     }
 }

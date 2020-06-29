@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Application", "src\SPM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Domain", "src\SPMS.Domain\SPMS.Domain.csproj", "{C15606CF-3B80-4663-9567-02425C6050A8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Persistence", "src\SPMS.Persistence\SPMS.Persistence.csproj", "{066B56AB-2090-41E2-97B6-D0913525ABDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Infrastructure", "src\SPMS.Infrastructure\SPMS.Infrastructure.csproj", "{C8648523-CFEE-4372-80DB-36CBC26E9384}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMS.Infrastructure", "src\SPMS.Infrastructure\SPMS.Infrastructure.csproj", "{C8648523-CFEE-4372-80DB-36CBC26E9384}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMS.Persistence.PostgreSQL", "src\SPMS.Persistence.PostgreSQL\SPMS.Persistence.PostgreSQL.csproj", "{5D5B71FC-78A9-420D-9E79-9699CF1DC3B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,14 +49,14 @@ Global
 		{C15606CF-3B80-4663-9567-02425C6050A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C15606CF-3B80-4663-9567-02425C6050A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C15606CF-3B80-4663-9567-02425C6050A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{066B56AB-2090-41E2-97B6-D0913525ABDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{066B56AB-2090-41E2-97B6-D0913525ABDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{066B56AB-2090-41E2-97B6-D0913525ABDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{066B56AB-2090-41E2-97B6-D0913525ABDC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C8648523-CFEE-4372-80DB-36CBC26E9384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C8648523-CFEE-4372-80DB-36CBC26E9384}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8648523-CFEE-4372-80DB-36CBC26E9384}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8648523-CFEE-4372-80DB-36CBC26E9384}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D5B71FC-78A9-420D-9E79-9699CF1DC3B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D5B71FC-78A9-420D-9E79-9699CF1DC3B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D5B71FC-78A9-420D-9E79-9699CF1DC3B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D5B71FC-78A9-420D-9E79-9699CF1DC3B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

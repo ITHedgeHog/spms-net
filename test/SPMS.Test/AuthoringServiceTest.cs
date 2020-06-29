@@ -3,7 +3,7 @@ using AutoMapper;
 using Moq;
 using SPMS.Application.Common.Mappings;
 using SPMS.Application.Services;
-using SPMS.Persistence;
+using SPMS.Persistence.PostgreSQL;
 using Xunit;
 
 namespace SPMS.Test

@@ -4,14 +4,14 @@
     ViewData["Title"] = $"Biography for {Model.Firstname} {Model.Surname}";
 }
 
-    <h1>Biography for @Model.Firstname @Model.Surname</h1>
+<h1>Biography for @Model.Firstname @Model.Surname</h1>
 
 <div class="row">
-    <div class="col-10 col-md-10">
-        @Html.Raw(Model.History)
+    <div class="col-9 col-md-9">
+        <markdown markdown="History" />
     </div>
 
-    <div class="col-2 col-md-2">
+    <div class="col-3 col-md-3">
         <table width="200" align="right" cellpadding="3" cellspacing="0" style="border: 1px #10110F solid; background: #10110F; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; -moz-border-radius-topleft: 1em; -moz-border-radius-bottomleft: 1em; -moz-border-radius-topright: 1em; -moz-border-radius-bottomright: 1em; width: 200; margin-top: -1.4em; margin: 0 0 1em 1em; font-family: Arial, Helvetica, sans-serif; font-size: 12px;color: #ffffff;">
 
             <tbody>
@@ -174,13 +174,13 @@
                     </td>
                     <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
                         <p>
-                           @Html.DisplayFor(m => m.Player)
+                            @Html.DisplayFor(m => m.Player)
                         </p>
                     </td>
                 </tr>
                 <tr>
                     <td bgcolor="#122d0e;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Status:</b>
+                        <b>State:</b>
                     </td>
                     <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
                         <p>
