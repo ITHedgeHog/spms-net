@@ -22,34 +22,7 @@ namespace SPMS.Persistence
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder.Entity<PlayerConnection>().HasNoKey();
-
-            modelBuilder.Entity<Player>()
-                .HasMany(x => x.Connections);
-
-            modelBuilder.Entity<PlayerRolePlayer>()
-                .HasKey(p => new {p.PlayerId, p.PlayerRoleId});
-            modelBuilder.Entity<PlayerRolePlayer>()
-                .HasOne(p => p.Player)
-                .WithMany(p => p.Roles)
-                .HasForeignKey(bc => bc.PlayerId);
-            modelBuilder.Entity<PlayerRolePlayer>()
-                .HasOne(bc => bc.PlayerRole)
-                .WithMany(c => c.PlayerRolePlayer)
-                .HasForeignKey(bc => bc.PlayerRoleId);
-
-
-
-            modelBuilder.Entity<EpisodeEntryPlayer>()
-                .HasKey(p => new { p.PlayerId, p.EpisodeEntryId });
-            modelBuilder.Entity<EpisodeEntryPlayer>()
-                .HasOne(p => p.Player)
-                .WithMany(p => p.EpisodeEntries)
-                .HasForeignKey(bc => bc.PlayerId);
-            modelBuilder.Entity<EpisodeEntryPlayer>()
-                .HasOne(bc => bc.EpisodeEntry)
-                .WithMany(c => c.EpisodeEntryPlayer)
-                .HasForeignKey(bc => bc.EpisodeEntryId);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SpmsContext).Assembly);
         }
 
         public DbSet<Biography> Biography { get; set; }

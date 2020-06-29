@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using SPMS.Web.Models;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Common;
+using SPMS.Domain.Models;
 
-namespace SPMS.Web.Service
+namespace SPMS.Application.Services
 {
     public class GameService : IGameService
     {
         private readonly IHttpContextAccessor _httpContext;
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
 
-        public GameService(SpmsContext context, IHttpContextAccessor httpContext)
+        public GameService(ISpmsContext context, IHttpContextAccessor httpContext)
         {
             _context = context;
             _httpContext = httpContext;
@@ -26,7 +25,7 @@ namespace SPMS.Web.Service
 
             // Get Matching Game
 
-            var game = await _context.GameUrl.Include(g => g.Game).FirstOrDefaultAsync(gu => gu.Url == url);
+            var game = await _context.GameUrl.Include(gd => gd.Game).FirstOrDefaultAsync(gu => gu.Url == url);
 
             if (game != default(GameUrl))
             {
@@ -34,7 +33,7 @@ namespace SPMS.Web.Service
             }
             // Return Btd if nothing matches
 
-            var g = await _context.Game.FirstAsync(g => g.Name == StaticValues.DefaultGameName);
+            var g = await _context.Game.FirstAsync(gm => gm.Name == StaticValues.DefaultGameName);
             return g;
         }
 

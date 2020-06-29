@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SPMS.Application.ViewModels;
+﻿using System.Collections.Generic;
 using SPMS.Application.ViewModels.Biography;
 
-namespace SPMS.Web.Areas.Admin.ViewModels
+namespace SPMS.Application.ViewModels
 {
     public class PlayerListViewModel : ViewModel
     {

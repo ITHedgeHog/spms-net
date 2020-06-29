@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using SPMS.Web.Models;
-using SPMS.Web.Service;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Services;
 
 namespace SPMS.Web.Policy
 {
@@ -22,10 +19,10 @@ namespace SPMS.Web.Policy
 
     public class AdministratorHandler : AuthorizationHandler<AdministratorRequirement>
     {
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
         private readonly IUserService _userService;
 
-        public AdministratorHandler(SpmsContext context, IUserService userService)
+        public AdministratorHandler(ISpmsContext context, IUserService userService)
         {
             _context = context;
             _userService = userService;
@@ -62,10 +59,10 @@ namespace SPMS.Web.Policy
 
     public class PlayerPolicyHandler : AuthorizationHandler<PlayerRequirement>
     {
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
         private readonly IUserService _userService;
 
-        public PlayerPolicyHandler(SpmsContext context, IUserService userService)
+        public PlayerPolicyHandler(ISpmsContext context, IUserService userService)
         {
             _context = context;
             _userService = userService;

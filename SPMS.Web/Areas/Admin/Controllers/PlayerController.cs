@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -8,7 +9,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.ViewModels;
 using SPMS.Application.ViewModels.Biography;
+using SPMS.Domain.Models;
 using SPMS.Web.Areas.Admin.ViewModels;
 using SPMS.Web.Models;
 
@@ -19,9 +23,9 @@ namespace SPMS.Web.Areas.Admin.Controllers
     public class PlayerController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
 
-        public PlayerController(SpmsContext context, IMapper mapper)
+        public PlayerController(ISpmsContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -67,12 +71,12 @@ namespace SPMS.Web.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DisplayName,AuthString")] Player player)
+        public async Task<IActionResult> Create([Bind("Id,DisplayName,AuthString")] Player player, CancellationToken token)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(player);
-                await _context.SaveChangesAsync();
+                await _context.Player.AddAsync(player, token);
+                await _context.SaveChangesAsync(token);
                 return RedirectToAction(nameof(Index));
             }
             return View(player);
@@ -99,7 +103,7 @@ namespace SPMS.Web.Areas.Admin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DisplayName,AuthString")] Player player)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,DisplayName,AuthString")] Player player, CancellationToken token)
         {
             if (id != player.Id)
             {
@@ -110,8 +114,8 @@ namespace SPMS.Web.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(player);
-                    await _context.SaveChangesAsync();
+                    _context.Player.Update(player);
+                    await _context.SaveChangesAsync(token);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -150,11 +154,11 @@ namespace SPMS.Web.Areas.Admin.Controllers
         // POST: Admin/Player/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id, CancellationToken token)
         {
             var player = await _context.Player.FindAsync(id);
             _context.Player.Remove(player);
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
             return RedirectToAction(nameof(Index));
         }
 
@@ -164,11 +168,11 @@ namespace SPMS.Web.Areas.Admin.Controllers
         }
 
         [HttpPost("admin/user/switch/player/role")]
-        public async Task<IActionResult> SwitchPlayerRole(int id)
+        public async Task<IActionResult> SwitchPlayerRole(int id, CancellationToken token)
         {
-            var role = await _context.PlayerRole.FirstAsync(x => x.Name == StaticValues.PlayerRole);
+            var role = await _context.PlayerRole.FirstAsync(x => x.Name == StaticValues.PlayerRole, cancellationToken: token);
 
-            var player = await _context.Player.Include(x => x.Roles).FirstAsync(x => x.Id == id);
+            var player = await _context.Player.Include(x => x.Roles).FirstAsync(x => x.Id == id, cancellationToken: token);
 
             if (player.Roles.All(x => x.PlayerRoleId != role.Id))
             {
@@ -181,16 +185,16 @@ namespace SPMS.Web.Areas.Admin.Controllers
                 player.Roles.Remove(player.Roles.First(x => x.PlayerRoleId == role.Id));
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
             return RedirectToAction("Index");
         }
 
         [HttpPost("admin/user/switch/admin/role")]
-        public async Task<IActionResult> SwitchAdminRole(int id)
+        public async Task<IActionResult> SwitchAdminRole(int id, CancellationToken token)
         {
-            var role = await _context.PlayerRole.FirstAsync(x => x.Name == StaticValues.AdminRole);
+            var role = await _context.PlayerRole.FirstAsync(x => x.Name == StaticValues.AdminRole, cancellationToken: token);
 
-            var player = await _context.Player.Include(x => x.Roles).FirstAsync(x => x.Id == id);
+            var player = await _context.Player.Include(x => x.Roles).FirstAsync(x => x.Id == id, cancellationToken: token);
 
             if (player.Roles.All(x => x.PlayerRoleId != role.Id))
             {
@@ -203,7 +207,7 @@ namespace SPMS.Web.Areas.Admin.Controllers
                 player.Roles.Remove(player.Roles.First(x => x.PlayerRoleId == role.Id));
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
             return RedirectToAction("Index");
         }
     }

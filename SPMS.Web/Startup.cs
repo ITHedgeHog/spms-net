@@ -51,16 +51,10 @@ namespace SPMS.Web
             Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", Configuration["AWS:AccessKey"]);
             Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration["AWS:SecretKey"]);
 
-
+            SPMS.Application.DependencyInjection.AddApplication(services);
+            SPMS.Infrastructure.DependencyInjection.AddInfrastructure(services, Configuration);
             SPMS.Persistence.DependencyInjection.AddPersistence(services, Configuration);
             
-            // using Microsoft.AspNetCore.DataProtection;
-            //services.AddDataProtection()
-            //    .PersistKeysToDbContext<SpmsContext>();
-
-            ///https://static-btd.ams3.digitaloceanspaces.com
-            ///
-
 
             var s3Config = new AmazonS3Config()
             {
@@ -176,11 +170,7 @@ namespace SPMS.Web
 
             // Add Services
             services.AddHttpContextAccessor();
-            services.AddTransient<IGameService, GameService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IStoryService, StoryService>();
-            ///services.AddTransient<IMarkdownService, MarkdownService>();
-            services.AddTransient<IAuthoringService, AuthoringService>();
+            
 
 
 

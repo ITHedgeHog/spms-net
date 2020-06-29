@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using SPMS.Web.Models;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Common;
+using SPMS.Domain.Models;
 
-namespace SPMS.Web.Service
+namespace SPMS.Application.Services
 {
     public class UserService : IUserService
     {
         private readonly IHttpContextAccessor _httpContext;
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
 
-        public UserService(IHttpContextAccessor httpContext, SpmsContext context)
+        public UserService(IHttpContextAccessor httpContext, ISpmsContext context)
         {
             _httpContext = httpContext;
             _context = context;
@@ -68,11 +67,11 @@ namespace SPMS.Web.Service
             return user?.Id ?? 0;
         }
         
-        private async Task<Player> GetPlayerAsync()
+        private async Task<Player> GetPlayerAsync(CancellationToken token)
         {
             var authId = GetAuthId();
 
-            if (!await _context.Player.AnyAsync(x => x.AuthString == authId))
+            if (!await _context.Player.AnyAsync(x => x.AuthString == authId, cancellationToken: token))
             {
                 var entity = new Player()
                 {
@@ -81,15 +80,15 @@ namespace SPMS.Web.Service
                     Email = _httpContext.HttpContext.User.Claims.First(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value
                 };
 
-                if (!await _context.Player.AnyAsync())
+                if (!await _context.Player.AnyAsync(cancellationToken: token))
                 {
                     foreach (var role in _context.PlayerRole)
                     {
                         entity.Roles.Add(new PlayerRolePlayer() { PlayerRoleId = role.Id });
                     }
                 }
-                await _context.Player.AddAsync(entity);
-                await _context.SaveChangesAsync();
+                await _context.Player.AddAsync(entity, token);
+                await _context.SaveChangesAsync(token);
             }
 
             var player = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole)
@@ -100,7 +99,7 @@ namespace SPMS.Web.Service
             {
                 player.Email = _httpContext.HttpContext.User.Claims.First(x =>
                     x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(token);
             }
 
             return player;
@@ -138,24 +137,11 @@ namespace SPMS.Web.Service
             return GetPlayer();
         }
 
-        public async Task<string> GetEmailAsync()
+        public async Task<string> GetEmailAsync(CancellationToken token)
         {
-            var player = await GetPlayerAsync();
+            var player = await GetPlayerAsync(token);
 
             return player.Email;
-        }
-
-        public async Task<string> GetGravatarHash()
-        {
-            var player = await GetPlayerAsync();
-            var tmpSource = Encoding.ASCII.GetBytes(player.Email);
-            var tmpHash = new MD5CryptoServiceProvider().ComputeHash(tmpSource);
-            var hash = new StringBuilder();
-            for (int i = 0; i < tmpHash.Length; i++)
-            {
-                hash.Append(tmpHash[i].ToString("X2"));
-            }
-            return hash.ToString();
         }
 
         public bool IsAuthenticated()
@@ -171,8 +157,7 @@ namespace SPMS.Web.Service
         bool IsAdmin();
         int GetId();
         Player GetPlayerFromDatabase();
-        Task<string> GetEmailAsync();
-        Task<string> GetGravatarHash();
+        Task<string> GetEmailAsync(CancellationToken token);
         bool IsAuthenticated();
     }
 }

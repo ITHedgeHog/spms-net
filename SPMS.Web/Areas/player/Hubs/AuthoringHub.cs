@@ -2,12 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility.Implementation;
 using Microsoft.AspNet.SignalR.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Services;
+using SPMS.Domain.Models;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
 using SPMS.Web.TagHelper;
@@ -16,11 +20,11 @@ namespace SPMS.Web.Areas.player.Hubs
 {
     public class AuthoringHub : Hub
     {
-        private readonly SpmsContext _db;
+        private readonly ISpmsContext _db;
         private readonly ILogger<AuthoringHub> _logger;
         private readonly IUserService _userService;
 
-        public AuthoringHub(SpmsContext context, ILogger<AuthoringHub> logger, IUserService userService)
+        public AuthoringHub(ISpmsContext context, ILogger<AuthoringHub> logger, IUserService userService)
         {
             _db = context;
             _logger = logger;
@@ -29,7 +33,7 @@ namespace SPMS.Web.Areas.player.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            var name = await _userService.GetEmailAsync();
+            var name = await _userService.GetEmailAsync(new CancellationToken());
             _logger.LogInformation($"Connections name {name}");
 
             var userCount =  _db.Player
@@ -49,7 +53,7 @@ namespace SPMS.Web.Areas.player.Hubs
                 Connected = true
             });
             _logger.LogInformation($"Add connection {Context.ConnectionId} - {Context.GetHttpContext().Request.Headers["User-Agent"]}");
-            await _db.SaveChangesAsync();
+            await _db.SaveChangesAsync(new CancellationToken());
             await base.OnConnectedAsync();
 
         }
@@ -61,7 +65,7 @@ namespace SPMS.Web.Areas.player.Hubs
             if (connection != null)
             {
                 connection.Connected = false;
-                await _db.SaveChangesAsync();
+                await _db.SaveChangesAsync(new CancellationToken());
                 //await Groups.RemoveFromGroupAsync(Context.ConnectionId, "group1");
             }
             await base.OnDisconnectedAsync(exception);

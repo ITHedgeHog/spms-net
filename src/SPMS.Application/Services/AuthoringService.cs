@@ -1,26 +1,29 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using SPMS.Web.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using SPMS.Application.Common.Interfaces;
 using SPMS.Application.ViewModels.Authoring;
+using SPMS.Common;
+using SPMS.Domain.Models;
 using SPMS.Web.Areas.player.ViewModels;
 
-namespace SPMS.Web.Service
+
+namespace SPMS.Application.Services
 {
     public class AuthoringService : IAuthoringService
     {
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
         private readonly IUserService _userService;
         private readonly IGameService _gameService;
         private readonly IMapper _mapper;
 
-        public AuthoringService(SpmsContext context, IMapper mapper, IGameService gameService, IUserService userService)
+        public AuthoringService(ISpmsContext context, IMapper mapper, IGameService gameService, IUserService userService)
         {
             _context = context;
             _mapper = mapper;
@@ -28,20 +31,20 @@ namespace SPMS.Web.Service
             _userService = userService;
         }
 
-        public async Task<AuthorPostViewModel> GetPost(int id)
+        public async Task<AuthorPostViewModel> GetPost(int id, CancellationToken cancellationToken)
         {
             var vm = new AuthorPostViewModel();
-            vm = await _context.EpisodeEntry.ProjectTo<AuthorPostViewModel>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Id == id);
+            vm = await _context.EpisodeEntry.ProjectTo<AuthorPostViewModel>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(x => x.Id == id, cancellationToken: cancellationToken);
 
-            vm.Statuses = await _context.EpisodeEntryStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Name == StaticValues.Draft)).ToListAsync();
+            vm.Statuses = await _context.EpisodeEntryStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Name == StaticValues.Draft)).ToListAsync(cancellationToken: cancellationToken);
             vm.TypeId = _context.EpisodeEntryType.First(x => x.Name == StaticValues.Post).Id;
             vm.PostTypes =
-                await _context.EpisodeEntryType.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Id == vm.TypeId)).ToListAsync();
+                await _context.EpisodeEntryType.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Id == vm.TypeId)).ToListAsync(cancellationToken: cancellationToken);
 
 
             if (vm.Authors.All(x => x.Name != _userService.GetName()))
             {
-                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName(), await _userService.GetEmailAsync()));
+                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName(), await _userService.GetEmailAsync(cancellationToken)));
             }
 
             return vm;
@@ -54,7 +57,7 @@ namespace SPMS.Web.Service
             return exists;
         }
 
-        public async Task<AuthorPostViewModel> NewPost()
+        public async Task<AuthorPostViewModel> NewPost(CancellationToken cancellationToken)
         {
             var vm = new AuthorPostViewModel();
             // TODO: Find active episode 
@@ -63,15 +66,15 @@ namespace SPMS.Web.Service
             vm = new AuthorPostViewModel(activeEpisodeId);
 
             //vm.Authors.Add(_userService.GetId());
-            vm.Statuses = await _context.EpisodeEntryStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Name == StaticValues.Draft)).ToListAsync();
+            vm.Statuses = await _context.EpisodeEntryStatus.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Name == StaticValues.Draft)).ToListAsync(cancellationToken: cancellationToken);
             vm.StatusId = int.Parse(vm.Statuses.First(x => x.Text == StaticValues.Draft).Value);
             vm.TypeId = _context.EpisodeEntryType.First(x => x.Name == StaticValues.Post).Id;
             vm.PostTypes =
-                await _context.EpisodeEntryType.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Id == vm.TypeId)).ToListAsync();
+                await _context.EpisodeEntryType.Select(x => new SelectListItem(x.Name, x.Id.ToString(), x.Id == vm.TypeId)).ToListAsync(cancellationToken: cancellationToken);
 
             if (vm.Authors.All(x => x.Name != _userService.GetName()))
             {
-                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName(), await _userService.GetEmailAsync()));
+                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName(), await _userService.GetEmailAsync(cancellationToken)));
             }
 
             return vm;
@@ -103,7 +106,7 @@ namespace SPMS.Web.Service
             }
         }
 
-        public async Task<int> SavePostAsync(AuthorPostViewModel model)
+        public async Task<int> SavePostAsync(AuthorPostViewModel model, CancellationToken cancellationToken)
         {
             if (_context.EpisodeEntry.Any(x => x.Id == model.Id))
             {
@@ -111,14 +114,14 @@ namespace SPMS.Web.Service
                 _mapper.Map(model, entity);
                 entity.UpdatedAt = DateTime.UtcNow;
                 HandleSubmit(entity, model);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
             }
             else
             {
                
                 var pId = _userService.GetId();
                 if (model.Authors.All(x => x.Id != pId))
-                    model.Authors.Add(new AuthorViewModel(pId, _userService.GetName(), await _userService.GetEmailAsync()));
+                    model.Authors.Add(new AuthorViewModel(pId, _userService.GetName(), await _userService.GetEmailAsync(cancellationToken)));
 
                 var entity = _mapper.Map<EpisodeEntry>(model);
                 entity.CreatedAt = DateTime.UtcNow;
@@ -132,8 +135,8 @@ namespace SPMS.Web.Service
                 }
                 
 
-                await _context.EpisodeEntry.AddAsync(entity);
-                await _context.SaveChangesAsync();
+                await _context.EpisodeEntry.AddAsync(entity, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
                
 
                 model.Id = entity.Id;
@@ -142,12 +145,12 @@ namespace SPMS.Web.Service
             return model.Id;
         }
 
-        public async Task<List<AuthorToInviteViewModel>> GetAuthorsAsync(int id)
+        public async Task<List<AuthorToInviteViewModel>> GetAuthorsAsync(int id, CancellationToken cancellationToken)
         {
-            var post = await _context.EpisodeEntry.Include(p => p.EpisodeEntryPlayer).FirstAsync(x => x.Id == id);
+            var post = await _context.EpisodeEntry.Include(p => p.EpisodeEntryPlayer).FirstAsync(x => x.Id == id, cancellationToken: cancellationToken);
 
             var authors = await _context.Player.Include(x => x.EpisodeEntries).ProjectTo<AuthorToInviteViewModel>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+                .ToListAsync(cancellationToken: cancellationToken);
 
             foreach (var a in authors.Where(a => post.EpisodeEntryPlayer.Any(x => x.PlayerId == a.Id)))
             {
@@ -158,9 +161,9 @@ namespace SPMS.Web.Service
             return authors;
         }
 
-        public async Task UpdateAuthors(InviteAuthorViewModel model)
+        public async Task UpdateAuthors(InviteAuthorViewModel model, CancellationToken cancellationToken)
         {
-            var post = await _context.EpisodeEntry.Include(x => x.EpisodeEntryPlayer).FirstAsync(x => x.Id == model.Id);
+            var post = await _context.EpisodeEntry.Include(x => x.EpisodeEntryPlayer).FirstAsync(x => x.Id == model.Id, cancellationToken: cancellationToken);
 
             post.EpisodeEntryPlayer.Clear();
             foreach (var author in model.Authors.Where(x => x.IsSelected))
@@ -169,7 +172,7 @@ namespace SPMS.Web.Service
 
             }
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 
@@ -177,10 +180,10 @@ namespace SPMS.Web.Service
     {
         Task<bool> HasActiveEpisodeAsync();
         Task<bool> PostExists(int id);
-        Task<AuthorPostViewModel> NewPost();
-        Task<AuthorPostViewModel> GetPost(int id);
-        Task<int> SavePostAsync(AuthorPostViewModel model);
-        Task<List<AuthorToInviteViewModel>> GetAuthorsAsync(int id);
-        Task UpdateAuthors(InviteAuthorViewModel model);
+        Task<AuthorPostViewModel> NewPost(CancellationToken cancellationToken);
+        Task<AuthorPostViewModel> GetPost(int id, CancellationToken cancellationToken);
+        Task<int> SavePostAsync(AuthorPostViewModel model, CancellationToken cancellationToken);
+        Task<List<AuthorToInviteViewModel>> GetAuthorsAsync(int id, CancellationToken cancellationToken);
+        Task UpdateAuthors(InviteAuthorViewModel model, CancellationToken cancellationToken);
     }
 }

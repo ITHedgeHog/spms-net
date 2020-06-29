@@ -1,22 +1,22 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using Microsoft.EntityFrameworkCore;
-using SPMS.Web.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
+using SPMS.Application.Common.Interfaces;
 using SPMS.Application.ViewModels.Story;
+using SPMS.Common;
 
-namespace SPMS.Web.Service
+namespace SPMS.Application.Services
 {
     public class StoryService : IStoryService
     {
         private readonly IUserService _userService;
-        private readonly SpmsContext _context;
+        private readonly ISpmsContext _context;
         private readonly IMapper _mapper;
         private readonly IGameService _gameService;
-        public StoryService(SpmsContext spmsContext, IUserService userService, IMapper mapper, IGameService gameService)
+        public StoryService(ISpmsContext spmsContext, IUserService userService, IMapper mapper, IGameService gameService)
         {
             _context = spmsContext;
             _userService = userService;
