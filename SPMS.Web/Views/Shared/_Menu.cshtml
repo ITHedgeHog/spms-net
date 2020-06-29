@@ -1,7 +1,9 @@
 ﻿@model SPMS.Application.ViewModels.ViewModel
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
-        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Beyond the Darkness</a>
+        <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+            <img src="~/img/branding.jpg" width="30" height="30" alt="@Model.SiteTitle" class="rounded"/>
+        </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -46,8 +48,10 @@
                     @if (Model.IsPlayer)
                     {
                         <li class="nav-item">
-                           
-                            <a class="nav-link text-dark" asp-area="player" asp-controller="PlayerDashboard" asp-action="Index"><img gravatar-email="@Model.gravatar" alt="@User.Identity.Name avatar and menu" class="navbar-image" /> Player Dashboard</a>
+                            <a class="nav-link text-dark" asp-area="player" asp-controller="PlayerDashboard" asp-action="Index">
+                                <img gravatar-email="@Model.gravatar" alt="@User.Identity.Name avatar and menu" class="d-inline-block align-top navbar-image rounded-circle"/>
+                                Dashboard
+                            </a>
                         </li>
                     }
                     @if (Model.IsAdmin)
