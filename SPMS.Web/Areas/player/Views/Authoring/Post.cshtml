@@ -105,19 +105,19 @@
                         <div class="card-body">
                             <div class="form-group">
                                 <label asp-for="Title" class="control-label"></label>
-                                <input asp-for="Title" class="form-control form-control-sm" aria-describedby="postTitle" placeholder="Post title" />
+                                <input asp-for="Title" class="form-control form-control-sm" aria-describedby="postTitle" placeholder="Post title" data-autosave="true" />
                                 <span asp-validation-for="Title" class="text-danger"></span>
                                 <p id="postTitle" class="sr-only form-text text-muted">The plain text title of the post make it descriptive to match what you have written in the post.</p>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Location" class="control-label"></label>
-                                <input asp-for="Location" class="form-control form-control-sm" placeholder="Where the post takes place" />
+                                <input asp-for="Location" class="form-control form-control-sm" placeholder="Where the post takes place" data-autosave="true" />
                                 <span asp-validation-for="Location" class="text-danger"></span>
                                 <p id="postLocation" class="sr-only form-text text-muted">Where this post takes place.</p>
                             </div>
                             <div class="form-group">
                                 <label asp-for="Timeline" class="control-label"></label>
-                                <input asp-for="Timeline" class="form-control form-control-sm" aria-describedby="postTimeline" placeholder="Timeline within the mission" />
+                                <input asp-for="Timeline" class="form-control form-control-sm" aria-describedby="postTimeline" placeholder="Timeline within the mission" data-autosave="true" />
                                 <span asp-validation-for="Timeline" class="text-danger"></span>
                                 <p id="postTimeline" class="sr-only form-text text-muted">When this post takes place within the mission timeline.</p>
                             </div>
@@ -203,15 +203,11 @@
 
 
         window.setInterval(function () {
-            var dirtyElements = $('#authorpost').find('[data-dirty=true]').add('[form=authorpost][data-dirty=true]');
-            var autosaveElements = $('#authorpost').find('[data-autosave=true]').add('[form=authorpost][data-autosave=true]');
+            var elements = $('#authorpost').find('[data-autosave=true]').add('[form=authorpost][data-autosave=true]');
 
-            var elementsToPost = $.merge(dirtyElements, autosaveElements);
-
-            //console.log(hiddenElements);
-            if (dirtyElements.length > 0) {
+            if (elements.length > 0) {
                 $('#saving').toggleClass('d-none');
-                var data = elementsToPost.serialize() + encodeURI('&Content=' + simplemde.value());
+                var data = elements.serialize() + encodeURI('&Content=' + simplemde.value());
                 console.log(data);
                 $.post('/player/author/post/autosave', data, function (data) {
                     $('#Id').val(data);
@@ -227,17 +223,5 @@
                 });
             }
         }, 60000); // 60 seconds
-
-        $(function () {
-            var formElements = $('#authorpost')
-                .find('input, select, textarea')
-                .add('[form=authorpost]')
-                .not(':disabled')
-                .each(function () {
-                    $(this).attr('data-dirty', false).change(function () {
-                        $(this).attr('data-dirty', true);
-                    });
-                });
-        });
     </script>
 }

@@ -63,19 +63,16 @@ function change() {
 }
 
 function autoSave() {
-    var dirtyElements = $('#authorpost').find('[data-dirty=true]').add('[form=authorpost][data-dirty=true]');
-    var autosaveElements = $('#authorpost').find('[data-autosave=true]').add('[form=authorpost][data-autosave=true]');
-
-    var elementsToPost = $.merge(dirtyElements, autosaveElements);
-
-    //console.log(hiddenElements);
-    if (dirtyElements.length > 0) {
+    var elements = $('#authorpost').find('[data-autosave=true]').add('[form=authorpost][data-autosave=true]');
+    if (elements.length > 0) {
         $('#saving').toggleClass('d-none');
-        var data = elementsToPost.serialize() + encodeURI('&Content=' + simplemde.value());
+        var data = elements.serialize() + encodeURI('&Content=' + simplemde.value());
+        console.log(data);
         $.post('/player/author/post/autosave', data, function (data) {
             $('#Id').val(data);
             dirtyElements.attr('data-dirty', false);
             $('#lastSave').removeClass('d-none');
+            //alert('data saved successfully');
             var today = new Date();
             var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
             var time = (today.getHours() < 10 ? '0' : '') + today.getHours() + ":" + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes() + ":" + (today.getSeconds() < 10 ? '0' : '') + today.getSeconds();

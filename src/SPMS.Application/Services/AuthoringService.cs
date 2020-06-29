@@ -142,6 +142,8 @@ namespace SPMS.Application.Services
                 model.Id = entity.Id;
             }
 
+            //TODO: Notify authors if this is draft update, or if status is changed.
+
             return model.Id;
         }
 
