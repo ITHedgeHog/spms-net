@@ -27,11 +27,6 @@ namespace SPMS.Web
                {
                    var spmsContext = services.GetRequiredService<SpmsContext>();
 
-                   var deleteDb = Environment.GetEnvironmentVariable("DeleteDatabase");
-
-                   if(deleteDb != null && bool.Parse(deleteDb))
-                       await spmsContext.Database.EnsureDeletedAsync();
-
                    await spmsContext.Database.MigrateAsync();
 
                    var mediator = services.GetRequiredService<IMediator>();

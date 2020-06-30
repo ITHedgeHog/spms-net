@@ -83,8 +83,7 @@ function autoSave() {
     }
 }
 
-function backToWritingPortal() {
+function leaveAuthoringPage() {
     autoSave();
     connection.server.leaveGroup(getChannel());
 }
-
