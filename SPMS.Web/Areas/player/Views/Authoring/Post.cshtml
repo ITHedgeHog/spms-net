@@ -9,7 +9,7 @@
         <h1 class="h2">Author post</h1>
 
         <div class="float-right">
-            <a asp-area="player" asp-controller="My" asp-action="Writing" class="btn btn-outline-secondary" onclick="backToWritingPortal();">
+            <a asp-area="player" asp-controller="My" asp-action="Writing" class="btn btn-outline-secondary" onclick="leaveAuthoringPage();">
                 <i class="fas fa-times-circle"></i>
                 Close Editor
             </a>
@@ -88,6 +88,9 @@
                                         <div class="blobs-container"><img gravatar-email="@author.Email" gravatar-size="20" alt="@author.Name is currently active"/> @author.Name
                                             <div id="author-@author.Id" class="blob d-none"> </div></div> </li>
                                 }
+                                <li class="list-group-item">
+                                    <a asp-controller="Authoring" asp-action="Invite" asp-route-id="@Model.Id"  onclick="leaveAuthoringPage();" class="btn btn-outline-secondary">Invite Authors</a>
+                                </li>
                             </ul>
                         </div>
                     </div>
