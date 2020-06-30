@@ -40,11 +40,11 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.EpisodeEntryType, opt => opt.Ignore())
                 .ForMember(x => x.EpisodeEntryPlayer, o => o.MapFrom(y => y.Authors))
                 .ForMember(x => x.Episode, opt => opt.Ignore())
-                .ForMember(x => x.CreatedAt, opt => opt.MapFrom(x => DateTime.UtcNow))
+                //.ForMember(x => x.CreatedAt, opt => opt.MapFrom(x => DateTime.UtcNow))
                 .ForMember(x => x.EpisodeEntryStatusId, o => o.MapFrom(y => y.StatusId))
                 .ForMember(x => x.EpisodeEntryStatus, o => o.Ignore())
-                .ForMember(x => x.PublishedAt, o => o.Ignore())
-                .ForMember(x => x.UpdatedAt, o => o.Ignore());
+                .ForMember(x => x.PublishedAt, o => o.Ignore());
+                //.ForMember(x => x.UpdatedAt, o => o.Ignore());
 
             CreateMap<AuthorViewModel, EpisodeEntryPlayer>()
                 .ForMember(x => x.PlayerId, o => o.MapFrom(y => y.Id))

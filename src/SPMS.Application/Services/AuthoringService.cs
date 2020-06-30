@@ -112,7 +112,7 @@ namespace SPMS.Application.Services
             {
                 var entity = await _context.EpisodeEntry.Include(e => e.EpisodeEntryPlayer).Include(e => e.EpisodeEntryStatus).Include(e => e.EpisodeEntryType).FirstOrDefaultAsync(e => e.Id == model.Id);
                 _mapper.Map(model, entity);
-                entity.UpdatedAt = DateTime.UtcNow;
+                //entity.UpdatedAt = DateTime.UtcNow;
                 HandleSubmit(entity, model);
                 await _context.SaveChangesAsync(cancellationToken);
             }
@@ -124,8 +124,8 @@ namespace SPMS.Application.Services
                     model.Authors.Add(new AuthorViewModel(pId, _userService.GetName(), await _userService.GetEmailAsync(cancellationToken)));
 
                 var entity = _mapper.Map<EpisodeEntry>(model);
-                entity.CreatedAt = DateTime.UtcNow;
-                entity.UpdatedAt = DateTime.UtcNow;
+               // entity.CreatedAt = DateTime.UtcNow;
+               // entity.UpdatedAt = DateTime.UtcNow;
                 HandleSubmit(entity, model);
 
                 if (entity.EpisodeEntryTypeId == 0)
