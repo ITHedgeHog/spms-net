@@ -54,11 +54,13 @@
     </nav>
 
     <div class="container-fluid">
-        @{ await Html.RenderPartialAsync("_Message"); }
+        
         <div class="row">
 
             @{ await Html.RenderPartialAsync("_Nav"); }
-
+            <div class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                @{ await Html.RenderPartialAsync("_Message"); }
+            </div>
             @RenderBody();
         </div>
     </div>

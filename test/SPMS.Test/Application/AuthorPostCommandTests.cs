@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace SPMS.Test.Application
             var result = await sut.Handle(new CreatePost(), CancellationToken.None);
 
             result.ShouldBe<int>(1);
+
+            Context.EpisodeEntry.Count().ShouldBe(1);
         }
     }
 }

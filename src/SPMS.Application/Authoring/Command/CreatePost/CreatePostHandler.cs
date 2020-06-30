@@ -43,7 +43,7 @@ namespace SPMS.Application.Authoring.Command.CreatePost
                 entity.EpisodeId = activeEpisodeId;
 
                 await _db.EpisodeEntry.AddAsync(entity, cancellationToken: cancellationToken);
-
+                await _db.SaveChangesAsync(cancellationToken);
 
                 return entity.Id;
             }
