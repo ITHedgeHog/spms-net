@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Moq;
+using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Mappings;
 using SPMS.Application.Services;
 using SPMS.Persistence.PostgreSQL;
