@@ -8,7 +8,10 @@ using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Services;
 using SPMS.Application.System.Commands;
+using SPMS.Common;
 using SPMS.Persistence.PostgreSQL;
 
 namespace SPMS.Web
@@ -25,7 +28,12 @@ namespace SPMS.Web
 
                try
                {
-                   var spmsContext = services.GetRequiredService<SpmsContext>();
+                   var date = services.GetRequiredService<IDateTime>();
+
+                   var user = services.GetRequiredService<IUserService>();
+
+
+                   var spmsContext = services.GetService<SpmsContext>();
 
                    await spmsContext.Database.MigrateAsync();
 

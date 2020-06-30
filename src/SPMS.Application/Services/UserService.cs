@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Common;
@@ -11,31 +10,25 @@ namespace SPMS.Application.Services
 {
     public class UserService : IUserService
     {
-        private readonly IHttpContextAccessor _httpContext;
+        private readonly ICurrentUserService _currentUser;
         private readonly ISpmsContext _context;
 
-        public UserService(IHttpContextAccessor httpContext, ISpmsContext context)
+        public UserService(ISpmsContext context, ICurrentUserService currentUser)
         {
-            _httpContext = httpContext;
+            
             _context = context;
+            _currentUser = currentUser;
         }
 
         public string GetAuthId()
         {
-            if (_httpContext.HttpContext != null && _httpContext.HttpContext.User.Identity.IsAuthenticated)
-            {
-                return _httpContext.HttpContext.User.Claims
-                    .FirstOrDefault(u => u.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier")
-                    ?.Value;
-            }
-
-            return string.Empty;
+            return _currentUser.GetAuthId();
         }
 
         public string GetName()
         {
 
-            if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
+            if (!_currentUser.IsAuthenticated())
                 return null;
             var user = GetPlayer();
             return user.DisplayName;
@@ -43,7 +36,7 @@ namespace SPMS.Application.Services
 
         public bool IsPlayer()
         {
-            if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
+            if (!_currentUser.IsAuthenticated())
                 return false;
             var user = GetPlayer();
             return user.Roles.Any(u => u.PlayerRole.Name == StaticValues.PlayerRole);
@@ -51,7 +44,7 @@ namespace SPMS.Application.Services
 
         public bool IsAdmin()
         {
-            if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
+            if (!_currentUser.IsAuthenticated())
                 return false;
 
             var user = GetPlayer();
@@ -60,7 +53,7 @@ namespace SPMS.Application.Services
 
         public int GetId()
         {
-            if (_httpContext.HttpContext != null && !_httpContext.HttpContext.User.Identity.IsAuthenticated)
+            if (!_currentUser.IsAuthenticated())
                 return 0;
 
             var user = GetPlayer();
@@ -71,16 +64,16 @@ namespace SPMS.Application.Services
         {
             var authId = GetAuthId();
 
-            if (!await _context.Player.AnyAsync(x => x.AuthString == authId, cancellationToken: token))
+            if (!await _context.Player.AnyAsync<Player>(x => x.AuthString == authId, cancellationToken: token))
             {
                 var entity = new Player()
                 {
-                    DisplayName = _httpContext.HttpContext.User.Identity.Name,
+                    DisplayName = _currentUser.GetName(),
                     AuthString = authId,
-                    Email = _httpContext.HttpContext.User.Claims.First(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value
+                    Email = _currentUser.GetEmail() 
                 };
 
-                if (!await _context.Player.AnyAsync(cancellationToken: token))
+                if (!await _context.Player.AnyAsync<Player>(cancellationToken: token))
                 {
                     foreach (var role in _context.PlayerRole)
                     {
@@ -91,14 +84,12 @@ namespace SPMS.Application.Services
                 await _context.SaveChangesAsync(token);
             }
 
-            var player = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole)
-                .First(x => x.AuthString == authId);
+            var player = _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).First<Player>(x => x.AuthString == authId);
 
             //TODO: Remove this fix
             if (string.IsNullOrEmpty(player.Email))
             {
-                player.Email = _httpContext.HttpContext.User.Claims.First(x =>
-                    x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+                player.Email = _currentUser.GetEmail();
                 await _context.SaveChangesAsync(token);
             }
 
@@ -109,16 +100,16 @@ namespace SPMS.Application.Services
         {
             var authId = GetAuthId();
 
-            if (!_context.Player.Any(x => x.AuthString == authId))
+            if (!_context.Player.Any<Player>(x => x.AuthString == authId))
             {
                 var player = new Player()
                 {
-                    DisplayName = _httpContext.HttpContext.User.Identity.Name,
+                    DisplayName = _currentUser.GetName(),
                     AuthString = authId,
-                    Email = _httpContext.HttpContext.User.Claims.First(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value
+                    Email = _currentUser.GetEmail()
                 };
 
-                if (!_context.Player.Any())
+                if (!Queryable.Any<Player>(_context.Player))
                 {
                     foreach (var role in _context.PlayerRole)
                     {
@@ -129,7 +120,7 @@ namespace SPMS.Application.Services
                 _context.SaveChanges();
             }
 
-            return _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).First(x => x.AuthString == authId);
+            return _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).First<Player>(x => x.AuthString == authId);
         }
 
         public Player GetPlayerFromDatabase()
@@ -146,18 +137,7 @@ namespace SPMS.Application.Services
 
         public bool IsAuthenticated()
         {
-            return _httpContext.HttpContext.User.Identity.IsAuthenticated;
+            return _currentUser.IsAuthenticated();
         }
     };
-    public interface IUserService
-    {
-        string GetAuthId();
-        string GetName();
-        bool IsPlayer();
-        bool IsAdmin();
-        int GetId();
-        Player GetPlayerFromDatabase();
-        Task<string> GetEmailAsync(CancellationToken token);
-        bool IsAuthenticated();
-    }
 }

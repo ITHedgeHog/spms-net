@@ -23,6 +23,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Services;
 using SPMS.Web.Areas.player.Hubs;
 using SPMS.Web.Filter;
 using SPMS.Web.Models;
@@ -50,11 +52,13 @@ namespace SPMS.Web
 
             Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", Configuration["AWS:AccessKey"]);
             Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration["AWS:SecretKey"]);
-
-            SPMS.Application.DependencyInjection.AddApplication(services);
+            // Add Services
+            services.AddHttpContextAccessor();
+            
             SPMS.Infrastructure.DependencyInjection.AddInfrastructure(services, Configuration);
             SPMS.Persistence.PostgreSQL.DependencyInjection.AddPersistence(services, Configuration);
-            
+            SPMS.Application.DependencyInjection.AddApplication(services);
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             var s3Config = new AmazonS3Config()
             {
@@ -168,8 +172,7 @@ namespace SPMS.Web
 
 
 
-            // Add Services
-            services.AddHttpContextAccessor();
+            
             
 
 
