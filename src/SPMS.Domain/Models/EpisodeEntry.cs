@@ -4,7 +4,7 @@ using SPMS.Domain.Common;
 
 namespace SPMS.Domain.Models
 {
-    public class EpisodeEntry //: AuditableEntity
+    public class EpisodeEntry : AuditableEntity
     {
         public EpisodeEntry()
         {
