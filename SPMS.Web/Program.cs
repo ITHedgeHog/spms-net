@@ -28,11 +28,6 @@ namespace SPMS.Web
 
                try
                {
-                   var date = services.GetRequiredService<IDateTime>();
-
-                   var user = services.GetRequiredService<IUserService>();
-
-
                    var spmsContext = services.GetService<SpmsContext>();
 
                    await spmsContext.Database.MigrateAsync();
