@@ -34,12 +34,7 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            @if (TempData.ContainsKey("message") && !string.IsNullOrEmpty(TempData["message"].ToString()))
-            {
-                <div class="alert alert-success" role="alert">
-                   @TempData["Message"]
-                </div>
-            }
+            @{ await Html.RenderPartialAsync("_Message"); }
             @RenderBody()
 
             <feature name="Beta">

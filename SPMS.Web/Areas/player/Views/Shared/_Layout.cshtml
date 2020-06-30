@@ -54,8 +54,9 @@
     </nav>
 
     <div class="container-fluid">
+        @{ await Html.RenderPartialAsync("_Message"); }
         <div class="row">
-            
+
             @{ await Html.RenderPartialAsync("_Nav"); }
 
             @RenderBody();
