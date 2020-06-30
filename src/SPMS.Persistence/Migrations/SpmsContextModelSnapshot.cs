@@ -77,6 +77,9 @@ namespace SPMS.Persistence.Migrations
                     b.Property<string>("Species")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("StateId")
+                        .HasColumnType("int");
+
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
@@ -92,12 +95,12 @@ namespace SPMS.Persistence.Migrations
 
                     b.HasIndex("PostingId");
 
-                    b.HasIndex("StatusId");
+                    b.HasIndex("StateId");
 
                     b.ToTable("Biography");
                 });
 
-            modelBuilder.Entity("SPMS.Domain.Models.BiographyStatus", b =>
+            modelBuilder.Entity("SPMS.Domain.Models.BiographyState", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -126,9 +129,11 @@ namespace SPMS.Persistence.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int?>("SeriesId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("StatusId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -461,22 +466,24 @@ namespace SPMS.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SPMS.Domain.Models.BiographyStatus", "Status")
+                    b.HasOne("SPMS.Domain.Models.BiographyState", "State")
                         .WithMany()
-                        .HasForeignKey("StatusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("StateId");
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.Episode", b =>
                 {
                     b.HasOne("SPMS.Domain.Models.Series", "Series")
                         .WithMany("Episodes")
-                        .HasForeignKey("SeriesId");
+                        .HasForeignKey("SeriesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SPMS.Domain.Models.EpisodeStatus", "Status")
                         .WithMany()
-                        .HasForeignKey("StatusId");
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.EpisodeEntry", b =>

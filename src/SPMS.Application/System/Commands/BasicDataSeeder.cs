@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Common;
 using SPMS.Domain.Models;
@@ -26,10 +27,10 @@ namespace SPMS.Application.System.Commands
 
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
-            if (await _db.Player.AnyAsync(cancellationToken))
-            {
-                return;
-            }
+            //if (await _db.Player.AnyAsync(cancellationToken))
+            //{
+            //    return;
+            //}
 
             await SeedPlayerRoleAsync(_db, cancellationToken);
 
@@ -50,6 +51,17 @@ namespace SPMS.Application.System.Commands
             await db.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task SeedBiographyStatus(ISpmsContext db, CancellationToken cancellationToken)
+        {
+            if (!db.BiographyStatus.Any(n => n.Name == StaticValues.BioStatusAlive))
+                await db.BiographyStatus.AddAsync(new BiographyStatus() { Name = StaticValues.BioStatusAlive }, cancellationToken);
+            if (!db.BiographyStatus.Any(n => n.Name == StaticValues.BioStatusDeceased))
+                await db.BiographyStatus.AddAsync(new BiographyStatus() { Name = StaticValues.BioStatusDeceased }, cancellationToken);
+            if (!db.BiographyStatus.Any(n => n.Name == StaticValues.BioStatusMia))
+                await db.BiographyStatus.AddAsync(new BiographyStatus() { Name = StaticValues.BioStatusMia }, cancellationToken);
+
+            await db.SaveChangesAsync(cancellationToken);
+        }
         public async Task SeedBeyondTheDarknessAsync(ISpmsContext db, CancellationToken cancellationToken)
         {
             var btdGame = new Game() { Name = StaticValues.DefaultGameName, Description = "BtD Simulation", SiteTitle = "Beyond the Darkness a Star Trek RPG", Disclaimer = "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>", SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
@@ -75,11 +87,16 @@ namespace SPMS.Application.System.Commands
             }
             else
             {
-                btdGame = await db.Game.FirstAsync(g => g.Name == StaticValues.DefaultGameName, cancellationToken: cancellationToken);
 
-                // Ensure Analyitics is set.
 
-                btdGame.SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
+                try
+                {
+                    btdGame = await db.Game.FirstOrDefaultAsync(g => g.Name == StaticValues.DefaultGameName,
+                        cancellationToken: cancellationToken);
+
+                    // Ensure Analyitics is set.
+
+                    btdGame.SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src='https://www.googletagmanager.com/gtag/js?id=UA-167297746-1'></script>
                 <script>
                 window.dataLayer = window.dataLayer || [];
@@ -88,8 +105,13 @@ namespace SPMS.Application.System.Commands
             gtag('config', 'UA-167297746-1');
                 </script> ";
 
-                db.Game.Update(btdGame);
-                
+                    db.Game.Update(btdGame);
+                }
+                catch (Exception ex)
+                {
+                    var i = 1;
+                }
+              
             }
 
             await db.SaveChangesAsync(cancellationToken);
@@ -139,8 +161,7 @@ namespace SPMS.Application.System.Commands
                     DateOfBirth = "",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StatusId = 3,
-                    History = @"
-        A black male of African/British decent, 6'0 in height and weighing in at 196 pounds. He has short cropped black hair and usually wears a short beard.
+                    History = @"A black male of African/British decent, 6'0 in height and weighing in at 196 pounds. He has short cropped black hair and usually wears a short beard.
 
 General Overview		Doctor Adisa, a specialist in neurology possesses a seemingly easygoing manner which he generally uses to mask his borderline OCD issues. He is very witty however his humor can sometimes become overly Sharp. His hobbies include playing various jazz instruments, long distance running, chess, and baking.
 
@@ -157,7 +178,7 @@ He enrolled in Starfleet directly after graduating the University against his fa
                 await db.Biography.AddAsync(new Biography()
                 {
                     Firstname = "Vars",
-                    Surname = "Qirat",
+                    Surname = "Qiratt",
                     Born = "Bolia",
                     Species = "Bolian",
                     Gender = "Male",
@@ -167,11 +188,21 @@ He enrolled in Starfleet directly after graduating the University against his fa
                     DateOfBirth = "",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StatusId = 3,
-                    History = @"Vars is best described as carrying extra weight. A rotund Bolian Male with puffy facial features and a noticeable double chin. His height is on the slightly shorter side, coming in at around 5\'9
+                    History = @"Vars is best described as carrying extra weight. A rotund Bolian Male with puffy facial features and a noticeable double chin. His height is on the slightly shorter side, coming in at around 5'9&quot;.
+Vars is a vibrant individual living up to the term, 'Jolly Fat Man'.He has a distinctive laugh that can be considered quite obnoxious, not helped by his flavorful personality.Wearing his emotions like a badge on his sleeve,
+Vars rarely shy's away from expressing his opinion. To the same extent, a withdrawn Vars is often the sign of an insecurity or fear.
 
-                    Vars is a vibrant individual living up to the term, \'Jolly Fat Man\'. He has a distinctive laugh that can be considered quite obnoxious, not helped by his flavorful personality. Wearing his emotions like a badge on his sleeve, Vars rarely shy\'s away from expressing his opinion. To the same extent, a withdrawn Vars is often the sign of an insecurity or fear.\n\nHe keeps with him a Hair piece that he wears on \'special occasions\' or on Thursdays. Part of his quirky nature.
+He keeps with him a Hair piece that he wears on 'special occasions' or on Thursdays.Part of his quirky nature.
 
-                    2383 - Current - USS Ronald Reagan - Chief of Operations(Lt Cmdr)\n2383(Late) - USS Ronald Reagan - Acting Chief of Operations(Lt Cmdr)\n2383(Early) - USS Ronald Reagan - Assistant Chief of Engineering / Acting Chief of Operations(Lt)\n2380 - 2382 - USS Midway - Assistant Chief of Engineering(Lt)\n2379 - USS Midway - Supervising Engineering Officer(Lt JG)\n2376 - 2378 - Starbase 386 - Star Ship Maintenance Engineering Team Lead(Lt JG)\n2374 - 2375 - USS Gettysburg - Engineering Officer / Trainee Supervisor(Lt JG)\n2372 - 2373 - USS Melbourne - Engineering Officer(Ens / Lt JG)\n2368 - 2371 - USS Galloway - Engineering Officer(Ens)\n2363 - 2367 - Starfleet Academy - Officer Cadet[Engineering Stream]"
+* 2383 - Current - USS Ronald Reagan - Chief of Operations(Lt Cmdr)
+* 2383(Late) - USS Ronald Reagan - Acting Chief of Operations(Lt Cmdr)
+* 2383(Early) - USS Ronald Reagan - Assistant Chief of Engineering / Acting Chief of Operations(Lt)
+* 2380 - 2382 - USS Midway - Assistant Chief of Engineering(Lt)\n2379 - USS Midway - Supervising Engineering Officer(Lt JG)
+* 2376 - 2378 - Starbase 386 - Star Ship Maintenance Engineering Team Lead(Lt JG)
+* 2374 - 2375 - USS Gettysburg - Engineering Officer / Trainee Supervisor(Lt JG)
+* 2372 - 2373 - USS Melbourne - Engineering Officer(Ens / Lt JG)
+* 2368 - 2371 - USS Galloway - Engineering Officer(Ens)
+* 2363 - 2367 - Starfleet Academy - Officer Cadet[Engineering Stream]"
                 }, cancellationToken);
 
 
@@ -191,7 +222,7 @@ He enrolled in Starfleet directly after graduating the University against his fa
 
             if (!await db.Episode.AnyAsync(x => x.Title == "Prologue", cancellationToken: cancellationToken))
             {
-                EpisodeStatus episodeStatus = await db.EpisodeStatus.AsNoTracking().FirstAsync(x => x.Name == StaticValues.Active, cancellationToken: cancellationToken);
+                EpisodeStatus episodeStatus = await db.EpisodeStatus.AsNoTracking().FirstAsync(x => x.Name == StaticValues.Published, cancellationToken: cancellationToken);
                 await db.Episode.AddAsync(new Episode()
                 {
                     Title = "Prologue",
@@ -199,34 +230,33 @@ He enrolled in Starfleet directly after graduating the University against his fa
                     StatusId = episodeStatus.Id
                 }, cancellationToken);
 
-                await db.SaveChangesAsync(cancellationToken);
+                
             }
 
-
+            await db.SaveChangesAsync(cancellationToken);
         }
 
 
         public static void SeedDefaults(ISpmsContext context)
         {
-
-
+            
             // Biography Status
-            if (!context.BiographyStatus.Any(n => n.Name == StaticValues.Draft))
-                context.BiographyStatus.Add(new BiographyStatus() { Name = StaticValues.Draft });
-            if (!context.BiographyStatus.Any(n => n.Name == StaticValues.Pending))
-                context.BiographyStatus.Add(new BiographyStatus() { Name = StaticValues.Pending });
-            if (!context.BiographyStatus.Any(n => n.Name == StaticValues.Active))
-                context.BiographyStatus.Add(new BiographyStatus() { Name = StaticValues.Active });
-            if (!context.BiographyStatus.Any(n => n.Name == StaticValues.Archived))
-                context.BiographyStatus.Add(new BiographyStatus() { Name = StaticValues.Archived });
+            if (!context.BiographyState.Any(n => n.Name == StaticValues.Draft))
+                context.BiographyState.Add(new BiographyState() { Name = StaticValues.Draft });
+            if (!context.BiographyState.Any(n => n.Name == StaticValues.Pending))
+                context.BiographyState.Add(new BiographyState() { Name = StaticValues.Pending });
+            if (!context.BiographyState.Any(n => n.Name == StaticValues.Published))
+                context.BiographyState.Add(new BiographyState() { Name = StaticValues.Published });
+            if (!context.BiographyState.Any(n => n.Name == StaticValues.Archived))
+                context.BiographyState.Add(new BiographyState() { Name = StaticValues.Archived });
 
             // Episode Status
             if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Draft))
                 context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Draft });
             if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Pending))
                 context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Pending });
-            if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Active))
-                context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Active });
+            if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Published))
+                context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Published });
             if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Archived))
                 context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Archived });
 
@@ -244,8 +274,8 @@ He enrolled in Starfleet directly after graduating the University against his fa
                 context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Draft });
             if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Pending))
                 context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Pending });
-            if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Active))
-                context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Active });
+            if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Published))
+                context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Published });
             if (!context.EpisodeEntryStatus.Any(n => n.Name == StaticValues.Archived))
                 context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Archived });
 

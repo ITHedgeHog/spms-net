@@ -53,7 +53,7 @@ namespace SPMS.Web
 
             SPMS.Application.DependencyInjection.AddApplication(services);
             SPMS.Infrastructure.DependencyInjection.AddInfrastructure(services, Configuration);
-            SPMS.Persistence.DependencyInjection.AddPersistence(services, Configuration);
+            SPMS.Persistence.PostgreSQL.DependencyInjection.AddPersistence(services, Configuration);
             
 
             var s3Config = new AmazonS3Config()

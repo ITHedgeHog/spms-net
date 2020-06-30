@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Services;
+using SPMS.Common;
 
 namespace SPMS.Web.Policy
 {

@@ -26,6 +26,7 @@ namespace SPMS.Persistence
         }
 
         public DbSet<Biography> Biography { get; set; }
+        public DbSet<BiographyState> BiographyState { get; set; }
         public DbSet<BiographyStatus> BiographyStatus { get; set; }
         public DbSet<Game> Game { get; set; }
         public DbSet<GameUrl> GameUrl { get; set; }

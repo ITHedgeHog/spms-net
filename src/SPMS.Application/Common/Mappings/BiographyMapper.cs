@@ -47,7 +47,7 @@ namespace SPMS.Application.Common.Mappings
 
 
             CreateMap<Biography, BiographyViewModel>()
-                .ForMember(x => x.Status, opt => opt.MapFrom(y => y.Status.Name))
+                .ForMember(x => x.Status, opt => opt.MapFrom(y => y.State.Name))
                 .ForMember(x => x.Player, opt => opt.MapFrom(y => y.Player.DisplayName))
                 .ForMember(x => x.Posting, opt => opt.MapFrom(y => y.Posting.Name))
                 .ForMember(x => x.IsReadOnly, opt => opt.Ignore())

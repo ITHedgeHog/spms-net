@@ -88,7 +88,7 @@ namespace SPMS.Persistence.Migrations
                     b.ToTable("Biography");
                 });
 
-            modelBuilder.Entity("SPMS.Web.Models.BiographyStatus", b =>
+            modelBuilder.Entity("SPMS.Web.Models.BiographyState", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,7 +100,7 @@ namespace SPMS.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BiographyStatus");
+                    b.ToTable("BiographyState");
                 });
 
             modelBuilder.Entity("SPMS.Web.Models.Episode", b =>
@@ -228,7 +228,7 @@ namespace SPMS.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("PostingId");
 
-                    b.HasOne("SPMS.Web.Models.BiographyStatus", "Status")
+                    b.HasOne("SPMS.Web.Models.BiographyState", "State")
                         .WithMany()
                         .HasForeignKey("StatusId");
                 });
@@ -250,7 +250,7 @@ namespace SPMS.Persistence.Migrations
             modelBuilder.Entity("SPMS.Web.Models.EpisodeStatus", b =>
                 {
                     b.HasOne("SPMS.Web.Models.Episode", null)
-                        .WithMany("Status")
+                        .WithMany("State")
                         .HasForeignKey("EpisodeId");
                 });
 #pragma warning restore 612, 618
