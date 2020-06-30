@@ -14,8 +14,8 @@ namespace SPMS.Application.ViewModels.Authoring
             Authors = new List<AuthorViewModel>();
             PostTypes = new List<SelectListItem>();
             Statuses = new List<SelectListItem>();
-            Title = "Default title";
-            Content = "Default content";
+            Title = string.Empty;
+            Content = string.Empty;
             Location = string.Empty;
             Timeline = string.Empty;
         }

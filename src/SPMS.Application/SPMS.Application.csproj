@@ -18,4 +18,10 @@
     <ProjectReference Include="..\SPMS.Domain\SPMS.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authoring\Command\SchedulePost\" />
+    <Folder Include="Authoring\Command\PublishPost\" />
+    <Folder Include="Authoring\Command\UpdatePost\" />
+  </ItemGroup>
+
 </Project>

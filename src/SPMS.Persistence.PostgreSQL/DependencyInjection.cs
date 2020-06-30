@@ -10,7 +10,7 @@ namespace SPMS.Persistence.PostgreSQL
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddDbContext<SpmsContext>(options =>
-                options.UseNpgsql(configuration.GetConnectionString("SpmsContext")), ServiceLifetime.Transient);
+                options.UseNpgsql(configuration.GetConnectionString("SpmsContext")));
 
             services.AddScoped<ISpmsContext>(provider => provider.GetService<SpmsContext>());
 

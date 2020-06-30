@@ -6,11 +6,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding;
+using SPMS.Application.Authoring.Command.CreatePost;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Services;
 using SPMS.Application.ViewModels;
@@ -31,13 +33,15 @@ namespace SPMS.Web.Controllers
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly IAuthoringService _authoringService;
+        private readonly IMediator _mediator;
 
-        public AuthoringController(ISpmsContext context, IMapper mapper, IUserService userService, IAuthoringService authoringService)
+        public AuthoringController(ISpmsContext context, IMapper mapper, IUserService userService, IAuthoringService authoringService, IMediator mediator)
         {
             _context = context;
             _mapper = mapper;
             _userService = userService;
             _authoringService = authoringService;
+            _mediator = mediator;
         }
 
 
@@ -50,11 +54,9 @@ namespace SPMS.Web.Controllers
                 return RedirectToAction("Writing", "My");
             }
 
-            var vm = await _authoringService.NewPost(cancellationToken);
+            var newPost = await _mediator.Send(new CreatePost(), cancellationToken);
 
-            var id = await _authoringService.SavePostAsync(vm, cancellationToken);
-
-            return RedirectToAction("Post", new { Id = id });
+            return RedirectToAction("Post", new { Id = newPost });
         }
 
         [HttpGet("player/author/post/{id}/invite")]

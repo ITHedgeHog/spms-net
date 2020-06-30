@@ -1,11 +1,25 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Services;
+using SPMS.Common;
+using SPMS.Domain.Common;
 using SPMS.Domain.Models;
 
 namespace SPMS.Persistence.PostgreSQL
 {
     public class SpmsContext : DbContext, ISpmsContext
     {
+        private readonly IUserService _currentUser;
+        private readonly IDateTime _dateTime;
+
+        public SpmsContext(DbContextOptions<SpmsContext> options, IUserService user, IDateTime dateTime)
+            : base(options)
+        {
+            _currentUser = user;
+            _dateTime = dateTime;
+        }
         public SpmsContext(DbContextOptions<SpmsContext> options)
             : base(options)
         {
@@ -15,6 +29,27 @@ namespace SPMS.Persistence.PostgreSQL
         {
             
         }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.Entity.CreatedBy = _currentUser.GetName();
+                        entry.Entity.Created = _dateTime.Now;
+                        break;
+                    case EntityState.Modified:
+                        entry.Entity.LastModifiedBy = _currentUser.GetName();
+                        entry.Entity.LastModified = _dateTime.Now;
+                        break;
+                }
+            }
+
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SpmsContext).Assembly);
