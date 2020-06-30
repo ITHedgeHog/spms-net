@@ -64,7 +64,7 @@ namespace SPMS.Web
                                         // Load configuration values with no label
                                         .Select(KeyFilter.Any, LabelFilter.Null)
                                         // Override with any configuration values specific to current hosting env
-                                        .Select(KeyFilter.Any, /*hostingContext.HostingEnvironment.EnvironmentName*/ "Production")
+                                        .Select(KeyFilter.Any, hostingContext.HostingEnvironment.EnvironmentName)
                                         .ConfigureRefresh(o =>
                                         {
 
