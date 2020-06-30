@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Services;
 using SPMS.Common;
@@ -11,39 +12,38 @@ namespace SPMS.Persistence.PostgreSQL
 {
     public class SpmsContext : DbContext, ISpmsContext
     {
-        private readonly IUserService _currentUser;
+        private readonly ICurrentUserService _currentUser;
         private readonly IDateTime _dateTime;
 
-        public SpmsContext(DbContextOptions<SpmsContext> options, IUserService user, IDateTime dateTime)
+        public SpmsContext(DbContextOptions<SpmsContext> options, ICurrentUserService user, IDateTime dateTime)
             : base(options)
         {
             _currentUser = user;
             _dateTime = dateTime;
+            
         }
         public SpmsContext(DbContextOptions<SpmsContext> options)
             : base(options)
         {
         }
 
-        public SpmsContext()
-        {
-            
-        }
-
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            if (_currentUser != null && _dateTime != null)
             {
-                switch (entry.State)
+                foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
                 {
-                    case EntityState.Added:
-                        entry.Entity.CreatedBy = _currentUser.GetName();
-                        entry.Entity.Created = _dateTime.Now;
-                        break;
-                    case EntityState.Modified:
-                        entry.Entity.LastModifiedBy = _currentUser.GetName();
-                        entry.Entity.LastModified = _dateTime.Now;
-                        break;
+                    switch (entry.State)
+                    {
+                        case EntityState.Added:
+                            entry.Entity.CreatedBy = _currentUser.GetName();
+                            entry.Entity.Created = _dateTime.Now;
+                            break;
+                        case EntityState.Modified:
+                            entry.Entity.LastModifiedBy = _currentUser.GetName();
+                            entry.Entity.LastModified = _dateTime.Now;
+                            break;
+                    }
                 }
             }
 

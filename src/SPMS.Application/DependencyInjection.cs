@@ -5,6 +5,7 @@ using System.Text;
 using AutoMapper;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Services;
 
 namespace SPMS.Application
@@ -18,10 +19,10 @@ namespace SPMS.Application
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestPerformanceBehaviour<,>));
             //services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
 
-            services.AddTransient<IGameService, GameService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IStoryService, StoryService>();
-            services.AddTransient<IAuthoringService, AuthoringService>();
+            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IStoryService, StoryService>();
+            services.AddScoped<IAuthoringService, AuthoringService>();
 
             return services;
         }
