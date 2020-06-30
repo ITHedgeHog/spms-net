@@ -11,6 +11,7 @@ using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Services;
 using SPMS.Application.ViewModels;
 using SPMS.Application.ViewModels.Story;
+using SPMS.Common;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
 
@@ -37,7 +38,7 @@ namespace SPMS.Web.Controllers
             var vm = new MyCharactersViewModel
             {
                 IsCreateCharacterEnabled = _userService.IsPlayer(),
-                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Active)
+                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published)
             };
 
 
@@ -57,7 +58,7 @@ namespace SPMS.Web.Controllers
             var vm = new MyWritingViewModel
             {
                 IsCreateCharacterEnabled = _userService.IsPlayer(),
-                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Active)
+                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published)
             };
 
             var owner = _userService.GetAuthId();

@@ -39,7 +39,7 @@ namespace SPMS.Application.Services
         public async Task<List<PostViewModel>> GetEpisodeStory(int activeEpisode)
         {
             var gameId = await _gameService.GetGameIdAsync();
-            return await _context.EpisodeEntry.Include(e => e.Episode).ThenInclude(e => e.Series).Include(e => e.EpisodeEntryPlayer).Include(e => e.EpisodeEntryStatus).Include(e => e.EpisodeEntryType).Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Active && e.Episode.Id == activeEpisode && e.Episode.Series.GameId == gameId).OrderBy(x => x.PublishedAt).ProjectTo<PostViewModel>(_mapper.ConfigurationProvider).ToListAsync();
+            return await _context.EpisodeEntry.Include(e => e.Episode).ThenInclude(e => e.Series).Include(e => e.EpisodeEntryPlayer).Include(e => e.EpisodeEntryStatus).Include(e => e.EpisodeEntryType).Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Published && e.Episode.Id == activeEpisode && e.Episode.Series.GameId == gameId).OrderBy(x => x.PublishedAt).ProjectTo<PostViewModel>(_mapper.ConfigurationProvider).ToListAsync();
         }
     }
 

@@ -88,7 +88,7 @@ namespace SPMS.Persistence.Migrations
                     b.ToTable("Biography");
                 });
 
-            modelBuilder.Entity("SPMS.Web.Models.BiographyStatus", b =>
+            modelBuilder.Entity("SPMS.Web.Models.BiographyState", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,7 +100,7 @@ namespace SPMS.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BiographyStatus");
+                    b.ToTable("BiographyState");
                 });
 
             modelBuilder.Entity("SPMS.Web.Models.Episode", b =>
@@ -228,7 +228,7 @@ namespace SPMS.Persistence.Migrations
                         .WithMany()
                         .HasForeignKey("PostingId");
 
-                    b.HasOne("SPMS.Web.Models.BiographyStatus", "Status")
+                    b.HasOne("SPMS.Web.Models.BiographyState", "State")
                         .WithMany()
                         .HasForeignKey("StatusId");
                 });
@@ -239,7 +239,7 @@ namespace SPMS.Persistence.Migrations
                         .WithMany("Episodes")
                         .HasForeignKey("SeriesId");
 
-                    b.HasOne("SPMS.Web.Models.EpisodeStatus", "Status")
+                    b.HasOne("SPMS.Web.Models.EpisodeStatus", "State")
                         .WithMany()
                         .HasForeignKey("StatusId");
                 });

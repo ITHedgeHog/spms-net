@@ -47,7 +47,7 @@ namespace SPMS.Persistence.Migrations
                 name: "FK_Biography_BiographyStatus_StatusId",
                 table: "Biography",
                 column: "StatusId",
-                principalTable: "BiographyStatus",
+                principalTable: "BiographyState",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -72,7 +72,7 @@ namespace SPMS.Persistence.Migrations
                 name: "FK_Biography_BiographyStatus_StatusId",
                 table: "Biography",
                 column: "StatusId",
-                principalTable: "BiographyStatus",
+                principalTable: "BiographyState",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }

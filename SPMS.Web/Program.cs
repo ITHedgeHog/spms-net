@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
@@ -10,9 +8,8 @@ using Microsoft.Extensions.Configuration.AzureAppConfiguration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using SPMS.Application.Common.Interfaces;
 using SPMS.Application.System.Commands;
-using SPMS.Persistence;
+using SPMS.Persistence.PostgreSQL;
 
 namespace SPMS.Web
 {
@@ -38,6 +35,7 @@ namespace SPMS.Web
                    await spmsContext.Database.MigrateAsync();
 
                    var mediator = services.GetRequiredService<IMediator>();
+                   
                    await mediator.Send(new BasicDataSeederCommand());
 
                }
