@@ -1,15 +1,20 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using AutoMapper;
 using SPMS.Application.Common.Mappings;
+using SPMS.Web.Mapping;
 using Xunit;
 
-namespace SPMS.Application.Tests.Common
+namespace SPMS.Application.Tests.Mapping
 {
-    public class BiographyMappingsTest : IClassFixture<BiographyMappingsFixture>
+
+    public class ViewModelMappingsTests : IClassFixture<ViewModelMappingsFixture>
     {
         private readonly IConfigurationProvider _configuration;
         private readonly IMapper _mapper;
 
-        public BiographyMappingsTest(BiographyMappingsFixture fixture)
+        public ViewModelMappingsTests(ViewModelMappingsFixture fixture)
         {
             _configuration = fixture.ConfigurationProvider;
             _mapper = fixture.Mapper;
@@ -18,22 +23,21 @@ namespace SPMS.Application.Tests.Common
         [Fact()]
         public void ShouldHaveValidConfiguration()
         {
-
             _mapper.ConfigurationProvider.AssertConfigurationIsValid();
         }
     }
 
-
-    public class BiographyMappingsFixture
+    public class ViewModelMappingsFixture
     {
-        public BiographyMappingsFixture()
+        public ViewModelMappingsFixture()
         {
             ConfigurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<BiographyMapper>();
-                //cfg.AddProfile<AuthorProfile>();
+                cfg.AddProfile<ViewModelMappingProfile>();
 
-            }); Mapper = ConfigurationProvider.CreateMapper();
+            });
+
+            Mapper = ConfigurationProvider.CreateMapper();
         }
 
         public IConfigurationProvider ConfigurationProvider { get; }

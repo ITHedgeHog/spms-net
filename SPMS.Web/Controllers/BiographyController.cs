@@ -12,6 +12,7 @@ using SPMS.Application.Services;
 using SPMS.Application.ViewModels;
 using SPMS.Application.ViewModels.Biography;
 using SPMS.Domain.Models;
+using BiographyDto = SPMS.Application.ViewModels.Biography.BiographyDto;
 
 namespace SPMS.Web.Controllers
 {
@@ -36,7 +37,7 @@ namespace SPMS.Web.Controllers
             var vm = new BiographiesDto
             {
                 Postings = await _context.Posting.Where(x => x.Name != "Undefined").OrderBy(x => x.Name).ToListAsync(),
-                Biographies = await _context.Biography.ProjectTo<BiographyDto>(_mapper.ConfigurationProvider).ToListAsync()
+                Biographies = await _context.Biography.ProjectTo<Application.ViewModels.BiographyDto>(_mapper.ConfigurationProvider).ToListAsync()
             };
 
             return View(vm);
@@ -46,13 +47,13 @@ namespace SPMS.Web.Controllers
         // GET: Biography/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            var vm = new BiographyViewModel();
+            var vm = new BiographyDto();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var biography = await _context.Biography.Include(x => x.Player).Include(x=>x.State).Include(x => x.Posting).ProjectTo<BiographyViewModel>(_mapper.ConfigurationProvider)
+            var biography = await _context.Biography.Include(x => x.Player).Include(x=>x.State).Include(x => x.Posting).ProjectTo<BiographyDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (biography == null)
             {

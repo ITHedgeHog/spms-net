@@ -1,39 +1,40 @@
 ﻿using AutoMapper;
 using SPMS.Application.Common.Mappings;
 using Xunit;
+using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
-namespace SPMS.Application.Tests.Common
+namespace SPMS.Application.Tests.Mapping
 {
-    public class AuthorMappingsTest : IClassFixture<AuthorMappingsFixture>
+    public class GenericMappingsTest : IClassFixture<GenericMappingsFixture>
     {
         private readonly IConfigurationProvider _configuration;
         private readonly IMapper _mapper;
 
-        public AuthorMappingsTest(AuthorMappingsFixture fixture)
+        public GenericMappingsTest(GenericMappingsFixture fixture) 
         {
             _configuration = fixture.ConfigurationProvider;
             _mapper = fixture.Mapper;
         }
 
         [Fact()]
-        public void ShoudHaveValidConfiguration()
+        public void ShouldHaveValidConfiguration()
         {
 
             _mapper.ConfigurationProvider.AssertConfigurationIsValid();
         }
     }
 
-    public class AuthorMappingsFixture
+    public class GenericMappingsFixture
     {
-        public AuthorMappingsFixture()
+        public GenericMappingsFixture()
         {
             ConfigurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<AuthorProfile>();
+                cfg.AddProfile<GenericMapper>();
+                //cfg.AddProfile<BiographyMapper>();
+                //cfg.AddProfile<AuthorProfile>();
 
-            }); 
-            
-            Mapper = ConfigurationProvider.CreateMapper();
+            }); Mapper = ConfigurationProvider.CreateMapper();
         }
 
         public IConfigurationProvider ConfigurationProvider { get; }

@@ -2,7 +2,7 @@
 
 namespace SPMS.Application.ViewModels.Biography
 {
-    public class BiographyViewModel : ViewModel
+    public class BiographyDto : ViewModel
     {
         public int Id { get; set; }
         public string Firstname { get; set; }

@@ -4,6 +4,7 @@ using AutoMapper;
 using SPMS.Application.ViewModels;
 using SPMS.Application.ViewModels.Biography;
 using SPMS.Domain.Models;
+using BiographyDto = SPMS.Application.ViewModels.Biography.BiographyDto;
 
 namespace SPMS.Application.Common.Mappings
 {
@@ -67,7 +68,7 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.States, o => o.Ignore());
 
 
-            CreateMap<Biography, BiographyViewModel>()
+            CreateMap<Biography, BiographyDto>()
                 .ForMember(x => x.Status, opt => opt.MapFrom(y => y.State.Name))
                 .ForMember(x => x.Player, opt => opt.MapFrom(y => y.Player.DisplayName))
                 .ForMember(x => x.Posting, opt => opt.MapFrom(y => y.Posting.Name))
@@ -84,7 +85,7 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.CommitShaLink, o => o.Ignore());
 
 
-            CreateMap<Biography, BiographyDto>();
+            CreateMap<Biography, ViewModels.BiographyDto>();
 
         }
     }
