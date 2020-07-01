@@ -1,4 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using AutoMapper;
+using SPMS.Application.ViewModels;
 using SPMS.Application.ViewModels.Biography;
 using SPMS.Domain.Models;
 
@@ -9,6 +12,20 @@ namespace SPMS.Application.Common.Mappings
 
         public BiographyMapper()
         {
+            CreateMap<CreateBiographyViewModel, Biography>()
+                .ForMember(x => x.State, opt => opt.Ignore())
+                .ForMember(x => x.Player, opt => opt.Ignore())
+                .ForMember(x => x.Posting, opt => opt.Ignore())
+                .ForMember(x => x.Status, o => o.Ignore())
+                .ForMember(x => x.State, o => o.Ignore());
+            CreateMap<EditBiographyViewModel, Biography>()
+                .ForMember(x => x.State, opt => opt.Ignore())
+                .ForMember(x => x.Player, opt => opt.Ignore())
+                .ForMember(x => x.Posting, opt => opt.Ignore())
+                .ForMember(x => x.Status, o => o.Ignore())
+                .ForMember(x => x.State, o => o.Ignore());
+
+
             CreateMap<Biography, CreateBiographyViewModel>()
                 .ForMember(x => x.Posting, opt => opt.MapFrom(y => y.Posting.Name))
                 .ForMember(x => x.IsReadOnly, opt => opt.Ignore())
@@ -23,13 +40,16 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.IsPlayer, opt => opt.Ignore())
                 .ForMember(x => x.gravatar, o => o.Ignore())
                 .ForMember(x => x.CommitSha, o => o.Ignore())
-                .ForMember(x => x.CommitShaLink, o => o.Ignore());
+                .ForMember(x => x.CommitShaLink, o => o.Ignore())
+                .ForMember(x => x.Status, o => o.Ignore())
+                .ForMember(x => x.Player, o => o.MapFrom(y => new PlayerViewModel() { Id = y.Player.Id, AuthString = y.Player.AuthString, DisplayName = y.Player.DisplayName, Roles = y.Player.Roles.Select(z => new PlayerRoleViewModel() { Id = z.PlayerRoleId, Name = z.PlayerRole.Name }).ToList() }))
+                .ForMember(x => x.States, o => o.Ignore());
 
             CreateMap<Biography, EditBiographyViewModel>()
                 .ForMember(x => x.Posting, opt => opt.MapFrom(y => y.Posting.Name))
                 .ForMember(x => x.Player,
                     opt => opt.MapFrom(y => new PlayerViewModel()
-                        { Id = y.Player.Id, AuthString = y.Player.AuthString, DisplayName = y.Player.DisplayName }))
+                    { Id = y.Player.Id, AuthString = y.Player.AuthString, DisplayName = y.Player.DisplayName }))
                 .ForMember(x => x.Statuses, opt => opt.Ignore())
                 .ForMember(x => x.Postings, opt => opt.Ignore())
                 .ForMember(x => x.IsReadOnly, opt => opt.Ignore())
@@ -42,8 +62,9 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.IsPlayer, opt => opt.Ignore())
                 .ForMember(x => x.gravatar, o => o.Ignore())
                 .ForMember(x => x.CommitSha, o => o.Ignore())
-                .ForMember(x => x.CommitShaLink, o => o.Ignore());
-
+                .ForMember(x => x.CommitShaLink, o => o.Ignore())
+                .ForMember(x => x.State, o => o.MapFrom(y => y.State.Name))
+                .ForMember(x => x.States, o => o.Ignore());
 
 
             CreateMap<Biography, BiographyViewModel>()
@@ -61,6 +82,9 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.gravatar, o => o.Ignore())
                 .ForMember(x => x.CommitSha, o => o.Ignore())
                 .ForMember(x => x.CommitShaLink, o => o.Ignore());
+
+
+            CreateMap<Biography, BiographyDto>();
 
         }
     }

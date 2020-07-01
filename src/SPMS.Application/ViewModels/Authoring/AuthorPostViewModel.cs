@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SPMS.Common.ViewModels;
 
 namespace SPMS.Application.ViewModels.Authoring
 {

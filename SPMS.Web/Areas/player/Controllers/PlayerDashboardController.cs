@@ -12,7 +12,7 @@ namespace SPMS.Web.Areas.player.Controllers
         [HttpGet("player/dashboard")]
         public IActionResult Index()
         {
-            var vm = new ViewModel();
+            var vm = new Common.ViewModels.ViewModel();
             return View(vm);
         }
     }

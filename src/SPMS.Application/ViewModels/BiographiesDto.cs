@@ -1,7 +1,19 @@
-﻿namespace SPMS.Domain.Models
+﻿using System.Collections.Generic;
+using SPMS.Common.ViewModels;
+using SPMS.Domain.Models;
+
+namespace SPMS.Application.ViewModels
 {
-    public class Biography
+    public class BiographiesDto : ViewModel
     {
+        public List<Posting> Postings { get; set; }
+
+        public List<BiographyDto> Biographies { get; set; }
+    }
+
+
+    public class BiographyDto
+    {   
         public int Id { get; set; }
         public string Firstname { get; set; }
         public string Surname { get; set; }
@@ -20,11 +32,8 @@
         public string Rank { get; set; }
         public string RankImage { get; set; }
 
-        public int StateId { get; set; }
-        public BiographyState State { get; set; }
-
         public int StatusId { get; set; }
-        public BiographyStatus Status { get; set; }
+        public string State { get; set; }
 
         public int PostingId { get; set; }
         public Posting Posting { get; set; }
@@ -32,11 +41,5 @@
         public int PlayerId { get; set; }
         public Player Player { get; set; }
         public string History { get; set; }
-    }
-
-    public class Posting
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using SPMS.Application.ViewModels;
 
 namespace SPMS.Web.Models
 {
-    public class ErrorViewModel : ViewModel
+    public class ErrorViewModel : Common.ViewModels.ViewModel
     {
         public string RequestId { get; set; }
 

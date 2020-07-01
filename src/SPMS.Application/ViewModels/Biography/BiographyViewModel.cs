@@ -1,4 +1,6 @@
-﻿namespace SPMS.Application.ViewModels.Biography
+﻿using SPMS.Common.ViewModels;
+
+namespace SPMS.Application.ViewModels.Biography
 {
     public class BiographyViewModel : ViewModel
     {

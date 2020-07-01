@@ -160,7 +160,7 @@ namespace SPMS.Web.Controllers
             ViewData["Id"] = episodeEntry.Id;
             ViewData["PostTitle"] = episodeEntry.Title;
             ViewData["PostContent"] = episodeEntry.Content;
-            return View(new ViewModel());
+            return View(new Common.ViewModels.ViewModel());
         }
 
         // POST: Authoring/Delete/5

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using SPMS.Common.ViewModels;
 
 namespace SPMS.Application.ViewModels.Biography
 {
@@ -42,6 +43,9 @@ namespace SPMS.Application.ViewModels.Biography
         public List<SelectListItem> Postings { get; set; }
         public int StatusId { get; set; }
         public IEnumerable<SelectListItem> Statuses { get; set; }
+
+        public int StateId { get; set; }
+        public IEnumerator<SelectListItem> States { get; set; }
     }
 
     public class BiographyStatusViewModel
@@ -71,7 +75,7 @@ namespace SPMS.Application.ViewModels.Biography
         public string Rank { get; set; }
         public string RankImage { get; set; }
 
-        public string Status { get; set; }
+        public string State { get; set; }
 
         public int PostingId { get; set; }
         public string Posting { get; set; }
@@ -82,5 +86,7 @@ namespace SPMS.Application.ViewModels.Biography
         public List<SelectListItem> Postings { get; set; }
         public List<SelectListItem> Statuses { get; set; }
         public int StatusId { get; set; }
+        public int StateId { get; set; }
+        public IEnumerator<SelectListItem> States { get; set; }
     }
 }

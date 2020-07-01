@@ -1,17 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using MediatR;
 using Moq;
 using Shouldly;
 using SPMS.Application.Authoring.Command.CreatePost;
-using SPMS.Test.Common;
+using SPMS.Application.Tests.Common;
 using Xunit;
 
-
-namespace SPMS.Test.Application
+namespace SPMS.Application.Tests.Authorings
 {
     public class AuthorPostCommandTests : CommandTestBase
     {

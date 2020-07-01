@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SPMS.Application.ViewModels.Authoring;
+using SPMS.Common.ViewModels;
 
 namespace SPMS.Application.ViewModels.Story
 {

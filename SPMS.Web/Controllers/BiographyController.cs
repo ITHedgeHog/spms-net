@@ -33,10 +33,10 @@ namespace SPMS.Web.Controllers
         // GET: Biography
         public async Task<IActionResult> Index()
         {
-            var vm = new BiographiesViewModel
+            var vm = new BiographiesDto
             {
                 Postings = await _context.Posting.Where(x => x.Name != "Undefined").OrderBy(x => x.Name).ToListAsync(),
-                Biographies = await _context.Biography.ToListAsync()
+                Biographies = await _context.Biography.ProjectTo<BiographyDto>(_mapper.ConfigurationProvider).ToListAsync()
             };
 
             return View(vm);
