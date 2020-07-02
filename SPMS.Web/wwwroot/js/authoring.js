@@ -67,12 +67,10 @@ function autoSave() {
     if (elements.length > 0) {
         $('#saving').toggleClass('d-none');
         var data = elements.serialize() + encodeURI('&Content=' + simplemde.value());
-        console.log(data);
+       
         $.post('/player/author/post/autosave', data, function (data) {
             $('#Id').val(data);
-            dirtyElements.attr('data-dirty', false);
             $('#lastSave').removeClass('d-none');
-            //alert('data saved successfully');
             var today = new Date();
             var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
             var time = (today.getHours() < 10 ? '0' : '') + today.getHours() + ":" + (today.getMinutes() < 10 ? '0' : '') + today.getMinutes() + ":" + (today.getSeconds() < 10 ? '0' : '') + today.getSeconds();
