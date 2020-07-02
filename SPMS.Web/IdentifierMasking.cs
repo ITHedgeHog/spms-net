@@ -3,16 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using SPMS.Application.Services;
 
 namespace SPMS.Web
 {
-    public class IdentifierMasking
+
+    public interface IIdentifierMask
+    {
+        int RevealId(string identifier);
+        string HideId(int id);
+    }
+    public class IdentifierMasking : IIdentifierMask
     {
         private static byte[] _key;
 
-        public IdentifierMasking(byte[] key = null)
+        public IdentifierMasking(IGameService game)
         {
-            _key = key ?? Sodium.SecretBox.GenerateKey();
+            var key = game.GetGameKey(Sodium.SecretBox.GenerateKey());
+            _key = key;
+        }
+
+        public int RevealId(string identifier)
+        {
+            return int.Parse(RevealIdentifier(identifier));
+        }
+
+        public string HideId(int id)
+        {
+            return HideIdentifier(id.ToString());
         }
 
         public string RevealIdentifier(string hidden)

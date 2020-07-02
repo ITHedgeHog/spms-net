@@ -1,11 +1,7 @@
 using System;
-using System.Net;
-using System.Reflection;
 using System.Threading.Tasks;
-using Amazon.Runtime;
 using Amazon.S3;
 using AspNetCore.DataProtection.Aws.S3;
-using AutoMapper;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -15,7 +11,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -24,10 +19,8 @@ using Microsoft.FeatureManagement;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.Services;
 using SPMS.Web.Areas.player.Hubs;
 using SPMS.Web.Filter;
-using SPMS.Web.Models;
 using SPMS.Web.Policy;
 using SPMS.Web.Service;
 using StackExchange.Redis;
@@ -47,9 +40,6 @@ namespace SPMS.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-
-
             Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", Configuration["AWS:AccessKey"]);
             Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration["AWS:SecretKey"]);
             // Add Services
@@ -59,6 +49,11 @@ namespace SPMS.Web
             SPMS.Persistence.PostgreSQL.DependencyInjection.AddPersistence(services, Configuration);
             SPMS.Application.DependencyInjection.AddApplication(services);
             services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IIdentifierMask, IdentifierMasking>();
+
+
+
+
 
             var s3Config = new AmazonS3Config()
             {
@@ -166,10 +161,6 @@ namespace SPMS.Web
                     }
                 };
             });
-
-
-            // Add AutoMapper
-            services.AddAutoMapper(typeof(Startup));
 
 
 

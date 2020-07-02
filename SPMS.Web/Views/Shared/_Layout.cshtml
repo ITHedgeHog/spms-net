@@ -1,4 +1,4 @@
-﻿@model SPMS.Application.ViewModels.ViewModel
+﻿@model SPMS.Common.ViewModels.ViewModel
 
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
@@ -34,12 +34,7 @@
     </header>
     <div class="container">
         <main role="main" class="pb-3">
-            
             @RenderBody()
-
-            <feature name="Beta">
-                <h1>Beta Flag Enabled</h1>
-            </feature>
         </main>
     </div>
     <mini-profiler position="RenderPosition.BottomLeft" />

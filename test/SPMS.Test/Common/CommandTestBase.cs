@@ -1,8 +1,7 @@
 ﻿using System;
 using SPMS.Persistence.PostgreSQL;
-using SpmsContextFactory = SPMS.Test.Common.SpmsContextFactory;
 
-namespace SPMS.Test.Common
+namespace SPMS.Application.Tests.Common
 {
     public class CommandTestBase : IDisposable
     {

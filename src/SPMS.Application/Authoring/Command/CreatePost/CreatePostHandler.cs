@@ -8,7 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.ViewModels.Authoring;
 using SPMS.Common;
 using SPMS.Domain.Models;
 

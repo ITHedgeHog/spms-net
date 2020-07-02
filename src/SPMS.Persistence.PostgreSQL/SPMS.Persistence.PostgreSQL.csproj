@@ -5,6 +5,15 @@
     <RootNamespace>SPMS.Persistence.PostgreSQL</RootNamespace>
     <AssemblyName>SPMS.Persistence.PostgreSQL</AssemblyName>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200701222646_BiographyState.cs" />
+    <Compile Remove="Migrations\20200701222646_BiographyState.Designer.cs" />
+    <Compile Remove="Migrations\20200701224433_BiographyState.cs" />
+    <Compile Remove="Migrations\20200701224433_BiographyState.Designer.cs" />
+    <Compile Remove="Migrations\20200701224928_BiographyState.cs" />
+    <Compile Remove="Migrations\20200701224928_BiographyState.Designer.cs" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">

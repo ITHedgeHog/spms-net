@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace SPMS.Application.ViewModels.Authoring
+namespace SPMS.Application.Dtos.Authoring
 {
-    public class AuthorPostViewModel : ViewModel
+    public class AuthorPostViewModel : SPMS.Common.ViewModels.ViewModel
     {
         
         public AuthorPostViewModel(in int activeEpisodeId)

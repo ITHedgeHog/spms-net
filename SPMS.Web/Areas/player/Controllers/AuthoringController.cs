@@ -14,12 +14,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using SPMS.Application.Authoring.Command.CreatePost;
 using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Dtos;
+using SPMS.Application.Dtos.Authoring;
 using SPMS.Application.Services;
-using SPMS.Application.ViewModels;
-using SPMS.Application.ViewModels.Authoring;
 using SPMS.Common;
 using SPMS.Persistence;
-using SPMS.Web.Areas.player.ViewModels;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
 
@@ -160,7 +159,7 @@ namespace SPMS.Web.Controllers
             ViewData["Id"] = episodeEntry.Id;
             ViewData["PostTitle"] = episodeEntry.Title;
             ViewData["PostContent"] = episodeEntry.Content;
-            return View(new ViewModel());
+            return View(new Common.ViewModels.ViewModel());
         }
 
         // POST: Authoring/Delete/5

@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.ViewModels;
-using SPMS.Application.ViewModels.Biography;
+using SPMS.Application.Dtos;
 using SPMS.Common;
 using SPMS.Domain.Models;
-using SPMS.Web.Areas.Admin.ViewModels;
-using SPMS.Web.Models;
 
 namespace SPMS.Web.Areas.Admin.Controllers
 {
