@@ -144,8 +144,14 @@
 
                     <div id="scheduleCollapse" class="collapse hide" aria-labelledby="schedulePost" data-parent="#managePost">
                         <div class="card-body">
-                            <p>Add Date Picker</p>
-                            <button name="submitpost" value="schedule" class="btn btn-primary disabled" disabled="disabled">Schedule Post</button>
+                            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                                <input type="text" asp-for="PostAt" class="form-control datetimepicker-input" data-target="#datetimepicker1"/>
+                                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+
+                            <button name="submitpost" value="schedule" class="btn btn-primary">Schedule Post</button>
                         </div>
                     </div>
                 </div>

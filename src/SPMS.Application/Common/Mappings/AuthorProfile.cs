@@ -27,7 +27,7 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.PostTypes, opt => opt.Ignore())
                 .ForMember(x => x.TypeId, opt => opt.Ignore())
                 .ForMember(x => x.Episode, opt => opt.MapFrom(x => x.Episode.Title))
-                .ForMember(x => x.Authors, opt => opt.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel(y.Player.Id, y.Player.DisplayName, y.Player.Email))))
+                .ForMember(x => x.Authors, opt => opt.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel(y.Player.Id, y.EpisodeEntryId, y.Player.DisplayName, y.Player.Email))))
                 .ForMember(x => x.EpisodeId, opt => opt.MapFrom(x => x.EpisodeId))
                 .ForMember(x => x.StatusId, o => o.MapFrom(y => y.EpisodeEntryStatusId))
                 .ForMember(x => x.Statuses, o => o.Ignore())

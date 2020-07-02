@@ -48,7 +48,7 @@ namespace SPMS.Application.Services
 
             if (vm.Authors.All(x => x.Name != _userService.GetName()))
             {
-                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName(), await _userService.GetEmailAsync(cancellationToken)));
+                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), vm.Id,  _userService.GetName(), await _userService.GetEmailAsync(cancellationToken)));
             }
 
             return vm;
@@ -78,7 +78,7 @@ namespace SPMS.Application.Services
 
             if (vm.Authors.All(x => x.Name != _userService.GetName()))
             {
-                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), _userService.GetName(), await _userService.GetEmailAsync(cancellationToken)));
+                vm.Authors.Add(new AuthorViewModel(_userService.GetId(), vm.Id, _userService.GetName(), await _userService.GetEmailAsync(cancellationToken)));
             }
 
             return vm;

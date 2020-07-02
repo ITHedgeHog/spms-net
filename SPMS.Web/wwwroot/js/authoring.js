@@ -4,6 +4,11 @@
     },
     element: $("#Content")[0]
 });
+$(function() {
+    $('#datetimepicker1').datetimepicker({
+        inline: true
+    });
+});
 
 simplemde.codemirror.on("keyup", function () {
     change();
@@ -18,14 +23,14 @@ simplemde.codemirror.on("click", function (stuff) {
 });
 
 function getChannel() {
-    return  "authoring-" + $("#Id").val();
+    return "authoring-" + $("#Id").val();
 }
 
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/authoringHub")
     .build();
-connection.start().then(function() {
-    connection.invoke("JoinGroup", getChannel()).catch((err) => { console.error(err)});
+connection.start().then(function () {
+    connection.invoke("JoinGroup", getChannel()).catch((err) => { console.error(err) });
 }).catch(function (err) { console.error(err) });
 
 connection.on("ReceiveText", (text) => {
@@ -49,12 +54,12 @@ connection.on("RemovePlayer",
     });
 
 connection.on("disconnected",
-    function() {
-        setTimeout(function() {
-                connection.start().then(function() {
-                    connection.invoke("JoinGroup", getChannel()).catch((err) => { console.error(err) });
-                }).catch(function(err) { console.error(err) });
-            },
+    function () {
+        setTimeout(function () {
+            connection.start().then(function () {
+                connection.invoke("JoinGroup", getChannel()).catch((err) => { console.error(err) });
+            }).catch(function (err) { console.error(err) });
+        },
             5000);
     }); // Restart connection after 5 seconds.
 
@@ -67,7 +72,7 @@ function autoSave() {
     if (elements.length > 0) {
         $('#saving').toggleClass('d-none');
         var data = elements.serialize() + encodeURI('&Content=' + simplemde.value());
-       
+
         $.post('/player/author/post/autosave', data, function (value) {
             $('#lastSave').removeClass('d-none');
             var today = new Date();
