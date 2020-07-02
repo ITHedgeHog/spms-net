@@ -27,12 +27,9 @@ namespace SPMS.Application.System.Commands
 
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
-            //if (await _db.Player.AnyAsync(cancellationToken))
-            //{
-            //    return;
-            //}
-
             await SeedPlayerRoleAsync(_db, cancellationToken);
+            await SeedBiographyStatus(_db, cancellationToken);
+            await SeedBiographyState(_db, cancellationToken);
 
             SeedDefaults(_db);
             SeedBtd(_db);
@@ -62,6 +59,22 @@ namespace SPMS.Application.System.Commands
 
             await db.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task SeedBiographyState(ISpmsContext db, CancellationToken cancellationToken)
+        {
+            // Biography Status
+            if (!db.BiographyState.Any(n => n.Name == StaticValues.Draft))
+                await db.BiographyState.AddAsync(new BiographyState() { Name = StaticValues.Draft }, cancellationToken);
+            if (!db.BiographyState.Any(n => n.Name == StaticValues.Pending))
+                await db.BiographyState.AddAsync(new BiographyState() { Name = StaticValues.Pending }, cancellationToken);
+            if (!db.BiographyState.Any(n => n.Name == StaticValues.Published))
+                await db.BiographyState.AddAsync(new BiographyState() { Name = StaticValues.Published }, cancellationToken);
+            if (!db.BiographyState.Any(n => n.Name == StaticValues.Archived))
+                await db.BiographyState.AddAsync(new BiographyState() { Name = StaticValues.Archived }, cancellationToken);
+
+            await db.SaveChangesAsync(cancellationToken);
+        }
+
         public async Task SeedBeyondTheDarknessAsync(ISpmsContext db, CancellationToken cancellationToken)
         {
             var btdGame = new Game() { Name = StaticValues.DefaultGameName, Description = "BtD Simulation", SiteTitle = "Beyond the Darkness a Star Trek RPG", Disclaimer = "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>", SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
@@ -121,7 +134,7 @@ namespace SPMS.Application.System.Commands
 
             // Character
             if (!await db.Biography.AnyAsync(b => b.Firstname == "Marcus" && b.Surname == "Brightstar", cancellationToken: cancellationToken))
-                await db.Biography.AddAsync(new Biography()
+                await db.Biography.AddAsync(new Domain.Models.Biography()
                 {
                     Firstname = "Marcus",
                     Surname = "Brightstar",
@@ -132,10 +145,11 @@ namespace SPMS.Application.System.Commands
                     Rank = "Captain",
                     DateOfBirth = "Sometime in 2351",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                    StatusId = 3
+                    StateId = 3,
+                    StatusId = 1
                 }, cancellationToken);
             if (!db.Biography.Any(b => b.Firstname == "Jessica" && b.Surname == "Darkly"))
-                await db.Biography.AddAsync(new Biography()
+                await db.Biography.AddAsync(new Domain.Models.Biography()
                 {
                     Firstname = "Jessica",
                     Surname = "Darkly",
@@ -146,10 +160,11 @@ namespace SPMS.Application.System.Commands
                     Rank = "Admiral",
                     DateOfBirth = "Sometime in 2332",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                    StatusId = 3
+                    StateId = 3,
+                    StatusId = 1
                 }, cancellationToken);
             if (!db.Biography.Any(b => b.Firstname == "Nigel" && b.Surname == "Adisa"))
-                await db.Biography.AddAsync(new Biography()
+                await db.Biography.AddAsync(new Domain.Models.Biography()
                 {
                     Firstname = "Nigel",
                     Surname = "Adisa",
@@ -160,7 +175,8 @@ namespace SPMS.Application.System.Commands
                     Rank = "Lieutenant",
                     DateOfBirth = "",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                    StatusId = 3,
+                    StateId = 3,
+                    StatusId = 1,
                     History = @"A black male of African/British decent, 6'0 in height and weighing in at 196 pounds. He has short cropped black hair and usually wears a short beard.
 
 General Overview		Doctor Adisa, a specialist in neurology possesses a seemingly easygoing manner which he generally uses to mask his borderline OCD issues. He is very witty however his humor can sometimes become overly Sharp. His hobbies include playing various jazz instruments, long distance running, chess, and baking.
@@ -175,7 +191,7 @@ He enrolled in Starfleet directly after graduating the University against his fa
                 }, cancellationToken);
 
             if (!db.Biography.Any(b => b.Firstname == "Vars" && b.Surname == "Qiratt"))
-                await db.Biography.AddAsync(new Biography()
+                await db.Biography.AddAsync(new Domain.Models.Biography()
                 {
                     Firstname = "Vars",
                     Surname = "Qiratt",
@@ -187,7 +203,8 @@ He enrolled in Starfleet directly after graduating the University against his fa
                     Rank = "Lieutenant Commander",
                     DateOfBirth = "",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                    StatusId = 3,
+                    StateId = 3,
+                    StatusId = 1,
                     History = @"Vars is best described as carrying extra weight. A rotund Bolian Male with puffy facial features and a noticeable double chin. His height is on the slightly shorter side, coming in at around 5'9&quot;.
 Vars is a vibrant individual living up to the term, 'Jolly Fat Man'.He has a distinctive laugh that can be considered quite obnoxious, not helped by his flavorful personality.Wearing his emotions like a badge on his sleeve,
 Vars rarely shy's away from expressing his opinion. To the same extent, a withdrawn Vars is often the sign of an insecurity or fear.
@@ -240,15 +257,7 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
         public static void SeedDefaults(ISpmsContext context)
         {
             
-            // Biography Status
-            if (!context.BiographyState.Any(n => n.Name == StaticValues.Draft))
-                context.BiographyState.Add(new BiographyState() { Name = StaticValues.Draft });
-            if (!context.BiographyState.Any(n => n.Name == StaticValues.Pending))
-                context.BiographyState.Add(new BiographyState() { Name = StaticValues.Pending });
-            if (!context.BiographyState.Any(n => n.Name == StaticValues.Published))
-                context.BiographyState.Add(new BiographyState() { Name = StaticValues.Published });
-            if (!context.BiographyState.Any(n => n.Name == StaticValues.Archived))
-                context.BiographyState.Add(new BiographyState() { Name = StaticValues.Archived });
+            
 
             // Episode Status
             if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Draft))

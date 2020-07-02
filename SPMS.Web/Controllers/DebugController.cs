@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SPMS.Application.ViewModels;
 
 namespace SPMS.Web.Controllers
 {
@@ -13,7 +12,7 @@ namespace SPMS.Web.Controllers
     {
         public IActionResult Index()
         {
-            var vm = new ViewModel();
+            var vm = new Common.ViewModels.ViewModel();
             return View(vm);
         }
     }

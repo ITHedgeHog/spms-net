@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SPMS.Application.ViewModels;
+﻿using SPMS.Common.ViewModels;
 
-namespace SPMS.Web.Areas.player.ViewModels
+namespace SPMS.Application.Dtos
 {
 
-    public class PlayerDashboardViewModel : ViewModel
+    public class PlayerDashboardViewModel : SPMS.Common.ViewModels.ViewModel
     {
         public PlayerDashboardViewModel() : base()
         {

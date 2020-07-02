@@ -5,7 +5,7 @@ using SPMS.Common;
 using SPMS.Domain.Models;
 using SPMS.Persistence.PostgreSQL;
 
-namespace SPMS.Test.Common
+namespace SPMS.Application.Tests.Common
 {
     public class SpmsContextFactory
     {

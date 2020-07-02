@@ -1,4 +1,4 @@
-﻿@model SPMS.Application.ViewModels.ViewModel
+﻿@model SPMS.Common.ViewModels.ViewModel
 <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
     <div class="container">
         <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
@@ -20,7 +20,10 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item text-dark" asp-area="" asp-controller="Story" asp-action="Sofar">The Story So Far</a>
                         <a class="dropdown-item text-dark" asp-area="" asp-controller="Biography" asp-action="Index">Dramatis Personae</a>
-                        <a class="dropdown-item text-dark" asp-area="" asp-controller="Registry" asp-action="Index">Starship Registry</a>
+                       
+                        <feature name="Registry">
+                            <a class="dropdown-item text-dark" asp-area="" asp-controller="Registry" asp-action="Index">Starship Registry</a>
+                        </feature>
                     </div>
                 </li>
 

@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using AutoMapper;
-using SPMS.Application.ViewModels;
-using SPMS.Application.ViewModels.Biography;
+using SPMS.Application.Dtos;
 using SPMS.Domain.Models;
 
 namespace SPMS.Application.Common.Mappings
@@ -20,14 +19,7 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(p=>p.EpisodeEntries, o => o.Ignore())
                 .ForMember(x => x.Connections, o=>o.Ignore())
                 .ForMember(x=>x.Email, o=>o.Ignore());
-            CreateMap<CreateBiographyViewModel, Biography>()
-                .ForMember(x=>x.State, opt => opt.Ignore())
-                .ForMember(x => x.Player, opt=>opt.Ignore())
-                .ForMember(x=>x.Posting, opt => opt.Ignore());
-            CreateMap<EditBiographyViewModel, Biography>()
-                .ForMember(x => x.State, opt => opt.Ignore())
-                .ForMember(x => x.Player, opt => opt.Ignore())
-                .ForMember(x => x.Posting, opt => opt.Ignore());
+            
 
 
         }

@@ -8,10 +8,10 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.ViewModels.Authoring;
+using SPMS.Application.Dtos;
+using SPMS.Application.Dtos.Authoring;
 using SPMS.Common;
 using SPMS.Domain.Models;
-using SPMS.Web.Areas.player.ViewModels;
 
 
 namespace SPMS.Application.Services

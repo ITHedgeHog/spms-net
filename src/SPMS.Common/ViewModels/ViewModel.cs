@@ -1,4 +1,4 @@
-﻿namespace SPMS.Application.ViewModels
+﻿namespace SPMS.Common.ViewModels
 {
     public class ViewModel
     {
@@ -9,7 +9,7 @@
         }
 
         public string gravatar { get; set; }
-        
+
         public bool IsReadOnly { get; set; }
 
         public string SiteTitle { get; set; }

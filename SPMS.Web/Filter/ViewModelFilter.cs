@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Services;
-using SPMS.Application.ViewModels;
 using SPMS.Web.Service;
 
 namespace SPMS.Web.Filter
@@ -38,7 +37,7 @@ namespace SPMS.Web.Filter
             // Do something after the action executes.
             if (resultContext.Controller is Controller controller)
             {
-                if (controller.ViewData.Model is ViewModel model)
+                if (controller.ViewData.Model is Common.ViewModels.ViewModel model)
                 {
                     model.GameName = await _gameService.GetGameNameAsync();
                     model.SiteTitle = await _gameService.GetSiteTitleAsync();

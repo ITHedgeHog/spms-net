@@ -20,8 +20,11 @@
         public string Rank { get; set; }
         public string RankImage { get; set; }
 
-        public int StatusId { get; set; }
+        public int StateId { get; set; }
         public BiographyState State { get; set; }
+
+        public int StatusId { get; set; }
+        public BiographyStatus Status { get; set; }
 
         public int PostingId { get; set; }
         public Posting Posting { get; set; }

@@ -5,7 +5,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.ViewModels.Story;
+using SPMS.Application.Dtos.Story;
 using SPMS.Common;
 
 namespace SPMS.Application.Services

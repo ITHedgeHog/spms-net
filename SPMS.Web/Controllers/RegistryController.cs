@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using SPMS.Application.ViewModels;
+using Microsoft.FeatureManagement.Mvc;
+using SPMS.Common;
 
 namespace SPMS.Web.Controllers
 {
+    [FeatureGate(FeatureFlags.Registry)]
     public class RegistryController : Controller
     {
         public IActionResult Index()
         {
-            var vm = new ViewModel();
+            var vm = new Common.ViewModels.ViewModel();
             return View(vm);
         }
     }

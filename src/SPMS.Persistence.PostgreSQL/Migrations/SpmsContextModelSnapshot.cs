@@ -75,7 +75,7 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                     b.Property<string>("Species")
                         .HasColumnType("text");
 
-                    b.Property<int?>("StateId")
+                    b.Property<int>("StateId")
                         .HasColumnType("integer");
 
                     b.Property<int>("StatusId")
@@ -94,6 +94,8 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                     b.HasIndex("PostingId");
 
                     b.HasIndex("StateId");
+
+                    b.HasIndex("StatusId");
 
                     b.ToTable("Biography");
                 });
@@ -302,6 +304,9 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<byte[]>("GameKey")
+                        .HasColumnType("bytea");
+
                     b.Property<bool>("IsReadonly")
                         .HasColumnType("boolean");
 
@@ -470,7 +475,15 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
 
                     b.HasOne("SPMS.Domain.Models.BiographyState", "State")
                         .WithMany()
-                        .HasForeignKey("StateId");
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SPMS.Domain.Models.BiographyStatus", "Status")
+                        .WithMany()
+                        .HasForeignKey("StatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.Episode", b =>

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using SPMS.Application.ViewModels.Story;
+using SPMS.Application.Dtos.Story;
 
-namespace SPMS.Application.ViewModels
+namespace SPMS.Application.Dtos
 {
-    public class MyCharactersViewModel : ViewModel
+    public class MyCharactersViewModel : SPMS.Common.ViewModels.ViewModel
     {
         public MyCharactersViewModel()
         {
@@ -17,7 +17,7 @@ namespace SPMS.Application.ViewModels
     }
 
 
-    public class MyWritingViewModel : ViewModel
+    public class MyWritingViewModel : SPMS.Common.ViewModels.ViewModel
     {
         public MyWritingViewModel()
         {

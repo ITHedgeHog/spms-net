@@ -14,5 +14,6 @@ namespace SPMS.Domain.Models
         public string Disclaimer { get; set; }
         public bool IsReadonly { get; set; }
         public string SiteAnalytics { get; set; }
+        public byte[] GameKey { get; set; }
     }
 }

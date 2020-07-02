@@ -8,7 +8,7 @@ namespace SPMS.Application.Common.Interfaces
 {
     public interface ISpmsContext
     {
-        DbSet<Biography> Biography { get; set; }
+        DbSet<Domain.Models.Biography> Biography { get; set; }
         DbSet<BiographyState> BiographyState { get; set; }
         DbSet<BiographyStatus> BiographyStatus { get; set; }
         DbSet<Game> Game { get; set; }

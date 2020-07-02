@@ -1,6 +1,6 @@
-﻿namespace SPMS.Application.ViewModels.Biography
+﻿namespace SPMS.ViewModel
 {
-    public class BiographyViewModel : ViewModel
+    public class BiographyViewModel : Common.ViewModels.ViewModel
     {
         public int Id { get; set; }
         public string Firstname { get; set; }

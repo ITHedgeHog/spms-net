@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SPMS.Application.ViewModels;
 
 namespace SPMS.Web.Areas.player.Controllers
 {
@@ -12,7 +11,7 @@ namespace SPMS.Web.Areas.player.Controllers
         [HttpGet("player/dashboard")]
         public IActionResult Index()
         {
-            var vm = new ViewModel();
+            var vm = new Common.ViewModels.ViewModel();
             return View(vm);
         }
     }

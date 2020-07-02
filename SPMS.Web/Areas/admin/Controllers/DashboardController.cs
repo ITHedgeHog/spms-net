@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using SPMS.Application.ViewModels;
 
 namespace SPMS.Web.Areas.admin.Controllers
 {
@@ -14,7 +13,7 @@ namespace SPMS.Web.Areas.admin.Controllers
         // GET: DashboardController
         public ActionResult Index()
         {
-            var vm = new ViewModel();
+            var vm = new Common.ViewModels.ViewModel();
             return View(vm);
         }
 
