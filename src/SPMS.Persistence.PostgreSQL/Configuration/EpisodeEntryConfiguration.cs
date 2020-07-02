@@ -11,11 +11,11 @@ namespace SPMS.Persistence.PostgreSQL.Configuration
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id).UseIdentityColumn().HasColumnName("Id");
 
-            builder.Property(x => x.Title).IsRequired(true).HasMaxLength(255);
-            builder.Property(x => x.Location).IsRequired(true).HasMaxLength(255);
-            builder.Property(x => x.Timeline).IsRequired(true).HasMaxLength(255);
+            builder.Property(x => x.Title).IsRequired(false).HasMaxLength(255);
+            builder.Property(x => x.Location).IsRequired(false).HasMaxLength(255);
+            builder.Property(x => x.Timeline).IsRequired(false).HasMaxLength(255);
 
-            builder.Property(x => x.Content).IsRequired(true);
+            builder.Property(x => x.Content).IsRequired(false);
         }
     }
 }

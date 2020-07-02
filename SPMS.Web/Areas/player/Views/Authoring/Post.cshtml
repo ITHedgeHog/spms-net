@@ -192,8 +192,7 @@
             if (elements.length > 0) {
                 $('#saving').toggleClass('d-none');
                 var data = elements.serialize() + encodeURI('&Content=' + simplemde.value());
-                $.post('/player/author/post/autosave', data, function (data) {
-                    $('#Id').val(data);
+                $.post('/player/author/post/autosave', data, function (value) {
                     $('#lastSave').removeClass('d-none');
                     //alert('data saved successfully');
                     var today = new Date();

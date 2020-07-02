@@ -135,11 +135,12 @@ namespace SPMS.Web.Controllers
         }
 
         [HttpPost("player/author/post/autosave")]
-        public async Task<IActionResult> ProcessAutoSave(AuthorPostViewModel model, CancellationToken token)
+        public async Task<IActionResult> ProcessAutoSave(AuthorPostDraftViewModel model, CancellationToken token)
         {
             if (ModelState.IsValid)
             {
-                model.Id = await _authoringService.SavePostAsync(model, token);
+                var dto = _mapper.Map<AuthorPostViewModel>(model);
+                model.Id = await _authoringService.SavePostAsync(dto, token);
             }
             return Ok(model.Id);
         }
