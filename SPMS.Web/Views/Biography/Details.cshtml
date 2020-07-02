@@ -1,4 +1,4 @@
-﻿@model SPMS.Application.ViewModels.Biography.BiographyDto
+﻿@model SPMS.ViewModel.BiographyViewModel
 
 @{
     ViewData["Title"] = $"Biography for {Model.Firstname} {Model.Surname}";
@@ -22,7 +22,7 @@
                 </tr>
                 <tr>
                     <td colspan="2" class="issn style1" style="background-color: #10100F; text-align: center; font-size: larger; color: #cccccc;">
-                        <img alt="@Model.Firstname @Model.Surname Avatar" src="https://placehold.it/200x250" width="200" height="250">
+                        <img src="~/img/default-avatar.png" alt="@Model.Firstname @Model.Surname Avatar" width="200" height="250"/>
                     </td>
                 </tr>
                 <tr>

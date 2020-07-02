@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using SPMS.Common.ViewModels;
 
-namespace SPMS.Application.ViewModels.Biography
+namespace SPMS.Application.Dtos
 {
-    public class CreateBiographyViewModel : ViewModel
+    public class CreateBiographyViewModel : SPMS.Common.ViewModels.ViewModel
     {
         public CreateBiographyViewModel()
         {
@@ -54,7 +53,7 @@ namespace SPMS.Application.ViewModels.Biography
         public string Name { get; set; }
     }
 
-    public class EditBiographyViewModel : ViewModel
+    public class EditBiographyViewModel : SPMS.Common.ViewModels.ViewModel
     {
         public int Id { get; set; }
         public string Firstname { get; set; }

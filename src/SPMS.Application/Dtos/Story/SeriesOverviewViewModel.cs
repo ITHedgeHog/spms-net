@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using SPMS.Application.ViewModels.Authoring;
+using SPMS.Application.Dtos.Authoring;
 using SPMS.Common.ViewModels;
 
-namespace SPMS.Application.ViewModels.Story
+namespace SPMS.Application.Dtos.Story
 {
-    public class SeriesOverviewViewModel : ViewModel
+    public class SeriesOverviewViewModel : SPMS.Common.ViewModels.ViewModel
     {
         public SeriesOverviewViewModel()
         {

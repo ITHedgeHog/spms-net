@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.FeatureManagement.Mvc;
-using SPMS.Application.ViewModels;
 using SPMS.Common;
 
 namespace SPMS.Web.Controllers

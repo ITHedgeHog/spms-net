@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SPMS.Application.ViewModels;
+﻿using System.Collections.Generic;
 using SPMS.Common.ViewModels;
 
-namespace SPMS.Web.Areas.Admin.ViewModels
+namespace SPMS.Application.Dtos
 {
-    public class PlayerEditViewModel : ViewModel
+    public class PlayerEditViewModel : SPMS.Common.ViewModels.ViewModel
     {
         public int Id { get; set; }
 

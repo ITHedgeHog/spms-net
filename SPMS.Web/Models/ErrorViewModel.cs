@@ -1,5 +1,4 @@
 using System;
-using SPMS.Application.ViewModels;
 
 namespace SPMS.Web.Models
 {

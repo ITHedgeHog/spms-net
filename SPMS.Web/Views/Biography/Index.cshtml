@@ -1,7 +1,8 @@
-﻿@model SPMS.Application.ViewModels.BiographiesDto
-
+﻿@model SPMS.Application.Dtos.BiographiesDto
+@inject IIdentifierMask Masker;
 @{
     ViewData["Title"] = "Dramatis Personae";
+
 }
 
 <div class="container">
@@ -18,13 +19,13 @@
                 {
                     <div class="col-md-3 mb-4">
                         <div class="card">
-                            <a asp-action="Details" asp-route-id="@item.Id" title="@item.Firstname @item.Surname">
+                            <a asp-action="Details" asp-route-id="@Masker.HideId(item.Id)" title="@item.Firstname @item.Surname">
                                 <img alt="@item.Firstname @item.Surname" src="~/img/default-avatar.png" class="card-img-top bg-dark">
                             </a>
                             <div class="card-body">
                                 <h5 class="card-title">@Html.DisplayFor(m => item.Firstname) @Html.DisplayFor(m => item.Surname)</h5>
-                                <p class="card-text">@Html.DisplayFor(m => item.Posting.Name)</p>
-                                <a asp-action="Details" asp-route-id="@item.Id" title="@item.Firstname @item.Surname" class="btn btn-primary">View Biography</a>
+                                <p class="card-text">@Html.DisplayFor(m => item.Posting)</p>
+                                <a asp-action="Details" asp-route-id="@Masker.HideId(item.Id)" title="@item.Firstname @item.Surname" class="btn btn-primary">View Biography</a>
                             </div>
                         </div>
                     </div>

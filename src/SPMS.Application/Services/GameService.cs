@@ -1,9 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Common;
 using SPMS.Domain.Models;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SPMS.Application.Services
 {
@@ -62,6 +64,21 @@ namespace SPMS.Application.Services
             return (await GetGameAsync()).SiteAnalytics;
         }
 
+        public byte[] GetGameKey(byte[] generateKey)
+        {
+            var game = GetGameAsync().Result;
+
+            if (game.GameKey == null || game.GameKey.Length == 0)
+            {
+                game.GameKey = generateKey;
+                _context.Game.Update(game);
+                _context.SaveChanges();
+                return generateKey;
+            }
+
+            return game.GameKey;
+        }
+
         public async Task<int> GetGameIdAsync()
         {
             return (await GetGameAsync()).Id;
@@ -76,5 +93,6 @@ namespace SPMS.Application.Services
         Task<string> GetSiteDisclaimerAsync();
         Task<bool> GetReadonlyStatusAsync();
         Task<string> GetAnalyticsAsyncTask();
+        byte[] GetGameKey(byte[] generateKey);
     }
 }

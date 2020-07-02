@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using AutoMapper;
-using SPMS.Application.ViewModels;
-using SPMS.Application.ViewModels.Biography;
+using SPMS.Application.Dtos;
 using SPMS.Domain.Models;
 
 namespace SPMS.Application.Common.Mappings

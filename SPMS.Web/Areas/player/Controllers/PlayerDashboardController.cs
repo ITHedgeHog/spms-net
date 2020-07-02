@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SPMS.Application.ViewModels;
 
 namespace SPMS.Web.Areas.player.Controllers
 {

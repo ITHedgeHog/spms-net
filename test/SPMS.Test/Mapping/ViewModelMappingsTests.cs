@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using SPMS.Application.Common.Mappings;
-using SPMS.Web.Mapping;
 using Xunit;
 
 namespace SPMS.Application.Tests.Mapping
@@ -20,7 +16,7 @@ namespace SPMS.Application.Tests.Mapping
             _mapper = fixture.Mapper;
         }
 
-        [Fact()]
+        [Fact(DisplayName = "SPMS.Web ViewModels Mapper is valid")]
         public void ShouldHaveValidConfiguration()
         {
             _mapper.ConfigurationProvider.AssertConfigurationIsValid();
@@ -33,7 +29,7 @@ namespace SPMS.Application.Tests.Mapping
         {
             ConfigurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<ViewModelMappingProfile>();
+                cfg.AddProfile<WebMapping>();
 
             });
 

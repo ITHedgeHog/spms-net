@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Services;
-using SPMS.Application.ViewModels;
 using SPMS.Web.Service;
 
 namespace SPMS.Web.Filter

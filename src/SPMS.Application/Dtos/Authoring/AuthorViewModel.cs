@@ -1,4 +1,4 @@
-﻿namespace SPMS.Application.ViewModels.Authoring
+﻿namespace SPMS.Application.Dtos.Authoring
 {
     public class AuthorViewModel
     {

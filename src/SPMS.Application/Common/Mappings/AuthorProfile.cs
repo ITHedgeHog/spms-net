@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using AutoMapper;
-using SPMS.Application.ViewModels.Authoring;
-using SPMS.Application.ViewModels.Story;
+using SPMS.Application.Dtos;
+using SPMS.Application.Dtos.Authoring;
+using SPMS.Application.Dtos.Story;
 using SPMS.Domain.Models;
-using SPMS.Web.Areas.player.ViewModels;
 
 namespace SPMS.Application.Common.Mappings
 {

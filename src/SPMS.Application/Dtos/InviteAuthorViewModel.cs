@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SPMS.Application.ViewModels;
-using SPMS.Application.ViewModels.Authoring;
-using SPMS.Common.ViewModels;
+﻿using System.Collections.Generic;
+using SPMS.Application.Dtos.Authoring;
 
-namespace SPMS.Web.Areas.player.ViewModels
+namespace SPMS.Application.Dtos
 {
-    public class InviteAuthorViewModel : ViewModel
+    public class InviteAuthorViewModel : SPMS.Common.ViewModels.ViewModel
     {
         public InviteAuthorViewModel()
         {

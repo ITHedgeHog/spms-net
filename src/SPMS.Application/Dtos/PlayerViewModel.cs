@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SPMS.Application.ViewModels.Biography
+namespace SPMS.Application.Dtos
 {
     public class PlayerViewModel
     {
