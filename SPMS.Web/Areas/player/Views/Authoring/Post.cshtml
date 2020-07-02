@@ -185,25 +185,6 @@
 
     <script type="text/javascript" language="javascript">
 
-        //var simplemde;
-        //jQuery.fn.extend({
-        //    autoHeight: function () {
-        //        function autoHeight_(element) {
-        //            return jQuery(element).css({
-        //                'height': 'auto',
-        //                'overflow-y': 'hidden'
-        //            }).height(element.scrollHeight);
-        //        }
-        //        return this.each(function () {
-        //            autoHeight_(this).on('input', function () {
-        //                autoHeight_(this);
-        //            });
-        //        });
-        //    }
-        //});
-        //$('#Content').autoHeight();
-
-
 
         window.setInterval(function () {
             var elements = $('#authorpost').find('[data-autosave=true]').add('[form=authorpost][data-autosave=true]');
@@ -211,10 +192,8 @@
             if (elements.length > 0) {
                 $('#saving').toggleClass('d-none');
                 var data = elements.serialize() + encodeURI('&Content=' + simplemde.value());
-                console.log(data);
                 $.post('/player/author/post/autosave', data, function (data) {
                     $('#Id').val(data);
-                    dirtyElements.attr('data-dirty', false);
                     $('#lastSave').removeClass('d-none');
                     //alert('data saved successfully');
                     var today = new Date();
