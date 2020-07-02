@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Dtos;
@@ -22,13 +24,15 @@ namespace SPMS.Application.Services
         private readonly IUserService _userService;
         private readonly IGameService _gameService;
         private readonly IMapper _mapper;
+        private TelemetryClient _telemetry;
 
-        public AuthoringService(ISpmsContext context, IMapper mapper, IGameService gameService, IUserService userService)
+        public AuthoringService(ISpmsContext context, IMapper mapper, IGameService gameService, IUserService userService, TelemetryClient telemetry)
         {
             _context = context;
             _mapper = mapper;
             _gameService = gameService;
             _userService = userService;
+            _telemetry = telemetry;
         }
 
         public async Task<AuthorPostViewModel> GetPost(int id, CancellationToken cancellationToken)
@@ -108,41 +112,57 @@ namespace SPMS.Application.Services
 
         public async Task<int> SavePostAsync(AuthorPostViewModel model, CancellationToken cancellationToken)
         {
-            if (_context.EpisodeEntry.Any(x => x.Id == model.Id))
+            using (var operation = _telemetry.StartOperation<RequestTelemetry>("SavePostAsync"))
             {
-                var entity = await _context.EpisodeEntry.Include(e => e.EpisodeEntryPlayer).Include(e => e.EpisodeEntryStatus).Include(e => e.EpisodeEntryType).FirstOrDefaultAsync(e => e.Id == model.Id);
-                _mapper.Map(model, entity);
-                //entity.UpdatedAt = DateTime.UtcNow;
-                HandleSubmit(entity, model);
-                await _context.SaveChangesAsync(cancellationToken);
-            }
-            else
-            {
-               
-                var pId = _userService.GetId();
-                if (model.Authors.All(x => x.Id != pId))
-                    model.Authors.Add(new AuthorViewModel(pId, _userService.GetName(), await _userService.GetEmailAsync(cancellationToken)));
+                _telemetry.TrackTrace("Checking what to do with id " +model.Id);
 
-                var entity = _mapper.Map<EpisodeEntry>(model);
-               // entity.CreatedAt = DateTime.UtcNow;
-               // entity.UpdatedAt = DateTime.UtcNow;
-                HandleSubmit(entity, model);
-
-                if (entity.EpisodeEntryTypeId == 0)
+                if (_context.EpisodeEntry.Any(x => x.Id == model.Id))
                 {
-                    entity.EpisodeEntryTypeId =
-                        _context.EpisodeEntryType.First(x => x.Name == StaticValues.Post).Id;
+                    try
+                    {
+
+                        var entity = await _context.EpisodeEntry.Include(e => e.EpisodeEntryPlayer)
+                            .Include(e => e.EpisodeEntryStatus).Include(e => e.EpisodeEntryType)
+                            .FirstOrDefaultAsync(e => e.Id == model.Id, cancellationToken: cancellationToken);
+                        _mapper.Map(model, entity);
+                        //entity.UpdatedAt = DateTime.UtcNow;
+                        HandleSubmit(entity, model);
+                        await _context.SaveChangesAsync(cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        _telemetry.TrackException(ex);
+                    }
                 }
-                
+                else
+                {
 
-                await _context.EpisodeEntry.AddAsync(entity, cancellationToken);
-                await _context.SaveChangesAsync(cancellationToken);
-               
+                    var pId = _userService.GetId();
+                    if (model.Authors.All(x => x.Id != pId))
+                        model.Authors.Add(new AuthorViewModel(pId, _userService.GetName(),
+                            await _userService.GetEmailAsync(cancellationToken)));
 
-                model.Id = entity.Id;
+                    var entity = _mapper.Map<EpisodeEntry>(model);
+                    // entity.CreatedAt = DateTime.UtcNow;
+                    // entity.UpdatedAt = DateTime.UtcNow;
+                    HandleSubmit(entity, model);
+
+                    if (entity.EpisodeEntryTypeId == 0)
+                    {
+                        entity.EpisodeEntryTypeId =
+                            _context.EpisodeEntryType.First(x => x.Name == StaticValues.Post).Id;
+                    }
+
+
+                    await _context.EpisodeEntry.AddAsync(entity, cancellationToken);
+                    await _context.SaveChangesAsync(cancellationToken);
+
+
+                    model.Id = entity.Id;
+                }
+
+                //TODO: Notify authors if this is draft update, or if status is changed.
             }
-
-            //TODO: Notify authors if this is draft update, or if status is changed.
 
             return model.Id;
         }

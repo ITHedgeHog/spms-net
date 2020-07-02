@@ -12,6 +12,9 @@ namespace SPMS.Application.Common.Mappings
     {
         public AuthorProfile()
         {
+
+            CreateMap<AuthorPostDraftViewModel, AuthorPostViewModel>();
+
             CreateMap<EpisodeEntry, AuthorPostViewModel>()
                 .ForMember(x => x.IsReadOnly, opt => opt.Ignore())
                 .ForMember(x => x.SiteDisclaimer, opt => opt.Ignore())

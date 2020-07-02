@@ -68,8 +68,7 @@ function autoSave() {
         $('#saving').toggleClass('d-none');
         var data = elements.serialize() + encodeURI('&Content=' + simplemde.value());
        
-        $.post('/player/author/post/autosave', data, function (data) {
-            $('#Id').val(data);
+        $.post('/player/author/post/autosave', data, function (value) {
             $('#lastSave').removeClass('d-none');
             var today = new Date();
             var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();

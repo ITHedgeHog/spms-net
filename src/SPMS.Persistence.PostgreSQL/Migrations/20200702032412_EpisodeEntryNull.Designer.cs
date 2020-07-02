@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SPMS.Persistence.PostgreSQL;
@@ -9,9 +10,10 @@ using SPMS.Persistence.PostgreSQL;
 namespace SPMS.Persistence.PostgreSQL.Migrations
 {
     [DbContext(typeof(SpmsContext))]
-    partial class SpmsContextModelSnapshot : ModelSnapshot
+    [Migration("20200702032412_EpisodeEntryNull")]
+    partial class EpisodeEntryNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -201,6 +203,7 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Timeline")
+                        .IsRequired()
                         .HasColumnType("character varying(255)")
                         .HasMaxLength(255);
 
