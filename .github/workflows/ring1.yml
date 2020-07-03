@@ -35,12 +35,6 @@ jobs:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
       - name: Save DigitalOcean kubeconfig
         run: doctl kubernetes cluster kubeconfig save spms-cluster
-      - name: Docker Build
-        run: docker build --build-arg COMMIT=$(echo $GITHUB_SHA) --build-arg BRANCH=$(echo $GITHUB_BRANCH) -t registry.digitalocean.com/agile-h/spms:$(echo $GITHUB_SHA | head -c7) spms/. -f spms/SPMS.Web/Dockerfile
-      - name: Log in to DigitalOcean Container Registry with short-lived credentials
-        run: doctl registry login --expiry-seconds 600
-      - name: Push image to DigitalOcean Container Registry
-        run: docker push  registry.digitalocean.com/agile-h/spms:$(echo $GITHUB_SHA | head -c7)
       - name: Update deployment file image
         run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/agile-h/spms:'${TAG}'|' $GITHUB_WORKSPACE/hosting/config/deployment1/deployment.yml
       - name: Update deployment file COMMIT_BRANCH
