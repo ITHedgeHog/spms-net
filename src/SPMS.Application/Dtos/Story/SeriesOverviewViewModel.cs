@@ -54,7 +54,7 @@ namespace SPMS.Application.Dtos.Story
         public string Timeline { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
-        public DateTime PublishedAt { get; set; }
+        public DateTime? PublishedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string LastAuthor { get; set; }
         public List<AuthorViewModel> Authors { get; set; }

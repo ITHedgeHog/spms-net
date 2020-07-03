@@ -57,7 +57,7 @@ namespace SPMS.Application.Dtos.Authoring
         public List<SelectListItem> Statuses { get; set; }
 
         public string submitpost { get; set; }
-        public DateTime? PostAt { get; internal set; }
+        public DateTime? PostAt { get; set; }
     }
 
     public class AuthorPostDraftViewModel : SPMS.Common.ViewModels.ViewModel
