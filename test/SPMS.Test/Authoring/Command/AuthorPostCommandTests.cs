@@ -1,16 +1,13 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using MediatR;
 using Moq;
 using Shouldly;
 using SPMS.Application.Authoring.Command.CreatePost;
 using SPMS.Application.Tests.Common;
-using SPMS.Domain.Models;
 using Xunit;
-using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 
-namespace SPMS.Application.Tests.Authorings
+namespace SPMS.Application.Tests.Authoring.Command
 {
     public class AuthorPostCommandTests : CommandTestBase
     {
