@@ -59,9 +59,10 @@ namespace SPMS.Application.Common.Mappings
 
             CreateMap<EpisodeEntry, PostViewModel>()
                 .ForMember(x => x.Authors, o => o.MapFrom(x => x.EpisodeEntryPlayer.Select(y => new AuthorViewModel() { Id = y.PlayerId, Name = y.Player.DisplayName })))
-                .ForMember(x => x.LastAuthor, o => o.Ignore())
-                .ForMember(x => x.CreatedAt, o => o.Ignore())
-                .ForMember(x => x.UpdatedAt, o => o.Ignore());
+                .ForMember(x => x.LastAuthor, o => o.MapFrom(y => y.LastModifiedBy))
+                .ForMember(x => x.CreatedAt, o => o.MapFrom(y => y.Created))
+                .ForMember(x => x.UpdatedAt, o => o.MapFrom(y =>y.LastModified))
+                .ForMember(x => x.PublishedAt, o => o.MapFrom(y => y.PublishedAt));
 
             CreateMap<Player, AuthorToInviteViewModel>()
                 .ForMember(x => x.IsSelected, o => o.Ignore())

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Sources;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -13,12 +14,15 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using SPMS.Application.Authoring.Command.CreatePost;
+using SPMS.Application.Authoring.Command.PublishPost;
+using SPMS.Application.Authoring.Command.UnpublishPost;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Dtos;
 using SPMS.Application.Dtos.Authoring;
 using SPMS.Application.Services;
 using SPMS.Common;
 using SPMS.Persistence;
+using SPMS.ViewModel;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
 
@@ -171,6 +175,52 @@ namespace SPMS.Web.Controllers
             var episodeEntry = await _context.EpisodeEntry.FindAsync(id);
             _context.EpisodeEntry.Remove(episodeEntry);
             await _context.SaveChangesAsync(cancellationToken);
+            return RedirectToAction("Writing", "My");
+        }
+
+        [HttpPost("player/authoring/publish")]
+        public async Task<IActionResult> Publish(int id, CancellationToken cancellationToken)
+        {
+           var result =  await _mediator.Send(new PublishPostCommand() {Id = id}, cancellationToken);
+
+           if (result)
+           {
+               TempData["Message"] = "Post published";
+               return RedirectToAction("Writing", "My");
+           }
+
+           TempData["Message"] = "Post not published";
+           return RedirectToAction("Writing", "My");
+        }
+
+        [HttpPost("player/authoring/unpublish")]
+        public async Task<IActionResult> Unpublish(int id, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new UnpublishPostCommand() { Id = id }, cancellationToken);
+
+            if (result)
+            {
+                TempData["Message"] = "Post marked as draft";
+                return RedirectToAction("Writing", "My");
+            }
+
+            TempData["Message"] = "Post not marked as draft";
+            return RedirectToAction("Writing", "My");
+        }
+
+        [HttpPost("player/authoring/schedule")]
+        public async Task<IActionResult> Schedule(SchedulePostViewModel vm, CancellationToken cancellationToken)
+        
+        {
+            //var result = await _mediator.Send(new UnpublishPostCommand() { Id = vm.Id, PublishAt = vm.PublishAt }, cancellationToken);
+
+            //if (result)
+            //{
+            //    TempData["Message"] = "Post marked as draft";
+            //    return RedirectToAction("Writing", "My");
+            //}
+
+            TempData["Message"] = "Post not scheduled";
             return RedirectToAction("Writing", "My");
         }
     }

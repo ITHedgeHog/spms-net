@@ -31,13 +31,17 @@
 
                         @foreach (var post in Model.DraftPosts)
                         {
+                            var title = post.Title ?? "Untitled post";
+                            
                             <li class="list-group-item">
-                                <div class="float-right">
-                                    <a asp-area="player" asp-controller="Authoring" asp-action="Invite" asp-route-id="@post.Id" class="btn btn-outline-primary"><i class="fas fa-user-edit"></i>Invite authors</a>
-                                    <a asp-area="player" asp-controller="Authoring" asp-action="Delete" asp-route-id="@post.Id" class="btn btn-outline-danger"><i class="fas fa-trash-alt"></i>Delete</a>
+                                <div class="float-right btn-group-vertical">
+                                    <a asp-area="player" asp-controller="Authoring" asp-action="Invite" asp-route-id="@post.Id" class="btn btn-outline-primary"><i class="fas fa-user-edit"></i> Authors</a>
+                                    <a asp-route-id="@post.Id" class="btn btn-outline-danger"  data-toggle="modal" data-target="#schedule"><i class="fas fa-trash-alt"></i> Delete</a>
+                                    <a data-toggle="modal" data-target="#publish" class="btn btn-outline-warning"><i class="fas fa-file-export"></i> Publish</a>
+                                    
                                 </div>
                                 <div class="float-left">
-                                    <a asp-action="post" asp-controller="authoring" asp-route-id="@post.Id"><i class="fas fa-file-alt"></i> @post.Title</a><div class="small text-right">Last updated @@ <i>@post.UpdatedAt</i> by <i>@post.LastAuthor</i></div>
+                                    <a asp-action="post" asp-controller="authoring" asp-route-id="@post.Id"><i class="fas fa-file-alt"></i> @title</a><div class="small text-right">Last updated @@ <i>@post.UpdatedAt</i> by <i>@post.LastAuthor</i></div>
                                 </div>
                             </li>
                         }
@@ -49,7 +53,15 @@
                     <ul class="list-group">
                         @foreach (var post in Model.PendingPosts)
                         {
-                            <li class="list-group-item"><a asp-action="post" asp-controller="authoring" asp-id="post.Id">@post.Title</a> <div class="small text-right">scheduled for <i>datetime</i></div></li>
+                            <li class="list-group-item">
+                                <div class="float-right">
+                                    <a asp-area="player" asp-controller="Authoring" asp-action="Unpublish" asp-route-id="@post.Id" class="btn btn-outline-secondary"><i class="fas fa-file-import"></i> Unpublish</a>
+                                </div>
+                                <div class="float-left">
+                                    <a asp-action="post" asp-controller="authoring" asp-id="post.Id">@post.Title</a>
+                                    <div class="small text-right">scheduled for <i>@post.PublishedAt</i></div>
+                                </div>
+                            </li>
                         }
                     </ul>
                 </div>
@@ -59,4 +71,63 @@
 </main>
 
 
+@foreach (var post in Model.DraftPosts)
+    {
+        var publishTitle = "publishTitle" + post.Id;
+        var publishFormName = "publish" + post.Id;
+        <div class="modal fade" id="publish" tabindex="-1" role="dialog" aria-labelledby="@publishTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="@publishTitle">Publish Post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure that you want to publish this post, it will be published <i>immediately</i>.</p>
 
+                    <form asp-controller="Authoring" asp-action="Publish" asp-route-id="@post.Id" name="@publishFormName">
+                        <input type="hidden" name="Id" value="@post.Id"/>
+                        
+                        <div class="float-right">
+                            <button type="submit" class="btn btn-primary disabled" disabled="disabled">Publish Post</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
+    var scheduleTitle = "scheduleTitle" + post.Id;
+    var scheduleFormName = "schedule" + post.Id;
+    <div class="modal fade" id="schedule" tabindex="-1" role="dialog" aria-labelledby="@scheduleTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="@scheduleTitle">Schedule Post</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form asp-controller="Authoring" asp-action="Schedule" asp-route-id="@post.Id" name="@scheduleFormName">
+                        <input type="hidden" name="Id" value="@post.Id"/>
+                        
+                        <div class="float-right">
+                            <button type="submit" class="btn btn-primary disabled" disabled="disabled">Schedule Post</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+}s

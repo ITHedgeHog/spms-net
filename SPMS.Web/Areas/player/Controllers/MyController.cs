@@ -61,16 +61,26 @@ namespace SPMS.Web.Controllers
                 HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published)
             };
 
+            var tmp = _context.EpisodeEntry
+                .Include(e => e.EpisodeEntryType)
+                .Include(e => e.Episode)
+                .Include(e => e.EpisodeEntryStatus)
+                .Include(p => p.EpisodeEntryPlayer).ThenInclude(p => p.Player)
+                .Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Pending).ToList();
+
             var owner = _userService.GetAuthId();
             vm.DraftPosts = _context.EpisodeEntry
                 .Include(e => e.EpisodeEntryType)
                 .Include(e => e.Episode)
                 .Include(p => p.EpisodeEntryPlayer).ThenInclude(p=>p.Player)
+                .Include(e => e.EpisodeEntryStatus)
                 .Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Draft)
                 .ProjectTo<PostViewModel>(_mapper.ConfigurationProvider).ToList();
             vm.PendingPosts = _context.EpisodeEntry
                 .Include(e => e.EpisodeEntryType)
                 .Include(e => e.Episode)
+                .Include(p => p.EpisodeEntryPlayer).ThenInclude(p => p.Player)
+                .Include(e => e.EpisodeEntryStatus)
                 .Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Pending)
                 .ProjectTo<PostViewModel>(_mapper.ConfigurationProvider).ToList();
             var bios = _context.Biography.Include(b => b.Player).Where(x => x.Player.AuthString == owner);
