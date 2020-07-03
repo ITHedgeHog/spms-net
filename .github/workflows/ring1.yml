@@ -1,9 +1,9 @@
 name: Deploy Ring 1
 
 on:
-  release:
-    types:
-      - published
+  push:
+    tags:
+      - ring1.*
 jobs:
     pre-ring1:
       runs-on: ubuntu-latest
