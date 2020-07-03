@@ -19,13 +19,14 @@ namespace SPMS.Application.Tests.Common
             context.Database.EnsureCreated();
 
             // Add Seed Data
-
-            var epoisodeStatus = new EpisodeEntryStatus() {Name = StaticValues.Published};
-            var episodeStatusDraft = new EpisodeEntryStatus() {Name = StaticValues.Draft};
             var episodeType = new EpisodeEntryType() {Name = StaticValues.Post};
-            context.EpisodeEntryStatus.Add(epoisodeStatus);
-            context.EpisodeEntryStatus.Add(episodeStatusDraft);
+            context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Published });
+            context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Draft });
+            context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() {Name = StaticValues.Archived});
+            context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Pending });
             context.EpisodeEntryType.Add(episodeType);
+            context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.Fiction});
+            context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.PersonalLog });
             context.SaveChanges();
 
             var game = new Game() { SiteTitle = "Test Game", Description = "The test game", Name = "Test Game", Url = new Collection<GameUrl>(){new GameUrl(){ Url = "localhost"}}};

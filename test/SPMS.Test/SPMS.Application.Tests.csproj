@@ -29,4 +29,8 @@
     <ProjectReference Include="..\..\SPMS.Web\SPMS.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AuthoringQuery\" />
+  </ItemGroup>
+
 </Project>
