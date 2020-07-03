@@ -5,30 +5,55 @@ on:
     types:
       - published
 jobs:
-  build:
-    if: "github.event.release.prerelease"
+    pre-ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 'Block Concurrent Executions'
+        uses: softprops/turnstyle@v1
+        with:
+          poll-interval-seconds: 10
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  Ring1:
+    needs: pre-ci
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
+        path: spms
+    - uses: actions/checkout@v2
+      name: Checkut getspms-hosting
+      with:
+        repository: ITHedgeHog/getspms-hosting
         ref: main
+        token:  ${{ secrets.PAC }}
+        path: hosting
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
         token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save spms-cluster
+    - name: Docker Build
+      run: docker build --build-arg COMMIT=$(echo $GITHUB_SHA) --build-arg BRANCH=$(echo $GITHUB_BRANCH) -t registry.digitalocean.com/agile-h/spms:$(echo $GITHUB_SHA | head -c7) spms/. -f spms/SPMS.Web/Dockerfile
+    - name: Log in to DigitalOcean Container Registry with short-lived credentials
+      run: doctl registry login --expiry-seconds 600
+    - name: Push image to DigitalOcean Container Registry
+      run: docker push  registry.digitalocean.com/agile-h/spms:$(echo $GITHUB_SHA | head -c7)
     - name: Update deployment file image
-      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/agile-h/spms:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment1/deployment.yml
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/agile-h/spms:'${TAG}'|' $GITHUB_WORKSPACE/hosting/config/deployment1/deployment.yml
     - name: Update deployment file COMMIT_BRANCH
-      run: BRANCH=$(echo $GITHUB_REF) && sed -i 's|<COMMIT_BRANCH>|'${BRANCH}'|' $GITHUB_WORKSPACE/config/deployment1/deployment.yml
+      run: BRANCH=$(echo $GITHUB_REF) && sed -i 's|<COMMIT_BRANCH>|'${BRANCH}'|' $GITHUB_WORKSPACE/hosting/config/deployment1/deployment.yml
     - name: Update deployment file COMMIT_SHA
-      run: TAG=$(echo $GITHUB_SHA) && sed -i 's|<COMMIT_SHA>|'${TAG}'|' $GITHUB_WORKSPACE/config/deployment1/deployment.yml
+      run: TAG=$(echo $GITHUB_SHA) && sed -i 's|<COMMIT_SHA>|'${TAG}'|' $GITHUB_WORKSPACE/hosting/config/deployment1/deployment.yml
     - name: Save DigitalOcean kubeconfig
       run: doctl kubernetes cluster kubeconfig save spms-cluster
     - name: Deploy to DigitalOcean Kubernetes
-      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment1/deployment.yml
+      run: kubectl apply -f $GITHUB_WORKSPACE/hosting/config/deployment1/deployment.yml
     - name: Configure Ingresses
-      run: kubectl apply -f $GITHUB_WORKSPACE/config/deployment1/sites/spms.yml
+      run: kubectl apply -f $GITHUB_WORKSPACE/hosting/config/deployment1/sites/spms.yml
     - name: Verify deployment
-      run: kubectl rollout status deployment/spms-1
+      run: kubectl rollout status deployment/spms-1`
+  
+  :
