@@ -1,6 +1,6 @@
 ﻿namespace SPMS.Domain.Models
 {
-    public class BiographyStatus : LookupTable
+    public class Posting : LookupTable
     {
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SPMS.Persistence.PostgreSQL;
@@ -9,9 +10,10 @@ using SPMS.Persistence.PostgreSQL;
 namespace SPMS.Persistence.PostgreSQL.Migrations
 {
     [DbContext(typeof(SpmsContext))]
-    partial class SpmsContextModelSnapshot : ModelSnapshot
+    [Migration("20200703221529_BiographyStateToItemList")]
+    partial class BiographyStateToItemList
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,19 +135,10 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<bool>("Default")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("GameId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GameId");
 
                     b.ToTable("BiographyStatus");
                 });
@@ -441,23 +434,13 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnName("Id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<bool>("Default")
-                        .HasColumnType("boolean");
-
-                    b.Property<int?>("GameId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GameId");
 
                     b.ToTable("Posting");
                 });
@@ -511,13 +494,6 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.BiographyState", b =>
-                {
-                    b.HasOne("SPMS.Domain.Models.Game", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameId");
-                });
-
-            modelBuilder.Entity("SPMS.Domain.Models.BiographyStatus", b =>
                 {
                     b.HasOne("SPMS.Domain.Models.Game", "Game")
                         .WithMany()
@@ -606,13 +582,6 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                         .HasForeignKey("PlayerRoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SPMS.Domain.Models.Posting", b =>
-                {
-                    b.HasOne("SPMS.Domain.Models.Game", "Game")
-                        .WithMany()
-                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.Series", b =>

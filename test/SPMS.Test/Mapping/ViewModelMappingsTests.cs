@@ -29,7 +29,7 @@ namespace SPMS.Application.Tests.Mapping
         {
             ConfigurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<WebMapping>();
+                cfg.AddProfile<ViewModelMapping>();
 
             });
 

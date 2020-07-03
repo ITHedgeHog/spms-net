@@ -10,6 +10,8 @@ namespace SPMS.Persistence.PostgreSQL.Configuration
         {
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id).UseIdentityColumn().HasColumnName("Id");
+            builder.Property(x => x.Name).IsRequired();
+            builder.Property(x => x.GameId).IsRequired(false);
         }
     }
 }

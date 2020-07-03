@@ -32,7 +32,6 @@
   <ItemGroup>
     <Folder Include="Authoring\Query\" />
     <Folder Include="AuthoringQuery\" />
-    <Folder Include="Character\Query\" />
   </ItemGroup>
 
 </Project>

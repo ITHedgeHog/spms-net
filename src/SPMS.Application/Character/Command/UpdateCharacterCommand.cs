@@ -10,7 +10,7 @@ using SPMS.Application.Common.Interfaces;
 
 namespace SPMS.Application.Character.Command
 {
-    public class UpdateCharacterCommand : IRequest<bool>
+    public class UpdateCharacterCommand : IRequest<UpdateCharacterResponse>
     {
         public int Id { get; set; }
         public string Firstname { get; set; }
@@ -40,35 +40,53 @@ namespace SPMS.Application.Character.Command
         public string Player { get; set; }
         public string History { get; set; }
 
-        public class UpdateCharacterHandler : IRequestHandler<UpdateCharacterCommand, bool>
+        public class UpdateCharacterHandler : IRequestHandler<UpdateCharacterCommand, UpdateCharacterResponse>
         {
             private readonly ISpmsContext _context;
             private readonly IMapper _mapper;
+            private readonly IUserService _userService;
 
-            public UpdateCharacterHandler(ISpmsContext context, IMapper mapper)
+            public UpdateCharacterHandler(ISpmsContext context, IMapper mapper, IUserService userService)
             {
                 _context = context;
                 _mapper = mapper;
+                _userService = userService;
             }
 
-            public async Task<bool> Handle(UpdateCharacterCommand request, CancellationToken cancellationToken)
+            public async Task<UpdateCharacterResponse> Handle(UpdateCharacterCommand request, CancellationToken cancellationToken)
             {
                 var entity = await _context.Biography.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
                 if (entity == null)
                 {
-                    return false;
+                    entity = _mapper.Map<Domain.Models.Biography>(request);
+                    entity.PostingId = (await _context.Posting.FirstOrDefaultAsync(x => x.Default)).Id;
+                    entity.StatusId = (await _context.BiographyStatus.FirstOrDefaultAsync(x => x.Default)).Id;
+                    entity.StateId = (await _context.BiographyState.FirstAsync(x => x.Default, cancellationToken: cancellationToken)).Id;
+                    entity.PlayerId = _userService.GetId();
+
+                    await _context.Biography.AddAsync(entity, cancellationToken);
+                    await _context.SaveChangesAsync(cancellationToken);
+                    return UpdateCharacterResponse.Created;
                 }
 
                 _mapper.Map(request, entity);
 
                 await _context.SaveChangesAsync(cancellationToken);
 
-                
 
-                return true;
+
+                return UpdateCharacterResponse.Updated;
             }
         }
 
+
+
+    }
+
+    public enum UpdateCharacterResponse
+    {
+        Updated,
+        Created
     }
 }

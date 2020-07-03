@@ -1,106 +1,28 @@
-﻿@model SPMS.Application.Dtos.CreateBiographyViewModel
+﻿@model SPMS.ViewModel.character.EditCharacterViewModel
+
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Character";
 }
 
-<h1>Create Biography</h1>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="PlayerId" />
-            <div class="form-group">
-                <label asp-for="Firstname" class="control-label"></label>
-                <input asp-for="Firstname" class="form-control" />
-                <span asp-validation-for="Firstname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Surname" class="control-label"></label>
-                <input asp-for="Surname" class="form-control" />
-                <span asp-validation-for="Surname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control" />
-                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Species" class="control-label"></label>
-                <input asp-for="Species" class="form-control" />
-                <span asp-validation-for="Species" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Homeworld" class="control-label"></label>
-                <input asp-for="Homeworld" class="form-control" />
-                <span asp-validation-for="Homeworld" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
-                <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Born" class="control-label"></label>
-                <input asp-for="Born" class="form-control" />
-                <span asp-validation-for="Born" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Eyes" class="control-label"></label>
-                <input asp-for="Eyes" class="form-control" />
-                <span asp-validation-for="Eyes" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hair" class="control-label"></label>
-                <input asp-for="Hair" class="form-control" />
-                <span asp-validation-for="Hair" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Height" class="control-label"></label>
-                <input asp-for="Height" class="form-control" />
-                <span asp-validation-for="Height" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Weight" class="control-label"></label>
-                <input asp-for="Weight" class="form-control" />
-                <span asp-validation-for="Weight" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Affiliation" class="control-label"></label>
-                <input asp-for="Affiliation" class="form-control" />
-                <span asp-validation-for="Affiliation" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Assignment" class="control-label"></label>
-                <input asp-for="Assignment" class="form-control" />
-                <span asp-validation-for="Assignment" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PostingId" class="control-label"></label>
-                <select asp-for="PostingId" asp-items="Model.Postings"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rank" class="control-label"></label>
-                <input asp-for="Rank" class="form-control" />
-                <span asp-validation-for="Rank" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="RankImage" class="control-label"></label>
-                <input asp-for="RankImage" class="form-control" />
-                <span asp-validation-for="RankImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <<select asp-for="StatusId" asp-items="Model.Statuses"></select>
-                <span asp-validation-for="RankImage" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Create Character</h1>
     </div>
-</div>
+
+
+    <div class="row-fluid">
+        @{ await Html.RenderPartialAsync("_CreateOrEdit", Model); }
+    </div>
+</main>
+
+@section Style {
+    <link href="~/css/simplemde.min.css" rel="stylesheet" />
+    <link href="~/css/pulse.css" rel="stylesheet" />
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/signalr/dist/browser/signalr.js"></script>
+    <script src="~/js/simplemde.min.js" asp-append-version="true"></script>
+    <script src="~/js/biography.js" asp-append-version="true"></script>
 }

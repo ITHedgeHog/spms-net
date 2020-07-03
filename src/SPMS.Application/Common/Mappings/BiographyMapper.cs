@@ -7,10 +7,10 @@ using BiographyDto = SPMS.Application.Dtos.BiographyDto;
 
 namespace SPMS.Application.Common.Mappings
 {
-    public class BiographyMapper : Profile
+    public class BiographyMapperProfile : Profile
     {
 
-        public BiographyMapper()
+        public BiographyMapperProfile()
         {
             CreateMap<CreateBiographyViewModel, Domain.Models.Biography>()
                 .ForMember(x => x.State, opt => opt.Ignore())
@@ -18,7 +18,7 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.Posting, opt => opt.Ignore())
                 .ForMember(x => x.Status, o => o.Ignore())
                 .ForMember(x => x.State, o => o.Ignore());
-            CreateMap<EditBiographyViewModel, Domain.Models.Biography>()
+            CreateMap<EditBiographyDto, Domain.Models.Biography>()
                 .ForMember(x => x.State, opt => opt.Ignore())
                 .ForMember(x => x.Player, opt => opt.Ignore())
                 .ForMember(x => x.Posting, opt => opt.Ignore())
@@ -42,13 +42,13 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.CommitSha, o => o.Ignore())
                 .ForMember(x => x.CommitShaLink, o => o.Ignore())
                 .ForMember(x => x.Status, o => o.Ignore())
-                .ForMember(x => x.Player, o => o.MapFrom(y => new PlayerViewModel() { Id = y.Player.Id, AuthString = y.Player.AuthString, DisplayName = y.Player.DisplayName, Roles = y.Player.Roles.Select(z => new PlayerRoleViewModel() { Id = z.PlayerRoleId, Name = z.PlayerRole.Name }).ToList() }))
+                .ForMember(x => x.Player, o => o.MapFrom(y => new PlayerDto() { Id = y.Player.Id, AuthString = y.Player.AuthString, DisplayName = y.Player.DisplayName, Roles = y.Player.Roles.Select(z => new PlayerRoleDto() { Id = z.PlayerRoleId, Name = z.PlayerRole.Name }).ToList() }))
                 .ForMember(x => x.States, o => o.Ignore());
 
-            CreateMap<Domain.Models.Biography, EditBiographyViewModel>()
+            CreateMap<Domain.Models.Biography, EditBiographyDto>()
                 .ForMember(x => x.Posting, opt => opt.MapFrom(y => y.Posting.Name))
                 .ForMember(x => x.Player,
-                    opt => opt.MapFrom(y => new PlayerViewModel()
+                    opt => opt.MapFrom(y => new PlayerDto()
                     { Id = y.Player.Id, AuthString = y.Player.AuthString, DisplayName = y.Player.DisplayName }))
                 .ForMember(x => x.Statuses, opt => opt.Ignore())
                 .ForMember(x => x.Postings, opt => opt.Ignore())

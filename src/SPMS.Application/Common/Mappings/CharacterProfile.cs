@@ -7,13 +7,19 @@ using SPMS.Application.Dtos;
 
 namespace SPMS.Application.Common.Mappings
 {
-    public class CharacterProfile : Profile
+    public class CharacterMapperProfile : Profile
     {
-        public CharacterProfile()
+        public CharacterMapperProfile()
         {
             CreateMap<BiographyDto, UpdateCharacterCommand>();
 
             CreateMap<UpdateCharacterCommand, Domain.Models.Biography>()
+                .ForMember(x => x.State, o => o.Ignore())
+                .ForMember(x => x.Status, o => o.Ignore())
+                .ForMember(x => x.Posting, o => o.Ignore())
+                .ForMember(x => x.Player, o => o.Ignore());
+
+            CreateMap<EditBiographyDto, UpdateCharacterCommand>()
                 .ForMember(x => x.State, o => o.Ignore())
                 .ForMember(x => x.Status, o => o.Ignore())
                 .ForMember(x => x.Posting, o => o.Ignore())

@@ -32,7 +32,7 @@ namespace SPMS.Application.Tests.Mapping
         {
             ConfigurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<CharacterProfile>();
+                cfg.AddProfile<CharacterMapperProfile>();
 
             }); Mapper = ConfigurationProvider.CreateMapper();
         }

@@ -5,7 +5,7 @@ namespace SPMS.Application.Dtos
 {
     public class PlayerListViewModel : SPMS.Common.ViewModels.ViewModel
     {
-        public List<PlayerViewModel> Players { get; set; }
+        public List<PlayerDto> Players { get; set; }
     }
 
 }
