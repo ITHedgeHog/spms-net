@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using SPMS.Application.Authoring.Command.CreatePost;
 using SPMS.Application.Authoring.Command.PublishPost;
+using SPMS.Application.Authoring.Command.SchedulePost;
 using SPMS.Application.Authoring.Command.UnpublishPost;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Dtos;
@@ -212,13 +213,13 @@ namespace SPMS.Web.Controllers
         public async Task<IActionResult> Schedule(SchedulePostViewModel vm, CancellationToken cancellationToken)
         
         {
-            //var result = await _mediator.Send(new UnpublishPostCommand() { Id = vm.Id, PublishAt = vm.PublishAt }, cancellationToken);
+            var result = await _mediator.Send(new SchedulePostCommand() { Id = vm.Id, PublishAt = vm.PublishAt }, cancellationToken);
 
-            //if (result)
-            //{
-            //    TempData["Message"] = "Post marked as draft";
-            //    return RedirectToAction("Writing", "My");
-            //}
+            if (result)
+            {
+                TempData["Message"] = "Post scheduled";
+                return RedirectToAction("Writing", "My");
+            }
 
             TempData["Message"] = "Post not scheduled";
             return RedirectToAction("Writing", "My");
