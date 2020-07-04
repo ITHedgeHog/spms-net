@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using MediatR;
 using Moq;
@@ -13,7 +11,7 @@ using SPMS.Persistence.PostgreSQL;
 using Xunit;
 using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 
-namespace SPMS.Application.Tests.AuthoringCommand
+namespace SPMS.Application.Tests.Authoring.Command
 {
     public class SchedulePostCommandTests : IClassFixture<SchedulePostFixture>
     {

@@ -16,14 +16,14 @@
             <ul>
                 @foreach (var character in Model.Characters)
                 {
-                    <li><a asp-action="Details" asp-controller="Biography" asp-area="" asp-route-id="@character.Key">@character.Value</a> [<a asp-action="Edit" asp-controller="Biography" asp-route-id="@character.Key">Edit</a>]</li>
+                    <li><a asp-action="Details" asp-controller="Biography" asp-area="" asp-route-id="@character.Key">@character.Value</a> [<a asp-action="Edit" asp-controller="Character" asp-area="player" asp-route-id="@character.Key">Edit</a>]</li>
                 }
             </ul>
         </div>
         <div class="col-2">
             @if (Model.IsCreateCharacterEnabled)
             {
-                <a asp-action="Create" asp-controller="Biography" asp-area="" class="btn btn-primary">Create New Character</a>
+                <a asp-action="Create" asp-controller="Character" asp-area="player" class="btn btn-primary">Create New Character</a>
             }
             else
             {

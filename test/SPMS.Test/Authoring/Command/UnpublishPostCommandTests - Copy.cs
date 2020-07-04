@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using MediatR;
 using Moq;
 using Shouldly;
-using SPMS.Application.Authoring.Command.PublishPost;
 using SPMS.Application.Authoring.Command.UnpublishPost;
 using SPMS.Common;
 using SPMS.Domain.Models;
@@ -14,7 +11,7 @@ using SPMS.Persistence.PostgreSQL;
 using Xunit;
 using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 
-namespace SPMS.Application.Tests.AuthoringCommand
+namespace SPMS.Application.Tests.Authoring.Command
 {
     public class UnpublishPostCommandTests : IClassFixture<UnpublishPostFixture>
     {

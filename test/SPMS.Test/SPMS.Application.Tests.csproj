@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Authoring\Query\" />
     <Folder Include="AuthoringQuery\" />
   </ItemGroup>
 
