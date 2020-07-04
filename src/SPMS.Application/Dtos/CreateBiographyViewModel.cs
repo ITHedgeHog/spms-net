@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SPMS.Application.Dtos
@@ -7,7 +8,7 @@ namespace SPMS.Application.Dtos
     {
         public CreateBiographyViewModel()
         {
-            Status = new BiographyStatusViewModel();
+            Status = new List<SelectListItem>();
             Statuses = new List<SelectListItem>();
             Postings = new List<SelectListItem>();
         }
@@ -15,7 +16,7 @@ namespace SPMS.Application.Dtos
         public int Id { get; set; }
         public string Firstname { get; set; }
         public string Surname { get; set; }
-
+        [Display(Name = "Date of Birth")]
         public string DateOfBirth { get; set; }
         public string Species { get; set; }
         public string Homeworld { get; set; }
@@ -30,62 +31,22 @@ namespace SPMS.Application.Dtos
         public string Rank { get; set; }
         public string RankImage { get; set; }
 
-        public BiographyStatusViewModel Status { get; set; }
+        public List<SelectListItem> Status { get; set; }
 
+        [Display(Name = "Posting")]
         public int PostingId { get; set; }
         public string Posting { get; set; }
-
+        [Display(Name = "Played by")]
         public int PlayerId { get; set; }
-        public PlayerViewModel Player { get; set; }
+        public PlayerDto Player { get; set; }
         public string History { get; set; }
 
         public List<SelectListItem> Postings { get; set; }
+        [Display(Name = "Status")]
         public int StatusId { get; set; }
-        public IEnumerable<SelectListItem> Statuses { get; set; }
-
-        public int StateId { get; set; }
-        public IEnumerator<SelectListItem> States { get; set; }
-    }
-
-    public class BiographyStatusViewModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class EditBiographyViewModel : SPMS.Common.ViewModels.ViewModel
-    {
-        public int Id { get; set; }
-        public string Firstname { get; set; }
-        public string Surname { get; set; }
-        public int PlayerId { get; set; }
-
-        public string DateOfBirth { get; set; }
-        public string Species { get; set; }
-        public string Homeworld { get; set; }
-        public string Gender { get; set; }
-        public string Born { get; set; }
-        public string Eyes { get; set; }
-        public string Hair { get; set; }
-        public string Height { get; set; }
-        public string Weight { get; set; }
-        public string Affiliation { get; set; }
-        public string Assignment { get; set; }
-        public string Rank { get; set; }
-        public string RankImage { get; set; }
-
-        public string State { get; set; }
-
-        public int PostingId { get; set; }
-        public string Posting { get; set; }
-
-        public PlayerViewModel Player { get; set; }
-        public string History { get; set; }
-
-        public List<SelectListItem> Postings { get; set; }
         public List<SelectListItem> Statuses { get; set; }
-        public int StatusId { get; set; }
+        [Display(Name="State")]
         public int StateId { get; set; }
-        public IEnumerator<SelectListItem> States { get; set; }
+        public List<SelectListItem> States { get; set; }
     }
 }

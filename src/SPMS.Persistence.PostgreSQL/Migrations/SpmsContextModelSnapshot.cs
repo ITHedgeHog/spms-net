@@ -84,6 +84,9 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                     b.Property<string>("Surname")
                         .HasColumnType("text");
 
+                    b.Property<int?>("TypeId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Weight")
                         .HasColumnType("text");
 
@@ -97,6 +100,8 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
 
                     b.HasIndex("StatusId");
 
+                    b.HasIndex("TypeId");
+
                     b.ToTable("Biography");
                 });
 
@@ -108,10 +113,19 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<bool>("Default")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GameId");
 
                     b.ToTable("BiographyState");
                 });
@@ -124,12 +138,46 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<bool>("Default")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GameId");
+
                     b.ToTable("BiographyStatus");
+                });
+
+            modelBuilder.Entity("SPMS.Domain.Models.BiographyType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<bool>("Default")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GameId");
+
+                    b.ToTable("BiographyTypes");
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.Episode", b =>
@@ -423,13 +471,23 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnName("Id")
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<bool>("Default")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GameId");
 
                     b.ToTable("Posting");
                 });
@@ -480,6 +538,31 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("SPMS.Domain.Models.BiographyType", "Type")
+                        .WithMany()
+                        .HasForeignKey("TypeId");
+                });
+
+            modelBuilder.Entity("SPMS.Domain.Models.BiographyState", b =>
+                {
+                    b.HasOne("SPMS.Domain.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId");
+                });
+
+            modelBuilder.Entity("SPMS.Domain.Models.BiographyStatus", b =>
+                {
+                    b.HasOne("SPMS.Domain.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId");
+                });
+
+            modelBuilder.Entity("SPMS.Domain.Models.BiographyType", b =>
+                {
+                    b.HasOne("SPMS.Domain.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.Episode", b =>
@@ -564,6 +647,13 @@ namespace SPMS.Persistence.PostgreSQL.Migrations
                         .HasForeignKey("PlayerRoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SPMS.Domain.Models.Posting", b =>
+                {
+                    b.HasOne("SPMS.Domain.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.Series", b =>

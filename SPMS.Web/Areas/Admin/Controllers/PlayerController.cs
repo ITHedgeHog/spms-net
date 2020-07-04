@@ -31,7 +31,7 @@ namespace SPMS.Web.Areas.Admin.Controllers
         {
             var vm = new PlayerListViewModel
             {
-                Players = await _context.Player.Include(x => x.Roles).ThenInclude(roles => roles.PlayerRole).ProjectTo<PlayerViewModel>(_mapper.ConfigurationProvider)
+                Players = await _context.Player.Include(x => x.Roles).ThenInclude(roles => roles.PlayerRole).ProjectTo<PlayerDto>(_mapper.ConfigurationProvider)
                     .ToListAsync()
             };
             return View(vm);

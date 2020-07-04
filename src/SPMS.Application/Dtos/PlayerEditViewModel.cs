@@ -11,6 +11,6 @@ namespace SPMS.Application.Dtos
 
         public string AuthString { get; set; }
 
-        public List<PlayerRoleViewModel> Roles { get; set; }
+        public List<PlayerRoleDto> Roles { get; set; }
     }
 }

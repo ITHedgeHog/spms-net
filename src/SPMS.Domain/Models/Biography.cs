@@ -32,11 +32,8 @@
         public int PlayerId { get; set; }
         public Player Player { get; set; }
         public string History { get; set; }
-    }
 
-    public class Posting
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int? TypeId { get; set; }
+        public virtual BiographyType Type { get; set; }
     }
 }

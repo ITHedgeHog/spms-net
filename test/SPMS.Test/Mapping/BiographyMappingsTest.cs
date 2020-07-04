@@ -30,7 +30,7 @@ namespace SPMS.Application.Tests.Mapping
         {
             ConfigurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<BiographyMapper>();
+                cfg.AddProfile<BiographyMapperProfile>();
                 //cfg.AddProfile<AuthorProfile>();
 
             }); Mapper = ConfigurationProvider.CreateMapper();

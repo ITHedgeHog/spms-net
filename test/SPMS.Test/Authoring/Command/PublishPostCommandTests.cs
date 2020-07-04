@@ -11,7 +11,7 @@ using SPMS.Persistence.PostgreSQL;
 using Xunit;
 using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 
-namespace SPMS.Application.Tests.Authoring
+namespace SPMS.Application.Tests.Authoring.Command
 {
     public class PublishPostCommandTests : IClassFixture<PostFixture>
     {

@@ -10,11 +10,11 @@ namespace SPMS.Application.Common.Mappings
         public GenericMapper()
         {
            
-            CreateMap<PlayerRole, PlayerRoleViewModel>().ForMember(x => x.Name, opt => opt.MapFrom(y => y.Name))
+            CreateMap<PlayerRole, PlayerRoleDto>().ForMember(x => x.Name, opt => opt.MapFrom(y => y.Name))
                 .ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id));
-            CreateMap<Player, PlayerViewModel>()
-                .ForMember(x => x.Roles, opt => opt.MapFrom(y => y.Roles.Select(z => new PlayerRoleViewModel(){ Id = z.PlayerRole.Id, Name = z.PlayerRole.Name})));
-            CreateMap<PlayerViewModel, Player>()
+            CreateMap<Player, PlayerDto>()
+                .ForMember(x => x.Roles, opt => opt.MapFrom(y => y.Roles.Select(z => new PlayerRoleDto(){ Id = z.PlayerRole.Id, Name = z.PlayerRole.Name})));
+            CreateMap<PlayerDto, Player>()
                 .ForMember(p=>p.Roles, opt=>opt.Ignore())
                 .ForMember(p=>p.EpisodeEntries, o => o.Ignore())
                 .ForMember(x => x.Connections, o=>o.Ignore())
