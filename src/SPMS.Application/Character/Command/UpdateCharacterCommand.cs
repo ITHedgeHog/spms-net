@@ -7,6 +7,7 @@ using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Services;
 
 namespace SPMS.Application.Character.Command
 {
@@ -45,24 +46,27 @@ namespace SPMS.Application.Character.Command
             private readonly ISpmsContext _context;
             private readonly IMapper _mapper;
             private readonly IUserService _userService;
+            private readonly IGameService _gameService;
 
-            public UpdateCharacterHandler(ISpmsContext context, IMapper mapper, IUserService userService)
+            public UpdateCharacterHandler(ISpmsContext context, IMapper mapper, IUserService userService, IGameService gameService)
             {
                 _context = context;
                 _mapper = mapper;
                 _userService = userService;
+                _gameService = gameService;
             }
 
             public async Task<UpdateCharacterResponse> Handle(UpdateCharacterCommand request, CancellationToken cancellationToken)
             {
+                var gameId = await _gameService.GetGameIdAsync();
                 var entity = await _context.Biography.FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
                 if (entity == null)
                 {
                     entity = _mapper.Map<Domain.Models.Biography>(request);
-                    entity.PostingId = (await _context.Posting.FirstOrDefaultAsync(x => x.Default)).Id;
-                    entity.StatusId = (await _context.BiographyStatus.FirstOrDefaultAsync(x => x.Default)).Id;
-                    entity.StateId = (await _context.BiographyState.FirstAsync(x => x.Default, cancellationToken: cancellationToken)).Id;
+                    entity.PostingId = (await _context.Posting.FirstOrDefaultAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
+                    entity.StatusId = (await _context.BiographyStatus.FirstOrDefaultAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
+                    entity.StateId = (await _context.BiographyState.FirstAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
                     entity.PlayerId = _userService.GetId();
 
                     await _context.Biography.AddAsync(entity, cancellationToken);

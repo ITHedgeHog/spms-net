@@ -32,5 +32,8 @@
         public int PlayerId { get; set; }
         public Player Player { get; set; }
         public string History { get; set; }
+
+        public int? BiographyTypeId { get; set; }
+        public virtual BiographyType BiographyType { get; set; }
     }
 }

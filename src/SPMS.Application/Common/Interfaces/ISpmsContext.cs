@@ -11,6 +11,7 @@ namespace SPMS.Application.Common.Interfaces
         DbSet<Domain.Models.Biography> Biography { get; set; }
         DbSet<BiographyState> BiographyState { get; set; }
         DbSet<BiographyStatus> BiographyStatus { get; set; }
+        DbSet<BiographyType> BiographyTypes { get; set; }
         DbSet<Game> Game { get; set; }
         DbSet<GameUrl> GameUrl { get; set; }
         DbSet<Series> Series { get; set; }

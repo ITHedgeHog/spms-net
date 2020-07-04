@@ -65,7 +65,7 @@ namespace SPMS.Application.System.Commands
                 Console.Write(ex.Message);
             }
 
-            if (!await db.BiographyStatus.AnyAsync(x => x.Default && x.GameId == game, cancellationToken: cancellationToken))
+            if (await db.BiographyStatus.AnyAsync(x => !x.Default && x.GameId == game, cancellationToken: cancellationToken))
             {
                 var entity = db.BiographyStatus.First(x => x.Name == StaticValues.BioStatusAlive && x.GameId == game);
                 entity.Default = true;
@@ -93,7 +93,7 @@ namespace SPMS.Application.System.Commands
                 await db.SaveChangesAsync(cancellationToken);
             }
 
-            if (!await db.BiographyState.AnyAsync(x => x.Default && x.GameId == game, cancellationToken: cancellationToken))
+            if (await db.BiographyState.AnyAsync(x => !x.Default && x.GameId == game, cancellationToken: cancellationToken))
             {
                 var entity = db.BiographyState.First(x => x.Name == StaticValues.Published && x.GameId == game);
                 entity.Default = true;
@@ -123,7 +123,7 @@ namespace SPMS.Application.System.Commands
                 await db.SaveChangesAsync(cancellationToken);
             }
 
-            if (!await db.Posting.AnyAsync(x => x.Default, cancellationToken: cancellationToken))
+            if (await db.Posting.AnyAsync(x => !x.Default, cancellationToken: cancellationToken))
             {
                 var state = db.Posting.First(x => x.Name == "Starbase Gamma" && x.GameId == game);
                 state.Default = true;
@@ -412,6 +412,10 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
                 await context.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "aqua.beyond-the-darkness.com" }, cancellationToken);
                 await context.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "spms1.beyond-the-darkness.com" }, cancellationToken);
                 await context.SaveChangesAsync(cancellationToken);
+            }
+            else
+            {
+                game = context.Game.First(g => g.Name == "USS Aqua");
             }
 
             await SeedBiographyStatus(_db, game.Id, cancellationToken);

@@ -10,6 +10,7 @@ using Shouldly;
 using SPMS.Application.Character.Command;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Mappings;
+using SPMS.Application.Services;
 using SPMS.Common;
 using SPMS.Domain.Models;
 using SPMS.Persistence.PostgreSQL;
@@ -23,19 +24,23 @@ namespace SPMS.Application.Tests.Character.Command
         private readonly ISpmsContext _context;
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
+        private readonly IGameService _gameService;
 
         public UpdateCharacterCommandTests(UpdateCharacterCommandFixture fixture)
         {
             _context = fixture.Context;
             _mapper = fixture.Mapper;
             _userService = fixture.MockUserService.Object;
+            _gameService = fixture.MockGameService.Object;
         }
 
         [Fact]
         public async void Updates_Character()
         {
+            
             var request = new UpdateCharacterCommand() { Id = 1, Firstname = "Dean" };
-            var sut = new UpdateCharacterCommand.UpdateCharacterHandler(_context, _mapper, _userService);
+
+            var sut = new UpdateCharacterCommand.UpdateCharacterHandler(_context, _mapper, _userService, _gameService);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -50,7 +55,8 @@ namespace SPMS.Application.Tests.Character.Command
             
             var numberOfCharactersAtStartOfTest = _context.Biography.Count();
             var request = new UpdateCharacterCommand() { Id = 1000, Firstname = "Weasley", Surname = "Crusher"};
-            var sut = new UpdateCharacterCommand.UpdateCharacterHandler(_context, _mapper, _userService);
+
+            var sut = new UpdateCharacterCommand.UpdateCharacterHandler(_context, _mapper, _userService, _gameService);
 
             var result = await sut.Handle(request, CancellationToken.None);
             var numberOfCharactersAtEndOfTest = _context.Biography.Count();
@@ -69,11 +75,14 @@ namespace SPMS.Application.Tests.Character.Command
         public IMapper Mapper { get; set; }
         public SpmsContext Context { get; set; }
         public Mock<IUserService> MockUserService { get; set; }
+        public Mock<IGameService> MockGameService { get; set; }
         public UpdateCharacterCommandFixture()
         {
             Context = SpmsContextFactory.Create();
-
-            Context.Biography.Add(new Domain.Models.Biography() {Firstname = "Dan", Surname = "Taylor", State = new BiographyState(){Name = StaticValues.Published, Default = true}, Player = new Player(){ DisplayName = "Dan"}});
+            var posting = new Posting() {Name = "Posting", GameId = 1, Default = true};
+            Context.Posting.Add(posting);
+            Context.SaveChanges();
+            Context.Biography.Add(new Domain.Models.Biography() {Firstname = "Dan", Surname = "Taylor", Status = new BiographyStatus(){Name = "Status", Default = true, GameId = 1 },State = new BiographyState(){Name = StaticValues.Published, Default = true, GameId = 1}, Player = new Player(){ DisplayName = "Dan"}, PostingId = posting.Id});
             Context.SaveChanges();
 
 
@@ -88,6 +97,10 @@ namespace SPMS.Application.Tests.Character.Command
 
             MockUserService = new Mock<IUserService>();
             MockUserService.Setup(x => x.GetId()).Returns(1);
+
+
+            MockGameService = new Mock<IGameService>();
+            MockGameService.Setup(x => x.GetGameIdAsync()).ReturnsAsync(1);
         }
         public void Dispose()
         {

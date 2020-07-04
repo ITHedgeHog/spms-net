@@ -8,6 +8,7 @@ using SPMS.Application.Character.Query;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Mappings;
 using SPMS.Application.Dtos;
+using SPMS.Application.Services;
 using SPMS.Domain.Models;
 using SPMS.Persistence.PostgreSQL;
 using Xunit;
@@ -32,8 +33,10 @@ namespace SPMS.Application.Tests.Character.Query
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(u => u.GetAuthId()).Returns("123");
             mockUserService.Setup(u => u.IsAdmin()).Returns(false);
+            var mockGameService = new Mock<IGameService>();
+            mockGameService.Setup(x => x.GetGameIdAsync()).ReturnsAsync(1);
             var request = new GetCharacterQuery() { Id = 1 };
-            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object);
+            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, mockGameService.Object);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -50,8 +53,10 @@ namespace SPMS.Application.Tests.Character.Query
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(u => u.GetAuthId()).Returns("123");
             mockUserService.Setup(u => u.IsAdmin()).Returns(false);
+            var mockGameService = new Mock<IGameService>();
+            mockGameService.Setup(x => x.GetGameIdAsync()).ReturnsAsync(1);
             var request = new GetCharacterQuery() { Id = 1001 };
-            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object);
+            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, mockGameService.Object);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -66,8 +71,10 @@ namespace SPMS.Application.Tests.Character.Query
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(u => u.GetAuthId()).Returns("562");
             mockUserService.Setup(u => u.IsAdmin()).Returns(true);
+            var mockGameService = new Mock<IGameService>();
+            mockGameService.Setup(x => x.GetGameIdAsync()).ReturnsAsync(1);
             var request = new GetCharacterQuery() { Id = 1 };
-            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object);
+            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, mockGameService.Object);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -82,8 +89,10 @@ namespace SPMS.Application.Tests.Character.Query
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(u => u.GetAuthId()).Returns("562");
             mockUserService.Setup(u => u.IsAdmin()).Returns(false);
+            var mockGameService = new Mock<IGameService>();
+            mockGameService.Setup(x => x.GetGameIdAsync()).ReturnsAsync(1);
             var request = new GetCharacterQuery() { Id = 1 };
-            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object);
+            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, mockGameService.Object);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
