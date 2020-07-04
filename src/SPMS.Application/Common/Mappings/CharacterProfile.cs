@@ -11,19 +11,23 @@ namespace SPMS.Application.Common.Mappings
     {
         public CharacterMapperProfile()
         {
-            CreateMap<BiographyDto, UpdateCharacterCommand>();
+            CreateMap<BiographyDto, UpdateCharacterCommand>()
+                .ForMember(x => x.Type, o => o.Ignore())
+                ;
 
             CreateMap<UpdateCharacterCommand, Domain.Models.Biography>()
                 .ForMember(x => x.State, o => o.Ignore())
                 .ForMember(x => x.Status, o => o.Ignore())
                 .ForMember(x => x.Posting, o => o.Ignore())
-                .ForMember(x => x.Player, o => o.Ignore());
+                .ForMember(x => x.Player, o => o.Ignore())
+                .ForMember(x => x.Type, o => o.Ignore());
 
             CreateMap<EditBiographyDto, UpdateCharacterCommand>()
                 .ForMember(x => x.State, o => o.Ignore())
                 .ForMember(x => x.Status, o => o.Ignore())
                 .ForMember(x => x.Posting, o => o.Ignore())
-                .ForMember(x => x.Player, o => o.Ignore());
+                .ForMember(x => x.Player, o => o.Ignore())
+                .ForMember(x => x.Type, o => o.Ignore());
         }
     }
 }

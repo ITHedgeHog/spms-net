@@ -33,7 +33,7 @@
         public Player Player { get; set; }
         public string History { get; set; }
 
-        public int? BiographyTypeId { get; set; }
-        public virtual BiographyType BiographyType { get; set; }
+        public int? TypeId { get; set; }
+        public virtual BiographyType Type { get; set; }
     }
 }

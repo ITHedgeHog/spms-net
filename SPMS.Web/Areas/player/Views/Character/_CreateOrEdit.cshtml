@@ -31,6 +31,15 @@
             <div class="row mb-1">
                 <div class="input-group input-group-sm col-12">
                     <div class="input-group-prepend">
+                        <label asp-for="TypeId" class="input-group-text"></label>
+                    </div>
+                    <select asp-for="TypeId" asp-items="Model.Types" class="form-control rounded-right"></select>
+                    <span asp-validation-for="TypeId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row mb-1">
+                <div class="input-group input-group-sm col-12">
+                    <div class="input-group-prepend">
                         <label asp-for="StatusId" class="input-group-text"></label>
                     </div>
                     <select asp-for="StatusId" asp-items="Model.Statuses" class="form-control rounded-right"></select>

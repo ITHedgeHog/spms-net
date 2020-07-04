@@ -36,5 +36,7 @@ namespace SPMS.Application.Dtos
         public int StatusId { get; set; }
         public int StateId { get; set; }
         public List<ListItemDto> States { get; set; }
+        public int TypeId { get; set; }
+        public List<ListItemDto> Types { get; set; }
     }
 }

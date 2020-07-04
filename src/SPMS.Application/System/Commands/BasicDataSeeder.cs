@@ -137,11 +137,24 @@ namespace SPMS.Application.System.Commands
                 await db.Posting.AddAsync(new Posting() { Name = "USS Sovereign", GameId = game }, cancellationToken);
 
             await db.SaveChangesAsync(cancellationToken);
+        }
 
-            
+        public async Task SeedBiographyTypes(ISpmsContext db, int gameId, CancellationToken cancellationToken)
+        {
+            if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypePlayer))
+                await db.BiographyTypes.AddAsync(
+                    new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypePlayer},
+                    cancellationToken);
+            if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypeNpc))
+                await db.BiographyTypes.AddAsync(
+                    new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypeNpc},
+                    cancellationToken);
+            if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypePoc))
+                await db.BiographyTypes.AddAsync(
+                    new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypePoc},
+                    cancellationToken);
 
-            
-
+            await db.SaveChangesAsync(cancellationToken);
         }
 
         public async Task SeedBeyondTheDarknessAsync(ISpmsContext db, CancellationToken cancellationToken)
@@ -201,6 +214,7 @@ namespace SPMS.Application.System.Commands
             await SeedBiographyStatus(_db, game.Id, cancellationToken);
             await SeedBiographyState(_db, game.Id, cancellationToken);
             await SeedPostings(_db, game.Id, cancellationToken);
+            await SeedBiographyTypes(_db, game.Id, cancellationToken);
 
 
             // Add Biographies
@@ -421,7 +435,7 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
             await SeedBiographyStatus(_db, game.Id, cancellationToken);
             await SeedBiographyState(_db, game.Id, cancellationToken);
             await SeedPostings(_db, game.Id, cancellationToken);
-
+            await SeedBiographyTypes(_db, game.Id, cancellationToken);
 
             //var bioCount = context.Biography.Include(x => x.Posting)
             //    .Count(b => b.Posting.Name == "Starbase Gamma");

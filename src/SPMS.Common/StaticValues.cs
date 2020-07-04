@@ -12,6 +12,10 @@
         public static string BioStatusDeceased => "Deceased";
         public static string BioStatusMia => "MIA";
 
+        public const string BioTypePlayer = "Player Character";
+        public const string BioTypeNpc = "Non-Player Character";
+        public const string BioTypePoc = "Player Owned Character";
+
         public const string PlayerRole =  "player";
         public const string AdminRole = "admin";
 

@@ -40,6 +40,8 @@ namespace SPMS.Application.Character.Command
         public int PlayerId { get; set; }
         public string Player { get; set; }
         public string History { get; set; }
+        public int TypeId { get; set; }
+        public string Type { get; set; }
 
         public class UpdateCharacterHandler : IRequestHandler<UpdateCharacterCommand, UpdateCharacterResponse>
         {
@@ -67,6 +69,7 @@ namespace SPMS.Application.Character.Command
                     entity.PostingId = (await _context.Posting.FirstOrDefaultAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
                     entity.StatusId = (await _context.BiographyStatus.FirstOrDefaultAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
                     entity.StateId = (await _context.BiographyState.FirstAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
+                    entity.TypeId = (await _context.BiographyTypes.FirstAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
                     entity.PlayerId = _userService.GetId();
 
                     await _context.Biography.AddAsync(entity, cancellationToken);

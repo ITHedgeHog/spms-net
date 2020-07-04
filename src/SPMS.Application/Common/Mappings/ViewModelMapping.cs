@@ -32,6 +32,8 @@ namespace SPMS.Application.Common.Mappings
             CreateMap<PlayerRoleDto, PlayerRoleViewModel>();
             CreateMap<PlayerDto, PlayerViewModel>();
             CreateMap<EditBiographyDto, EditCharacterViewModel>()
+                .ForMember(x => x.Types, o=>o.Ignore())
+                .ForMember(x => x.TypeId, o => o.MapFrom(y => y.Types.FirstOrDefault(x => x.Selected).Value))
                 .ForMember(x => x.PostingId, o => o.MapFrom(y => y.Postings.FirstOrDefault(x => x.Selected).Value))
                 .ForMember(x => x.StateId, o => o.MapFrom(y => y.States.FirstOrDefault(x => x.Selected).Value))
                 .ForMember(x => x.StatusId, o => o.MapFrom(y => y.Statuses.FirstOrDefault(x => x.Selected).Value))
@@ -50,7 +52,7 @@ namespace SPMS.Application.Common.Mappings
 
             CreateMap<EditCharacterViewModel, UpdateCharacterCommand>()
                 .ForMember(x => x.Player, o => o.Ignore())
-                //.ForMember(x => x.Postings, o => o.Ignore())
+                .ForMember(x => x.Type, o => o.Ignore())
                 //.ForMember(x => x.Statuses, o => o.Ignore())
                 .ForMember(x => x.Status, o => o.Ignore())
                 ;

@@ -66,6 +66,7 @@ namespace SPMS.Application.Tests.Character.Command
 
             newCharacter.PlayerId.ShouldNotBe(0);
             newCharacter.StateId.ShouldNotBe(0);
+            _context.BiographyTypes.First(x => x.Name == StaticValues.BioTypePlayer).Id.ShouldBe(newCharacter.TypeId.Value);
 
         }
     }
@@ -81,8 +82,10 @@ namespace SPMS.Application.Tests.Character.Command
             Context = SpmsContextFactory.Create();
             var posting = new Posting() {Name = "Posting", GameId = 1, Default = true};
             Context.Posting.Add(posting);
+            var biographyType = new BiographyType() { Default = true, GameId = 1, Name = StaticValues.BioTypePlayer};
+            Context.BiographyTypes.Add(biographyType);
             Context.SaveChanges();
-            Context.Biography.Add(new Domain.Models.Biography() {Firstname = "Dan", Surname = "Taylor", Status = new BiographyStatus(){Name = "Status", Default = true, GameId = 1 },State = new BiographyState(){Name = StaticValues.Published, Default = true, GameId = 1}, Player = new Player(){ DisplayName = "Dan"}, PostingId = posting.Id});
+            Context.Biography.Add(new Domain.Models.Biography() {Firstname = "Dan", Surname = "Taylor", TypeId  = 1, Status = new BiographyStatus(){Name = "Status", Default = true, GameId = 1 },State = new BiographyState(){Name = StaticValues.Published, Default = true, GameId = 1}, Player = new Player(){ DisplayName = "Dan"}, PostingId = posting.Id});
             Context.SaveChanges();
 
 
