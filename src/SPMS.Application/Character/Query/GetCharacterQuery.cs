@@ -44,10 +44,10 @@ namespace SPMS.Application.Character.Query
                     return null;
                 }
                 dto ??= new EditBiographyDto();
-                dto.Postings =  _db.Posting.Where( x => x.GameId == gameId).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToList();
-                dto.Statuses = _db.BiographyStatus.Where(x => x.GameId == gameId).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToList();
-                dto.States = _db.BiographyState.Where(x => x.GameId == gameId).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToList();
-                
+                dto.Postings = await _db.Posting.Where( x => x.GameId == gameId).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToListAsync(cancellationToken);
+                dto.Statuses = await _db.BiographyStatus.Where(x => x.GameId == gameId).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToListAsync(cancellationToken);
+                dto.States = await _db.BiographyState.Where(x => x.GameId == gameId).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToListAsync(cancellationToken);
+                dto.Types = await _db.BiographyTypes.Where(x => x.GameId == gameId).ProjectTo<ListItemDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
                 return dto;
             }
         }
