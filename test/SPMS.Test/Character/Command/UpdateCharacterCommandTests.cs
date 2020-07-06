@@ -54,7 +54,7 @@ namespace SPMS.Application.Tests.Character.Command
         {
             
             var numberOfCharactersAtStartOfTest = _context.Biography.Count();
-            var request = new UpdateCharacterCommand() { Id = 1000, Firstname = "Weasley", Surname = "Crusher"};
+            var request = new UpdateCharacterCommand() { Id = 1000, Firstname = "Weasley", Surname = "Crusher", TypeId = _context.BiographyTypes.First(x => x.Name == StaticValues.BioTypePlayer).Id };
 
             var sut = new UpdateCharacterCommand.UpdateCharacterHandler(_context, _mapper, _userService, _gameService);
 
