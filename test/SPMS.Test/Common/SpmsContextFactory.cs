@@ -42,9 +42,9 @@ namespace SPMS.Application.Tests.Common
             context.Episode.Add(episode);
 
             // Biography Lookups 
-            context.BiographyTypes.Add(new BiographyType() {Name = StaticValues.BioTypePlayer, Default = true});
-            context.BiographyTypes.Add(new BiographyType() { Name = StaticValues.BioTypeNpc, Default = false });
-            context.BiographyTypes.Add(new BiographyType() { Name = StaticValues.BioTypePoc, Default = false });
+            context.BiographyTypes.Add(new BiographyType() {Name = StaticValues.BioTypePlayer, Default = true, GameId = game.Id});
+            context.BiographyTypes.Add(new BiographyType() { Name = StaticValues.BioTypeNpc, Default = false, GameId = game.Id });
+            context.BiographyTypes.Add(new BiographyType() { Name = StaticValues.BioTypePoc, Default = false, GameId = game.Id });
 
             context.SaveChanges();
 

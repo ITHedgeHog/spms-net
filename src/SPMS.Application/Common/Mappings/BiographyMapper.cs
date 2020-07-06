@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using SPMS.Application.Dtos;
 using SPMS.Application.Dtos.Common;
 using SPMS.Domain.Models;
+using System.Linq;
 using BiographyDto = SPMS.Application.Dtos.BiographyDto;
 
 namespace SPMS.Application.Common.Mappings
@@ -13,7 +12,11 @@ namespace SPMS.Application.Common.Mappings
 
         public BiographyMapperProfile()
         {
-            CreateMap<LookupTable, ListItemDto>();
+            CreateMap<LookupTable, ListItemDto>()
+                .ForCtorParam("value", o => o.MapFrom(y => y.Id.ToString()))
+                .ForCtorParam("text", o => o.MapFrom(y => y.Name))
+                .ForCtorParam("selected", o => o.MapFrom(y => y.Default))
+                .ForAllMembers(x=>x.Ignore());
 
             CreateMap<CreateBiographyViewModel, Domain.Models.Biography>()
                 .ForMember(x => x.State, opt => opt.Ignore())
