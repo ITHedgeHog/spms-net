@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Biography.Query;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Dtos;
+using SPMS.Application.Services;
 using SPMS.Domain.Models;
 using SPMS.ViewModel;
 

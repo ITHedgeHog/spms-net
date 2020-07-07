@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using SPMS.Application.Dtos.Authoring;
 using SPMS.Common.ViewModels;
+using SPMS.ViewModel.Story;
 
 namespace SPMS.Application.Dtos.Story
 {
@@ -38,7 +39,7 @@ namespace SPMS.Application.Dtos.Story
         public string Title { get; set; }
         public string Description { get; set; }
         public string Banner { get; set; }
-        public List<PostViewModel> Story { get; internal set; }
+        public List<StoryPostViewModel> Story { get; internal set; }
     }
 
     public class PostViewModel
