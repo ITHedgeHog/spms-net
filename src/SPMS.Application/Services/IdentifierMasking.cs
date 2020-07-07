@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
-using SPMS.Application.Services;
 
-namespace SPMS.Web
+namespace SPMS.Application.Services
 {
-
-    public interface IIdentifierMask
-    {
-        int RevealId(string identifier);
-        string HideId(int id);
-    }
     public class IdentifierMasking : IIdentifierMask
     {
         private static byte[] _key;
@@ -26,7 +16,7 @@ namespace SPMS.Web
 
         public int RevealId(string identifier)
         {
-            return int.Parse(RevealIdentifier(identifier));
+            return int.Parse((string) RevealIdentifier(identifier));
         }
 
         public string HideId(int id)
