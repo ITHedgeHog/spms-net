@@ -1,18 +1,16 @@
-﻿@model SPMS.Application.Dtos.Story.SeriesOverviewViewModel
+﻿@model SPMS.Application.Dtos.Story.StoryOverviewDto
 
 @{
     ViewData["Title"] = "The story so far " + Model.SiteTitle;
 }
-<h1>Current Series &amp; Episodes</h1>
 
 <div class="container">
     <div class="row">
         <div class="col-sm-12">
-            <h2>@Model.CurrentSeries.Title</h2>
-            <markdown>@Model.CurrentSeries.Description</markdown>
+            <h2><text>S</text>@Model.CurrentSeries.Id<text>E</text>@Model.CurrentEpisode.Id - @Model.CurrentEpisode.Title </h2>
         </div>
     </div>
-    <div class="row">
+    @*<div class="row">
         @{ 
             string columnMdClass = "col-md-12";
             var hasBanner = !string.IsNullOrEmpty(Model.CurrentEpisode.Banner) ? true : false;
@@ -33,7 +31,7 @@
                 <img src="https://dummyimage.com/120x240/000000/fff.gif&text=Episode+One" alt="Episode Banner" />
             </div>
         }
-    </div>
+    </div>*@
     <div class="row">
         <div class="col-sm-12">
             @foreach(var post in Model.CurrentEpisode.Story)
@@ -45,6 +43,9 @@
                     </div>
                     <div class="card-body">
                         <markdown markdown="@post.Content" />
+                    </div>
+                    <div class="card-footer">
+                        <p class="small">Posted @post.PublishedAt by <i>unknown user</i></p>
                     </div>
                 </div>
             }

@@ -25,6 +25,7 @@ namespace SPMS.Application.Dtos.Story
         public int EpisodeId { get; set; }
         public string Episode { get; set; }
         public DateTime? PublishedAt { get; set; }
+        public string PostedBy { get; set; }
 
     }
 }
