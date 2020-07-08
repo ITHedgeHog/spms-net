@@ -58,9 +58,7 @@ namespace SPMS.Application.Common.Mappings
             CreateMap<EditCharacterViewModel, UpdateCharacterCommand>()
                 .ForMember(x => x.Player, o => o.Ignore())
                 .ForMember(x => x.Type, o => o.Ignore())
-                //.ForMember(x => x.Statuses, o => o.Ignore())
-                .ForMember(x => x.Status, o => o.Ignore())
-                ;
+                .ForMember(x => x.Status, o => o.Ignore());
 
             CreateMap<StoryPostDto, StoryPostViewModel>()
                 .ForMember(x => x.Id, o => o.MapFrom<IdHiderResolver>())
@@ -76,7 +74,7 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.IsAdmin, o => o.Ignore())
                 .ForMember(x => x.CommitSha, o => o.Ignore())
                 .ForMember(x => x.CommitShaLink, o => o.Ignore())
-                .ForMember(x => x.GameName, o => o.Ignore()); ;
+                .ForMember(x => x.GameName, o => o.Ignore());
 
             CreateMap<StoryPostViewModel, StoryPostDto>()
                 .ForMember(x => x.Id, o => o.MapFrom<IdRevealerResolver>())
@@ -86,8 +84,8 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.EpisodeEntryTypeId, o => o.Ignore())
                 .ForMember(x => x.EpisodeEntryType, o => o.Ignore())
                 .ForMember(x => x.EpisodeId, o => o.Ignore())
-                .ForMember(x => x.Episode, o => o.Ignore());
-
+                .ForMember(x => x.Episode, o => o.Ignore())
+                .ForMember(x=>x.PostedBy, o =>o.Ignore());
         }
     }
 

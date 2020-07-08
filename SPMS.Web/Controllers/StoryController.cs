@@ -24,9 +24,10 @@ namespace SPMS.Web.Controllers
             _mapper = mapper;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var vm = await _storyService.GetOverview(); 
+            var query = new StoryOverviewQuery();
+            var vm = await _mediator.Send(query, cancellationToken); 
             return View(vm);
         }
 

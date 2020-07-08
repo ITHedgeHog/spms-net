@@ -31,7 +31,7 @@ namespace SPMS.Application.Tests.Common
 
             var game = new Game() { SiteTitle = "Test Game", Description = "The test game", Name = "Test Game", Url = new Collection<GameUrl>(){new GameUrl(){ Url = "localhost"}}};
             context.Game.Add(game);
-            var series = new Series() {Game = game, Title = "Series 1"};
+            var series = new Series() {Game = game, Title = "Series 1", IsActive = true};
             context.Series.Add(series);
             var episode = new Episode()
             {

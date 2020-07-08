@@ -30,16 +30,16 @@ namespace SPMS.Application.Services
             _mediator = mediator;
         }
 
-        public async Task<SeriesOverviewViewModel> GetOverview()
+        public async Task<StoryOverviewDto> GetOverview()
         {
-            var vm = new SeriesOverviewViewModel();
+            var vm = new StoryOverviewDto();
             //TODO Pull real data
-            vm.CurrentSeries = new SeriesViewModel() { Id = 1, Title = "Series One: Beyond the Darkness", Description = "**Markdown** *Content*" };
-            vm.CurrentEpisode = new EpisodeViewModel() { Id = 1, Title = "Episode 1 - Discovery", Description = "**The crew** of Starbase Gamma begin to unravel the mysteries of the *Gamma Quadrant*.", Banner = "https://dummyimage.com/120x240/000000/fff.gif&text=Episode+One" };
+            vm.CurrentSeries = new SeriesDto() { Id = 1, Title = "Series One: Beyond the Darkness", Description = "**Markdown** *Content*" };
+            vm.CurrentEpisode = new EpisodeDto() { Id = 1, Title = "Episode 1 - Discovery", Description = "**The crew** of Starbase Gamma begin to unravel the mysteries of the *Gamma Quadrant*.", Banner = "https://dummyimage.com/120x240/000000/fff.gif&text=Episode+One" };
 
             var dtos = await _mediator.Send(new TopStoryPostQuery() {Id = vm.CurrentEpisode.Id}, CancellationToken.None);
 
-            vm.CurrentEpisode.Story = _mapper.Map<List<StoryPostViewModel>>(dtos);
+            vm.CurrentEpisode.Story = _mapper.Map<List<StoryPostDto>>(dtos);
 
             return vm;
         }
@@ -55,6 +55,6 @@ namespace SPMS.Application.Services
     public interface IStoryService
     {
         Task<List<PostViewModel>> GetEpisodeStory(int activeEpisode);
-        Task<SeriesOverviewViewModel> GetOverview();
+        Task<StoryOverviewDto> GetOverview();
     }
 }
