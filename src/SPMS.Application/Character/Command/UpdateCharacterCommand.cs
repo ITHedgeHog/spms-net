@@ -66,10 +66,14 @@ namespace SPMS.Application.Character.Command
                 if (entity == null)
                 {
                     entity = _mapper.Map<Domain.Models.Biography>(request);
-                    entity.PostingId = (await _context.Posting.FirstOrDefaultAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
-                    entity.StatusId = (await _context.BiographyStatus.FirstOrDefaultAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
-                    entity.StateId = (await _context.BiographyState.FirstAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
-                    entity.TypeId = (await _context.BiographyTypes.FirstAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
+                    if(entity.PostingId == 0)
+                        entity.PostingId = (await _context.Posting.FirstOrDefaultAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
+                    if (entity.StatusId == 0)
+                        entity.StatusId = (await _context.BiographyStatus.FirstOrDefaultAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
+                    if (entity.StateId == 0)
+                        entity.StateId = (await _context.BiographyState.FirstAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
+                    if (!entity.TypeId.HasValue)
+                        entity.TypeId = (await _context.BiographyTypes.FirstAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
                     entity.PlayerId = _userService.GetId();
 
                     await _context.Biography.AddAsync(entity, cancellationToken);

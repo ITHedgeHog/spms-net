@@ -13,9 +13,6 @@ using SPMS.Domain.Models;
 
 namespace SPMS.Application.System.Commands
 {
-
-
-
     public class BasicDataSeeder
     {
         private readonly ISpmsContext _db;
@@ -28,9 +25,9 @@ namespace SPMS.Application.System.Commands
         public async Task SeedAllAsync(CancellationToken cancellationToken)
         {
             await SeedPlayerRoleAsync(_db, cancellationToken);
-            
+
             SeedDefaults(_db);
-            
+
 
             await SeedBeyondTheDarknessAsync(_db, cancellationToken);
             await SeedAquariusAsync(_db, cancellationToken);
@@ -84,7 +81,7 @@ namespace SPMS.Application.System.Commands
 
         public async Task SeedBiographyState(ISpmsContext db, int game, CancellationToken cancellationToken)
         {
-            
+
 
 
             foreach (var state in await db.BiographyState.Where(x => x.GameId == null).ToListAsync(cancellationToken))
@@ -106,13 +103,13 @@ namespace SPMS.Application.System.Commands
             if (!db.BiographyState.Any(n => n.Name == StaticValues.Pending && n.GameId == game))
                 await db.BiographyState.AddAsync(new BiographyState() { Name = StaticValues.Pending, GameId = game }, cancellationToken);
             if (!db.BiographyState.Any(n => n.Name == StaticValues.Published && n.GameId == game))
-                await db.BiographyState.AddAsync(new BiographyState() { Name = StaticValues.Published, Default = true, GameId = game}, cancellationToken);
+                await db.BiographyState.AddAsync(new BiographyState() { Name = StaticValues.Published, Default = true, GameId = game }, cancellationToken);
             if (!db.BiographyState.Any(n => n.Name == StaticValues.Archived && n.GameId == game))
-                await db.BiographyState.AddAsync(new BiographyState() { Name = StaticValues.Archived, GameId = game}, cancellationToken);
+                await db.BiographyState.AddAsync(new BiographyState() { Name = StaticValues.Archived, GameId = game }, cancellationToken);
 
             await db.SaveChangesAsync(cancellationToken);
 
-            
+
         }
 
         public async Task SeedPostings(ISpmsContext db, int game, CancellationToken cancellationToken)
@@ -132,7 +129,7 @@ namespace SPMS.Application.System.Commands
 
             // Posting
             if (!db.Posting.Any(p => p.Name == "Starbase Gamma" && p.GameId == game))
-                await db.Posting.AddAsync(new Posting() { Name = "Starbase Gamma", Default = true, GameId = game}, cancellationToken);
+                await db.Posting.AddAsync(new Posting() { Name = "Starbase Gamma", Default = true, GameId = game }, cancellationToken);
             if (!db.Posting.Any(p => p.Name == "USS Sovereign" && p.GameId == game))
                 await db.Posting.AddAsync(new Posting() { Name = "USS Sovereign", GameId = game }, cancellationToken);
 
@@ -141,20 +138,27 @@ namespace SPMS.Application.System.Commands
 
         public async Task SeedBiographyTypes(ISpmsContext db, int gameId, CancellationToken cancellationToken)
         {
-            if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypePlayer))
-                await db.BiographyTypes.AddAsync(
-                    new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypePlayer},
-                    cancellationToken);
-            if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypeNpc))
-                await db.BiographyTypes.AddAsync(
-                    new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypeNpc},
-                    cancellationToken);
-            if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypePoc))
-                await db.BiographyTypes.AddAsync(
-                    new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypePoc},
-                    cancellationToken);
+            try
+            {
+                if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypePlayer))
+                    await db.BiographyTypes.AddAsync(
+                        new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypePlayer},
+                        cancellationToken);
+                if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypeNpc))
+                    await db.BiographyTypes.AddAsync(
+                        new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypeNpc},
+                        cancellationToken);
+                if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypePoc))
+                    await db.BiographyTypes.AddAsync(
+                        new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypePoc},
+                        cancellationToken);
 
-            await db.SaveChangesAsync(cancellationToken);
+                await db.SaveChangesAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public async Task SeedBeyondTheDarknessAsync(ISpmsContext db, CancellationToken cancellationToken)
@@ -206,7 +210,7 @@ namespace SPMS.Application.System.Commands
                 {
                     var i = 1;
                 }
-              
+
             }
 
             await db.SaveChangesAsync(cancellationToken);
@@ -301,7 +305,8 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
 * 2383 - Current - USS Ronald Reagan - Chief of Operations(Lt Cmdr)
 * 2383(Late) - USS Ronald Reagan - Acting Chief of Operations(Lt Cmdr)
 * 2383(Early) - USS Ronald Reagan - Assistant Chief of Engineering / Acting Chief of Operations(Lt)
-* 2380 - 2382 - USS Midway - Assistant Chief of Engineering(Lt)\n2379 - USS Midway - Supervising Engineering Officer(Lt JG)
+* 2380 - 2382 - USS Midway - Assistant Chief of Engineering(Lt)
+* 2379 - USS Midway - Supervising Engineering Officer(Lt JG)
 * 2376 - 2378 - Starbase 386 - Star Ship Maintenance Engineering Team Lead(Lt JG)
 * 2374 - 2375 - USS Gettysburg - Engineering Officer / Trainee Supervisor(Lt JG)
 * 2372 - 2373 - USS Melbourne - Engineering Officer(Ens / Lt JG)
@@ -311,8 +316,8 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
 
 
             // Series
-            var series = new Series() { Title = "Series 1", GameId = game.Id };
-            if (!db.Series.Any(x => x.Title == "Series 1"))
+            var series = new Series() { Title = "Series 1", GameId = game.Id, IsActive = true };
+            if (!db.Series.Any(x => x.Title == "Series 1" && x.GameId == game.Id))
             {
                 await db.Series.AddAsync(series, cancellationToken);
 
@@ -322,6 +327,12 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
             {
                 series = await _db.Series.FirstAsync(x => x.Title == "Series 1" && x.GameId == game.Id,
                     cancellationToken: cancellationToken);
+
+                if (!series.IsActive)
+                {
+                    series.IsActive = true;
+                    db.SaveChanges();
+                }
             }
 
             if (!await db.Episode.AnyAsync(x => x.Title == "Prologue", cancellationToken: cancellationToken))
@@ -334,7 +345,7 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
                     StatusId = episodeStatus.Id
                 }, cancellationToken);
 
-                
+
             }
 
             await db.SaveChangesAsync(cancellationToken);
@@ -343,8 +354,8 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
 
         public static void SeedDefaults(ISpmsContext context)
         {
-            
-            
+
+
 
             // Episode Status
             if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Draft))
@@ -376,7 +387,7 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
                 context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Archived });
 
 
-            
+
 
 
             // Players

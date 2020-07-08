@@ -11,6 +11,6 @@ namespace SPMS.Domain.Models
 
         public int GameId { get; set; }
         public Game Game { get; set; }
-        
+        public bool IsActive { get; set; }
     }
 }

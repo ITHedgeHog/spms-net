@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using SPMS.Application.Dtos;
+using SPMS.Application.Dtos.Common;
 using SPMS.Domain.Models;
+using System.Linq;
 using BiographyDto = SPMS.Application.Dtos.BiographyDto;
 
 namespace SPMS.Application.Common.Mappings
@@ -12,6 +12,12 @@ namespace SPMS.Application.Common.Mappings
 
         public BiographyMapperProfile()
         {
+            CreateMap<LookupTable, ListItemDto>()
+                .ForCtorParam("value", o => o.MapFrom(y => y.Id.ToString()))
+                .ForCtorParam("text", o => o.MapFrom(y => y.Name))
+                .ForCtorParam("selected", o => o.MapFrom(y => y.Default))
+                .ForAllMembers(x=>x.Ignore());
+
             CreateMap<CreateBiographyViewModel, Domain.Models.Biography>()
                 .ForMember(x => x.State, opt => opt.Ignore())
                 .ForMember(x => x.Player, opt => opt.Ignore())
@@ -54,7 +60,7 @@ namespace SPMS.Application.Common.Mappings
             CreateMap<Domain.Models.Biography, EditBiographyDto>()
                 .ForMember(x => x.Posting, opt => opt.MapFrom(y => y.Posting.Name))
                 .ForMember(x => x.Player,
-                    opt => opt.MapFrom(y => new PlayerDto()
+                     opt => opt.MapFrom(y => new PlayerDto()
                     { Id = y.Player.Id, AuthString = y.Player.AuthString, DisplayName = y.Player.DisplayName }))
                 .ForMember(x => x.Statuses, opt => opt.Ignore())
                 .ForMember(x => x.Postings, opt => opt.Ignore())
