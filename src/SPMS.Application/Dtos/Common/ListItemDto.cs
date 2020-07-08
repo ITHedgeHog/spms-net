@@ -2,6 +2,10 @@
 {
     public class ListItemDto
     {
+        public ListItemDto()
+        {
+            
+        }
         public ListItemDto(string text, string value)
         {
             Value = value;

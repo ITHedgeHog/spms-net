@@ -1,12 +1,17 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SPMS.Application.Character.Command;
 using SPMS.Application.Dtos;
 using SPMS.Application.Dtos.Common;
+using SPMS.Application.Dtos.Story;
+using SPMS.Application.Services;
+using SPMS.Application.Story.Query;
 using SPMS.ViewModel;
 using SPMS.ViewModel.character;
 using SPMS.ViewModel.Common;
+using SPMS.ViewModel.Story;
 
 namespace SPMS.Application.Common.Mappings
 {
@@ -53,9 +58,64 @@ namespace SPMS.Application.Common.Mappings
             CreateMap<EditCharacterViewModel, UpdateCharacterCommand>()
                 .ForMember(x => x.Player, o => o.Ignore())
                 .ForMember(x => x.Type, o => o.Ignore())
-                //.ForMember(x => x.Statuses, o => o.Ignore())
-                .ForMember(x => x.Status, o => o.Ignore())
-                ;
+                .ForMember(x => x.Status, o => o.Ignore());
+
+            CreateMap<StoryPostDto, StoryPostViewModel>()
+                .ForMember(x => x.Id, o => o.MapFrom<IdHiderResolver>())
+                .ForMember(x => x.NextPost, o => o.Ignore())
+                .ForMember(x => x.LastPost, o => o.Ignore())
+                .ForMember(x => x.gravatar, o => o.Ignore())
+                .ForMember(x => x.IsReadOnly, o => o.Ignore())
+                .ForMember(x => x.SiteAnalytics, o => o.Ignore())
+                .ForMember(x => x.SiteDisclaimer, o => o.Ignore())
+                .ForMember(x => x.SiteTitle, o => o.Ignore())
+                .ForMember(x => x.UseAnalytics, o => o.Ignore())
+                .ForMember(x => x.IsPlayer, o => o.Ignore())
+                .ForMember(x => x.IsAdmin, o => o.Ignore())
+                .ForMember(x => x.CommitSha, o => o.Ignore())
+                .ForMember(x => x.CommitShaLink, o => o.Ignore())
+                .ForMember(x => x.GameName, o => o.Ignore());
+
+            CreateMap<StoryPostViewModel, StoryPostDto>()
+                .ForMember(x => x.Id, o => o.MapFrom<IdRevealerResolver>())
+                .ForMember(x => x.EpisodeEntryStatusId, o => o.Ignore())
+                .ForMember(x => x.EpisodeEntryStatus, o => o.Ignore())
+                .ForMember(x => x.EpisodeEntryPlayer, o => o.Ignore())
+                .ForMember(x => x.EpisodeEntryTypeId, o => o.Ignore())
+                .ForMember(x => x.EpisodeEntryType, o => o.Ignore())
+                .ForMember(x => x.EpisodeId, o => o.Ignore())
+                .ForMember(x => x.Episode, o => o.Ignore())
+                .ForMember(x=>x.PostedBy, o =>o.Ignore());
+        }
+    }
+
+    public class IdHiderResolver : IValueResolver<StoryPostDto, StoryPostViewModel, string>
+    {
+        private readonly IIdentifierMask _masker;
+
+        public IdHiderResolver(IIdentifierMask masker)
+        {
+            _masker = masker;
+        }
+
+        public string Resolve(StoryPostDto source, StoryPostViewModel destination, string destMember, ResolutionContext context)
+        {
+            return _masker.HideId(source.Id);
+        }
+    }
+
+    public class IdRevealerResolver : IValueResolver<StoryPostViewModel, StoryPostDto, int>
+    {
+        private readonly IIdentifierMask _masker;
+
+        public IdRevealerResolver(IIdentifierMask masker)
+        {
+            _masker = masker;
+        }
+
+        public int Resolve(StoryPostViewModel source,  StoryPostDto destination, int destMember, ResolutionContext context)
+        {
+            return _masker.RevealId(source.Id);
         }
     }
 }

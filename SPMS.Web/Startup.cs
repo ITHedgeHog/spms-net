@@ -19,6 +19,7 @@ using Microsoft.FeatureManagement;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Services;
 using SPMS.Web.Areas.player.Hubs;
 using SPMS.Web.Filter;
 using SPMS.Web.Policy;

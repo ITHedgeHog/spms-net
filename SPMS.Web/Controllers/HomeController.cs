@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SPMS.Application.Services;
+using SPMS.ViewModel.Home;
 using SPMS.Web.Models;
 using SPMS.Web.Service;
 
@@ -24,7 +25,7 @@ namespace SPMS.Web.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var vm = new Common.ViewModels.ViewModel();
+            var vm = new HomeViewModel();
             return View(vm);
         }
 

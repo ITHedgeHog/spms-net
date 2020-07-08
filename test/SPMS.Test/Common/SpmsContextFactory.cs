@@ -31,7 +31,7 @@ namespace SPMS.Application.Tests.Common
 
             var game = new Game() { SiteTitle = "Test Game", Description = "The test game", Name = "Test Game", Url = new Collection<GameUrl>(){new GameUrl(){ Url = "localhost"}}};
             context.Game.Add(game);
-            var series = new Series() {Game = game, Title = "Series 1"};
+            var series = new Series() {Game = game, Title = "Series 1", IsActive = true};
             context.Series.Add(series);
             var episode = new Episode()
             {
@@ -40,6 +40,11 @@ namespace SPMS.Application.Tests.Common
                 Status = new EpisodeStatus() { Name = StaticValues.Published }
             };
             context.Episode.Add(episode);
+
+            // Biography Lookups 
+            context.BiographyTypes.Add(new BiographyType() {Name = StaticValues.BioTypePlayer, Default = true, GameId = game.Id});
+            context.BiographyTypes.Add(new BiographyType() { Name = StaticValues.BioTypeNpc, Default = false, GameId = game.Id });
+            context.BiographyTypes.Add(new BiographyType() { Name = StaticValues.BioTypePoc, Default = false, GameId = game.Id });
 
             context.SaveChanges();
 

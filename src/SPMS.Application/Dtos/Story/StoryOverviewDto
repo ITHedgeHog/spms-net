@@ -2,43 +2,44 @@
 using System.Collections.Generic;
 using SPMS.Application.Dtos.Authoring;
 using SPMS.Common.ViewModels;
+using SPMS.ViewModel.Story;
 
 namespace SPMS.Application.Dtos.Story
 {
-    public class SeriesOverviewViewModel : SPMS.Common.ViewModels.ViewModel
+    public class StoryOverviewDto : SPMS.Common.ViewModels.ViewModel
     {
-        public SeriesOverviewViewModel()
+        public StoryOverviewDto()
         {
-            ForthComingSeries = new List<SeriesViewModel>();
-            ForthComingEpisodes = new List<EpisodeViewModel>();
+            ForthComingSeries = new List<SeriesDto>();
+            ForthComingEpisodes = new List<EpisodeDto>();
         }
 
-        public List<SeriesViewModel> ForthComingSeries { get; set; }
-        public List<EpisodeViewModel> ForthComingEpisodes { get; set; }
-        public SeriesViewModel CurrentSeries { get; set; }
-        public EpisodeViewModel CurrentEpisode { get; set; }
+        public List<SeriesDto> ForthComingSeries { get; set; }
+        public List<EpisodeDto> ForthComingEpisodes { get; set; }
+        public SeriesDto CurrentSeries { get; set; }
+        public EpisodeDto CurrentEpisode { get; set; }
     }
 
-    public class SeriesViewModel
+    public class SeriesDto
     {
-        public SeriesViewModel()
+        public SeriesDto()
         {
-            Episodes = new List<EpisodeViewModel>();
+            Episodes = new List<EpisodeDto>();
         }
 
-        public List<EpisodeViewModel> Episodes { get; set; }
+        public List<EpisodeDto> Episodes { get; set; }
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
     }
 
-    public class EpisodeViewModel
+    public class EpisodeDto
     {
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Banner { get; set; }
-        public List<PostViewModel> Story { get; internal set; }
+        public List<StoryPostDto> Story { get; set; }
     }
 
     public class PostViewModel

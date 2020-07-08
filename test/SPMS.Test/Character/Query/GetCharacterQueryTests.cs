@@ -45,6 +45,7 @@ namespace SPMS.Application.Tests.Character.Query
             result.ShouldBeOfType<EditBiographyDto>();
             result.Firstname.ShouldBe("Dan");
             result.Surname.ShouldBe("Taylor");
+            result.Types.ShouldNotBeEmpty();
         }
 
         [Fact]
@@ -63,6 +64,8 @@ namespace SPMS.Application.Tests.Character.Query
             result.ShouldBeOfType<EditBiographyDto>();
             result.Firstname.ShouldBeNullOrEmpty();
             result.Surname.ShouldBeNullOrEmpty();
+
+            result.Types.ShouldNotBeEmpty();
         }
 
         [Fact]
@@ -81,6 +84,8 @@ namespace SPMS.Application.Tests.Character.Query
             result.ShouldBeOfType<EditBiographyDto>();
             result.Firstname.ShouldBe("Dan");
             result.Surname.ShouldBe("Taylor");
+
+            result.Types.ShouldNotBeEmpty();
         }
 
         [Fact]
