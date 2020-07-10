@@ -52,7 +52,11 @@ namespace SPMS.Persistence.PostgreSQL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+<<<<<<< HEAD
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(SpmsContextConfiguration).Assembly);
+=======
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(SpmsContext).Assembly);
+>>>>>>> main
         }
 
         public DbSet<Biography> Biography { get; set; }

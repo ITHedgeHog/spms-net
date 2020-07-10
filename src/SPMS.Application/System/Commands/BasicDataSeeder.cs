@@ -199,7 +199,6 @@ namespace SPMS.Application.System.Commands
                         await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "spms0.rpg-hosting.net" }, cancellationToken);
                     }
 
-
                     // Ensure Analyitics is set.
 
                     game.SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->

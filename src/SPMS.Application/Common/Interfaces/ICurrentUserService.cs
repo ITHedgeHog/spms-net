@@ -10,5 +10,6 @@
         bool IsNew();
         string GetFirstname();
         string GetSurname();
+
     }
 }

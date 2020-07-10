@@ -14,6 +14,7 @@ using SPMS.Application.System.Commands;
 using SPMS.Common;
 using SPMS.Persistence.MSSQL;
 
+
 namespace SPMS.Web
 {
     public class Program
@@ -32,13 +33,9 @@ namespace SPMS.Web
                     try
                     {
                         var spmsContext = services.GetService<SpmsContext>();
-
                         await spmsContext.Database.MigrateAsync();
-
                         var mediator = services.GetRequiredService<IMediator>();
-
                         await mediator.Send(new BasicDataSeederCommand());
-
                     }
                     catch (Exception ex)
                     {

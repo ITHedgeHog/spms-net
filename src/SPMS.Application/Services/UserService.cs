@@ -124,6 +124,7 @@ namespace SPMS.Application.Services
             //    _context.SaveChanges();
             //}
 
+
             return _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).First<Player>(x => x.AuthString == authId);
         }
 

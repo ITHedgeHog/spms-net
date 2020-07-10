@@ -22,8 +22,6 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.Firstname, o => o.Ignore())
                 .ForMember(x => x.Surname, o => o.Ignore());
 
-
-
         }
     }
 }

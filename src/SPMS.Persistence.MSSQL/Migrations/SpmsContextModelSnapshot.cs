@@ -78,6 +78,7 @@ namespace SPMS.Persistence.MSSQL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("StateId")
+
                         .HasColumnType("int");
 
                     b.Property<int>("StatusId")
@@ -102,13 +103,14 @@ namespace SPMS.Persistence.MSSQL.Migrations
 
                     b.HasIndex("StatusId");
 
+
                     b.HasIndex("TypeId");
 
                     b.ToTable("Biography");
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.BiographyState", b =>
-                {
+            {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
@@ -135,7 +137,7 @@ namespace SPMS.Persistence.MSSQL.Migrations
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.BiographyStatus", b =>
-                {
+            {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")

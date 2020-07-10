@@ -15,6 +15,7 @@ namespace SPMS.Web.Service
 
         public string GetAuthId()
         {
+
             if (_httpContext != null && _httpContext.User.Identity.IsAuthenticated)
             {
                 return _httpContext.User.Claims
@@ -33,6 +34,7 @@ namespace SPMS.Web.Service
         public string GetName()
         {
             return _httpContext.User.Identity.Name;
+
         }
 
         public string GetEmail()

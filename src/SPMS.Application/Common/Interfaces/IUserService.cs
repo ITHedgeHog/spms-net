@@ -15,5 +15,6 @@ namespace SPMS.Application.Common.Interfaces
         Task<string> GetEmailAsync(CancellationToken token);
         bool IsAuthenticated();
         Task CreateNewPlayer(CancellationToken cancellationToken);
+
     }
 }

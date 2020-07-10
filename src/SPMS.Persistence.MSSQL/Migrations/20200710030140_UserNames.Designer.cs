@@ -137,7 +137,7 @@ namespace SPMS.Persistence.MSSQL.Migrations
                 });
 
             modelBuilder.Entity("SPMS.Domain.Models.BiographyStatus", b =>
-                {
+            {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnName("Id")
@@ -161,7 +161,7 @@ namespace SPMS.Persistence.MSSQL.Migrations
                     b.HasIndex("GameId");
 
                     b.ToTable("BiographyStatus");
-                });
+        });
 
             modelBuilder.Entity("SPMS.Domain.Models.BiographyType", b =>
                 {
@@ -611,6 +611,7 @@ namespace SPMS.Persistence.MSSQL.Migrations
                         .IsRequired();
 
                     b.HasOne("SPMS.Domain.Models.EpisodeStatus", "Status")
+
                         .WithMany()
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)

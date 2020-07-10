@@ -1,30 +1,20 @@
 using System;
-using System.Threading.Tasks;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.Services;
 using SPMS.Web.Areas.player.Hubs;
 using SPMS.Web.Filter;
 using SPMS.Web.Policy;
 using SPMS.Web.Service;
-using StackExchange.Redis;
 using Westwind.AspNetCore.Markdown;
 
 namespace SPMS.Web
@@ -60,7 +50,6 @@ namespace SPMS.Web
 
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
                 // Handling SameSite cookie according to https://docs.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-3.1
@@ -149,6 +138,7 @@ namespace SPMS.Web
             //        }
             //    };
             //});
+
 
             // Policies
             services.AddAuthorization(options =>
