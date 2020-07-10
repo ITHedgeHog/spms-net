@@ -69,11 +69,16 @@
                     <li class="navbar-text">Hello @User.Identity.Name</li>
                     <!-- The Account controller is not defined in this project. Instead, it is part of Microsoft.Identity.Web.UI nuget package and
                     it defines some well known actions such as SignUp/In, SignOut and EditProfile-->
-                    @*<li class="navbar-btn">
+                    <li class="navbar-btn">
+                        <form method="get" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="ResetPassword">
+                            <button type="submit" class="btn btn-primary" style="margin-right:5px">Edit Profile</button>
+                        </form>
+                    </li>
+                    <li class="navbar-btn">
                         <form method="get" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="EditProfile">
                             <button type="submit" class="btn btn-primary" style="margin-right:5px">Edit Profile</button>
                         </form>
-                    </li>*@
+                    </li>
                     <li class="navbar-item">
                         <form method="get" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignOut">
                             <button type="submit" class="btn btn-primary">Sign Out</button>
