@@ -23,6 +23,9 @@ namespace SPMS.Web.Controllers
             _gameService = gameService;
         }
 
+        [Route("")]
+        [Route("Home")]
+        [Route("Home/Index")]
         public async Task<IActionResult> Index()
         {
             var vm = new HomeViewModel();

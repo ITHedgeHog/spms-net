@@ -24,11 +24,11 @@ namespace SPMS.Persistence.MSSQL
 
         private TContext Create(string basePath, string environmentName)
         {
-
+            Console.WriteLine(environmentName);
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(basePath)
                 .AddJsonFile("appsettings.json")
-                .AddJsonFile($"appsettings.Local.json", optional: true)
+                .AddJsonFile($"appsettings.Development.json", optional: true)
                 .AddJsonFile($"appsettings.{environmentName}.json", optional: true)
                 .AddEnvironmentVariables()
                 .Build();

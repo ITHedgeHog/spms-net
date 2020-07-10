@@ -7,5 +7,8 @@
         bool IsAuthenticated();
         string GetName();
         string GetEmail();
+        bool IsNew();
+        string GetFirstname();
+        string GetSurname();
     }
 }

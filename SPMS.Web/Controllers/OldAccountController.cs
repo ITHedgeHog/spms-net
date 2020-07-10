@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SPMS.Web.Controllers
 {
-    public class AccountController : Controller
+    public class OldAccountController : Controller
     {
         public async Task Login(string returnUrl = "/")
         {

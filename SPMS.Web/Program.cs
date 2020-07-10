@@ -45,7 +45,7 @@ namespace SPMS.Web
                         var logger = services.GetRequiredService<ILogger<Program>>();
                         logger.LogError(ex, "An error occurred whilst migrating or initialising the database.");
                     }
-                }
+                } 
 
                 host.Run();
             }

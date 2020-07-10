@@ -38,7 +38,24 @@ namespace SPMS.Web.Service
         public string GetEmail()
         {
             return _httpContext.User.Claims.First(x =>
-                x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+                x.Type == "emails").Value;
+        }
+
+        public bool IsNew()
+        {
+            return bool.TryParse(_httpContext.User.Claims.FirstOrDefault(x => x.Type == "newUser")?.Value, out var isNewClaim) && isNewClaim;
+        }
+
+        public string GetFirstname()
+        {
+            return _httpContext.User.Claims.First(x =>
+                x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname").Value;
+        }
+
+        public string GetSurname()
+        {
+            return _httpContext.User.Claims.First(x =>
+                x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname").Value;
         }
     }
 }
