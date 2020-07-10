@@ -7,7 +7,7 @@ using Shouldly;
 using SPMS.Application.Authoring.Command.PublishPost;
 using SPMS.Common;
 using SPMS.Domain.Models;
-using SPMS.Persistence.PostgreSQL;
+using SPMS.Persistence.MSSQL;
 using Xunit;
 using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 

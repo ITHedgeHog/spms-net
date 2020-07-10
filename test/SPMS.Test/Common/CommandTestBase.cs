@@ -1,5 +1,6 @@
 ﻿using System;
-using SPMS.Persistence.PostgreSQL;
+using SPMS.Persistence.MSSQL;
+
 
 namespace SPMS.Application.Tests.Common
 {

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Common;
 using SPMS.Domain.Models;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SPMS.Application.Services
 {
@@ -98,30 +99,35 @@ namespace SPMS.Application.Services
 
         private Player GetPlayer()
         {
+            //var isNew = _currentUser.IsNew();
             var authId = GetAuthId();
 
-            if (!_context.Player.Any<Player>(x => x.AuthString == authId))
-            {
-                var player = new Player()
-                {
-                    DisplayName = _currentUser.GetName(),
-                    AuthString = authId,
-                    Email = _currentUser.GetEmail()
-                };
+            //if (isNew && !_context.Player.Any(x => x.AuthString == authId))
+            //{
+            //    var player = new Player()
+            //    {
+            //        DisplayName = _currentUser.GetName(),
+            //        AuthString = authId,
+            //        Email = _currentUser.GetEmail(),
+            //        Firstname = _currentUser.GetFirstname(),
+            //        Surname = _currentUser.GetSurname()
+            //    };
 
-                if (!Queryable.Any<Player>(_context.Player))
-                {
-                    foreach (var role in _context.PlayerRole)
-                    {
-                        player.Roles.Add(new PlayerRolePlayer() { PlayerRoleId = role.Id });
-                    }
-                }
-                _context.Player.Add(player);
-                _context.SaveChanges();
-            }
+            //    if (!_context.Player.Any())
+            //    {
+            //        foreach (var role in _context.PlayerRole)
+            //        {
+            //            player.Roles.Add(new PlayerRolePlayer() { PlayerRoleId = role.Id });
+            //        }
+            //    }
+            //    _context.Player.Add(player);
+            //    _context.SaveChanges();
+            //}
+
 
             return _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).First<Player>(x => x.AuthString == authId);
         }
+
 
         public Player GetPlayerFromDatabase()
         {
@@ -137,7 +143,37 @@ namespace SPMS.Application.Services
 
         public bool IsAuthenticated()
         {
+            //var player = GetPlayer();
             return _currentUser.IsAuthenticated();
+        }
+
+        public async Task CreateNewPlayer(CancellationToken cancellationToken)
+        {
+            var authId = GetAuthId();
+
+            if (!string.IsNullOrEmpty(authId) && !_context.Player.Any(x => x.AuthString == authId))
+            {
+                var player = new Player()
+                {
+                    DisplayName = _currentUser.GetName(),
+                    AuthString = authId,
+                    Email = _currentUser.GetEmail(),
+                    Firstname = _currentUser.GetFirstname(),
+                    Surname = _currentUser.GetSurname()
+                };
+
+                if (!_context.Player.Any())
+                {
+                    foreach (var role in _context.PlayerRole)
+                    {
+                        player.Roles.Add(new PlayerRolePlayer() { PlayerRoleId = role.Id });
+                    }
+                }
+                await _context.Player.AddAsync(player, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+
+            //return _context.Player.Include(p => p.Roles).ThenInclude(role => role.PlayerRole).First<Player>(x => x.AuthString == authId);
         }
     };
 }

@@ -1,30 +1,20 @@
 using System;
-using System.Threading.Tasks;
-using Amazon.S3;
-using AspNetCore.DataProtection.Aws.S3;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.Services;
 using SPMS.Web.Areas.player.Hubs;
 using SPMS.Web.Filter;
 using SPMS.Web.Policy;
 using SPMS.Web.Service;
-using StackExchange.Redis;
 using Westwind.AspNetCore.Markdown;
 
 namespace SPMS.Web
@@ -41,134 +31,113 @@ namespace SPMS.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", Configuration["AWS:AccessKey"]);
-            Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration["AWS:SecretKey"]);
-            // Add Services
-            services.AddHttpContextAccessor();
-            
+            services.AddOptions();
             SPMS.Infrastructure.DependencyInjection.AddInfrastructure(services, Configuration);
-            SPMS.Persistence.PostgreSQL.DependencyInjection.AddPersistence(services, Configuration);
+            SPMS.Persistence.MSSQL.DependencyInjection.AddPersistence(services, Configuration);
             SPMS.Application.DependencyInjection.AddApplication(services);
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
-            services.AddScoped<IIdentifierMask, IdentifierMasking>();
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
+            services.AddHttpContextAccessor();
 
-
-
-
-
-            var s3Config = new AmazonS3Config()
-            {
-                ServiceURL = "https://ams3.digitaloceanspaces.com"
-            };
-            // Configure your AWS SDK however you usually would do so e.g. IAM roles, environment variables
-            services.TryAddSingleton<IAmazonS3>(new AmazonS3Client(s3Config)
-            {
-
-            });
-
-            // Assumes a Configuration property set as IConfigurationRoot similar to ASP.NET docs
-            services.AddDataProtection()
-                .SetApplicationName(Configuration.GetValue<string>("cluster-name")) // Not required by S3 storage but a requirement for server farms
-                .PersistKeysToAwsS3(Configuration.GetSection("S3Persistence"));
+            //services.Configure<CookiePolicyOptions>(options =>
+            //{
+            //    options.CheckConsentNeeded = context => true;
+            //    options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
+            //    options.OnAppendCookie = cookieContext =>
+            //        CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
+            //    options.OnDeleteCookie = cookieContext =>
+            //        CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
+            //});
 
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
-                options.OnAppendCookie = cookieContext =>
-                    CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
-                options.OnDeleteCookie = cookieContext =>
-                    CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
+                // Handling SameSite cookie according to https://docs.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-3.1
+                options.HandleSameSiteCookieCompatibility();
             });
 
-            // Add authentication services
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-            .AddCookie()
-            .AddOpenIdConnect("Auth0", options =>
-            {
-                // Set the authority to your Auth0 domain
-                options.Authority = $"https://{Configuration["Auth0:Domain"]}";
+            services.AddSignIn(Configuration, "AzureAdB2C");
+            //// Add authentication services
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //})
+            //.AddCookie()
+            //.AddOpenIdConnect("Auth0", options =>
+            //{
+            //    // Set the authority to your Auth0 domain
+            //    options.Authority = $"https://{Configuration["Auth0:Domain"]}";
 
-                // Configure the Auth0 Client ID and Client Secret
-                options.ClientId = Configuration["Auth0:ClientId"];
-                options.ClientSecret = Configuration["Auth0:ClientSecret"];
+            //    // Configure the Auth0 Client ID and Client Secret
+            //    options.ClientId = Configuration["Auth0:ClientId"];
+            //    options.ClientSecret = Configuration["Auth0:ClientSecret"];
 
-                // Set response type to code
-                options.ResponseType = OpenIdConnectResponseType.Code;
+            //    // Set response type to code
+            //    options.ResponseType = OpenIdConnectResponseType.Code;
 
-                // Configure the scope
-                options.Scope.Add("openid");
+            //    // Configure the scope
+            //    options.Scope.Add("openid");
 
-                // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
-                // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
-                options.CallbackPath = new PathString("/callback");
+            //    // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
+            //    // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
+            //    options.CallbackPath = new PathString("/callback");
 
-                // Configure the Claims Issuer to be Auth0
-                options.ClaimsIssuer = "Auth0";
+            //    // Configure the Claims Issuer to be Auth0
+            //    options.ClaimsIssuer = "Auth0";
 
-                // Configure the scope
-                options.Scope.Clear();
-                options.Scope.Add("openid");
-                options.Scope.Add("profile");
-                options.Scope.Add("email");
-                //     options.Scope.Add("roles");
+            //    // Configure the scope
+            //    options.Scope.Clear();
+            //    options.Scope.Add("openid");
+            //    options.Scope.Add("profile");
+            //    options.Scope.Add("email");
+            //    //     options.Scope.Add("roles");
 
-                // Set the correct name claim type
-                options.TokenValidationParameters = new TokenValidationParameters
-                {
-                    NameClaimType = "name",
-                    RoleClaimType = "https://schemas.quickstarts.com/roles"
-                };
+            //    // Set the correct name claim type
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        NameClaimType = "name",
+            //        RoleClaimType = "https://schemas.quickstarts.com/roles"
+            //    };
 
-                options.Events = new OpenIdConnectEvents
-                {
-                    // handle the logout redirection
-                    OnRedirectToIdentityProviderForSignOut = (context) =>
-                    {
-                        var logoutUri = $"https://{Configuration["Auth0:Domain"]}/v2/logout?client_id={Configuration["Auth0:ClientId"]}";
+            //    options.Events = new OpenIdConnectEvents
+            //    {
+            //        // handle the logout redirection
+            //        OnRedirectToIdentityProviderForSignOut = (context) =>
+            //        {
+            //            var logoutUri = $"https://{Configuration["Auth0:Domain"]}/v2/logout?client_id={Configuration["Auth0:ClientId"]}";
 
-                        var postLogoutUri = context.Properties.RedirectUri;
-                        if (!string.IsNullOrEmpty(postLogoutUri))
-                        {
-                            if (postLogoutUri.StartsWith("/"))
-                            {
-                                // transform to absolute
-                                var request = context.Request;
-                                postLogoutUri = request.Scheme + "://" + request.Host + request.PathBase + postLogoutUri;
-                            }
-                            logoutUri += $"&returnTo={ Uri.EscapeDataString(postLogoutUri)}";
-                        }
+            //            var postLogoutUri = context.Properties.RedirectUri;
+            //            if (!string.IsNullOrEmpty(postLogoutUri))
+            //            {
+            //                if (postLogoutUri.StartsWith("/"))
+            //                {
+            //                    // transform to absolute
+            //                    var request = context.Request;
+            //                    postLogoutUri = request.Scheme + "://" + request.Host + request.PathBase + postLogoutUri;
+            //                }
+            //                logoutUri += $"&returnTo={ Uri.EscapeDataString(postLogoutUri)}";
+            //            }
 
-                        context.Response.Redirect(logoutUri);
-                        context.HandleResponse();
+            //            context.Response.Redirect(logoutUri);
+            //            context.HandleResponse();
 
-                        return Task.CompletedTask;
-                    },
-                    OnRemoteFailure = (ctx) =>
-                    {
-                        TelemetryConfiguration tc1 = TelemetryConfiguration.CreateDefault();
-                        tc1.InstrumentationKey = Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
+            //            return Task.CompletedTask;
+            //        },
+            //        OnRemoteFailure = (ctx) =>
+            //        {
+            //            TelemetryConfiguration tc1 = TelemetryConfiguration.CreateDefault();
+            //            tc1.InstrumentationKey = Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
 
-                        var client = new TelemetryClient(tc1);
-                        client.TrackException(ctx.Failure);
-                        //ai.
-                        // React to the error here. See the notes below.
-                        return Task.CompletedTask;
-                    }
-                };
-            });
-
-
-
-            
-            
-
-
+            //            var client = new TelemetryClient(tc1);
+            //            client.TrackException(ctx.Failure);
+            //            //ai.
+            //            // React to the error here. See the notes below.
+            //            return Task.CompletedTask;
+            //        }
+            //    };
+            //});
 
 
             // Policies
@@ -199,63 +168,20 @@ namespace SPMS.Web
 
             services.AddMarkdown();
 
-            services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddRazorRuntimeCompilation().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
+
+
+            // services.AddRazorPages();
+
+            services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddMicrosoftIdentityUI()
+                .AddRazorRuntimeCompilation().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
+
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
             services.AddFeatureManagement();
 
             services.AddSignalR(o => o.EnableDetailedErrors = true)
-                .AddMessagePackProtocol()
-                .AddStackExchangeRedis(o =>
-                {
-                    o.ConnectionFactory = async writer =>
-                    {
-                        var cnx = Configuration.GetConnectionString("Redis");
-                        try
-                        {
-                            var config = ConfigurationOptions.Parse(cnx);
-                            config.AbortOnConnectFail = false;
-                            config.AllowAdmin = false;
-                            config.ChannelPrefix = "SPMS"; // TODO Link to Tenant Here.
-                            config.SetDefaultPorts();   
-                            config.ReconnectRetryPolicy = new ExponentialRetry(5000);
-                            config.ConnectRetry = 5;
-                            config.Ssl = true;
-                            var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
-                            connection.ConnectionFailed += (_, e) =>
-                            {
-                                TelemetryConfiguration tc1 = TelemetryConfiguration.CreateDefault();
-                                tc1.InstrumentationKey = Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
+                .AddMessagePackProtocol().AddAzureSignalR();
 
-                                var client = new TelemetryClient(tc1);
-                                client.TrackException(e.Exception);
-                                //ai.
-                            };
-
-                            if (!connection.IsConnected)
-                            {
-                                Console.WriteLine("Did not connect to Redis. ");
-                            }
-                            return connection;
-                        }
-                        catch (Exception ex)
-                        {
-                            TelemetryConfiguration tc1 = TelemetryConfiguration.CreateDefault();
-                            tc1.InstrumentationKey = Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
-
-                            var client = new TelemetryClient(tc1);
-                            client.TrackException(ex);
-                            //ai.
-
-                            return null;
-                        }
-
-
-                    };
-                });
-
-            services.AddApplicationInsightsTelemetry();
-
-
+            services.Configure<OpenIdConnectOptions>(Configuration.GetSection("AzureAdB2C"));
         }
 
 
@@ -272,18 +198,6 @@ namespace SPMS.Web
             });
 
 
-            //TODO: Convert this to a Mediator Command
-            //context.Database.EnsureDeleted();
-            //if (Configuration.GetValue<bool>("MigrateAndSeed"))
-            //{
-            //    context.Database.Migrate();
-            //    Seed.SeedDefaults(context);
-            //}
-
-            //if (Configuration.GetValue<bool>("SeedBtd"))
-            //{
-            //    Seed.SeedBtd(context);
-            //}
             if (env.IsDevelopment() || Configuration.GetValue<bool>("ShowErrors"))
             {
                 app.UseDeveloperExceptionPage();

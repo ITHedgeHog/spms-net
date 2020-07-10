@@ -16,7 +16,7 @@ using SPMS.Application.Story.Query;
 using SPMS.Application.Tests.Mapping;
 using SPMS.Common;
 using SPMS.Domain.Models;
-using SPMS.Persistence.PostgreSQL;
+using SPMS.Persistence.MSSQL;
 using Xunit;
 using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 

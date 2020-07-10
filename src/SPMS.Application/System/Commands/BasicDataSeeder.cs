@@ -181,7 +181,7 @@ namespace SPMS.Application.System.Commands
                 // Add Game URL's
 
                 await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "www.beyond-the-darkness.com" }, cancellationToken);
-                await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "spms0.beyond-the-darkness.com" }, cancellationToken);
+                await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "spms0.rpg-hosting.net" }, cancellationToken);
                 await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "btd.beyond-the-darkness.com" }, cancellationToken);
             }
             else
@@ -190,8 +190,14 @@ namespace SPMS.Application.System.Commands
 
                 try
                 {
-                    game = await db.Game.FirstOrDefaultAsync(g => g.Name == StaticValues.DefaultGameName,
+                    game = await db.Game.Include(x => x.Url).FirstOrDefaultAsync(g => g.Name == StaticValues.DefaultGameName,
                         cancellationToken: cancellationToken);
+
+
+                    if (!game.Url.Any(x => x.Url == "spms0.rpg-hosting.net"))
+                    {
+                        await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "spms0.rpg-hosting.net" }, cancellationToken);
+                    }
 
                     // Ensure Analyitics is set.
 

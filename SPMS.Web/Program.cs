@@ -12,7 +12,8 @@ using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Services;
 using SPMS.Application.System.Commands;
 using SPMS.Common;
-using SPMS.Persistence.PostgreSQL;
+using SPMS.Persistence.MSSQL;
+
 
 namespace SPMS.Web
 {
@@ -20,31 +21,39 @@ namespace SPMS.Web
     {
         public static async Task Main(string[] args)
         {
-           var host = CreateHostBuilder(args).Build();
+            try
+            {
 
-           using (var scope = host.Services.CreateScope())
-           {
-               var services = scope.ServiceProvider;
+                var host = CreateHostBuilder(args).Build();
 
-               try
-               {
-                   var spmsContext = services.GetService<SpmsContext>();
+                using (var scope = host.Services.CreateScope())
+                {
+                    var services = scope.ServiceProvider;
 
-                   await spmsContext.Database.MigrateAsync();
+                    try
+                    {
+                        var spmsContext = services.GetService<SpmsContext>();
+                        await spmsContext.Database.MigrateAsync();
+                        var mediator = services.GetRequiredService<IMediator>();
+                        await mediator.Send(new BasicDataSeederCommand());
+                    }
+                    catch (Exception ex)
+                    {
+                        var logger = services.GetRequiredService<ILogger<Program>>();
+                        logger.LogError(ex, "An error occurred whilst migrating or initialising the database.");
+                    }
+                } 
 
-                   var mediator = services.GetRequiredService<IMediator>();
-                   
-                   await mediator.Send(new BasicDataSeederCommand());
-
-               }
-               catch (Exception ex)
-               {
-                   var logger = services.GetRequiredService<ILogger<Program>>();
-                   logger.LogError(ex, "An error occurred whilst migrating or initialising the database.");
-               }
-           }
-
-           host.Run();
+                host.Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine(ex.InnerException.Message);
+                }
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args)

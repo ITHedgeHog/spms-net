@@ -18,9 +18,9 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(p=>p.Roles, opt=>opt.Ignore())
                 .ForMember(p=>p.EpisodeEntries, o => o.Ignore())
                 .ForMember(x => x.Connections, o=>o.Ignore())
-                .ForMember(x=>x.Email, o=>o.Ignore());
-            
-
+                .ForMember(x=>x.Email, o=>o.Ignore())
+                .ForMember(x => x.Firstname, o => o.Ignore())
+                .ForMember(x => x.Surname, o => o.Ignore());
 
         }
     }

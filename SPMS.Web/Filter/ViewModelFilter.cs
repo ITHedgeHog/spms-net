@@ -30,11 +30,13 @@ namespace SPMS.Web.Filter
             ActionExecutionDelegate next)
         {
             // Do something before the action executes.
+            await _userService.CreateNewPlayer(CancellationToken.None);
 
             // next() calls the action method.
             var resultContext = await next();
             // resultContext.Result is set.
             // Do something after the action executes.
+            //await _userService.CreateNewPlayer(CancellationToken.None);
             if (resultContext.Controller is Controller controller)
             {
                 if (controller.ViewData.Model is Common.ViewModels.ViewModel model)

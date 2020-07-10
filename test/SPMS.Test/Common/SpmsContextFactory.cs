@@ -3,7 +3,8 @@ using System.Collections.ObjectModel;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Common;
 using SPMS.Domain.Models;
-using SPMS.Persistence.PostgreSQL;
+using SPMS.Persistence.MSSQL;
+
 
 namespace SPMS.Application.Tests.Common
 {
