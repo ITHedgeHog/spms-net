@@ -24,7 +24,7 @@ namespace SPMS.Application.Services
         private readonly IUserService _userService;
         private readonly IGameService _gameService;
         private readonly IMapper _mapper;
-        private TelemetryClient _telemetry;
+        private readonly TelemetryClient _telemetry;
 
         public AuthoringService(ISpmsContext context, IMapper mapper, IGameService gameService, IUserService userService, TelemetryClient telemetry)
         {

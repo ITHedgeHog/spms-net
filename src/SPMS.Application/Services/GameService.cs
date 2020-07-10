@@ -11,19 +11,19 @@ namespace SPMS.Application.Services
 {
     public class GameService : IGameService
     {
-        private readonly IHttpContextAccessor _httpContext;
+        private readonly HttpContext _httpContext;
         private readonly ISpmsContext _context;
 
         public GameService(ISpmsContext context, IHttpContextAccessor httpContext)
         {
             _context = context;
-            _httpContext = httpContext;
+            _httpContext = httpContext.HttpContext;
         }
 
         private async Task<Game> GetGameAsync()
         {
             // Get Current URL
-            var url = _httpContext.HttpContext.Request.Host.Host;
+            var url = _httpContext.Request.Host.Host;
 
             // Get Matching Game
 

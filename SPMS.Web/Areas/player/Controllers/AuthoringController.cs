@@ -139,6 +139,7 @@ namespace SPMS.Web.Controllers
 
         }
 
+        [Authorize]
         [HttpPost("player/author/post/autosave")]
         public async Task<IActionResult> ProcessAutoSave(AuthorPostDraftViewModel model, CancellationToken token)
         {

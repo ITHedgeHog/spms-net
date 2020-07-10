@@ -10,7 +10,7 @@ using SPMS.Application.Common.Mappings;
 using SPMS.Application.Dtos;
 using SPMS.Application.Services;
 using SPMS.Domain.Models;
-using SPMS.Persistence.PostgreSQL;
+using SPMS.Persistence.MSSQL;
 using Xunit;
 using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 

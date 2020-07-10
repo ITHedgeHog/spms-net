@@ -4,9 +4,9 @@ using SPMS.Domain.Models;
 
 namespace SPMS.Persistence.Configuration
 {
-    public class BiographyStatusConfiguration : IEntityTypeConfiguration<BiographyStatus>
+    public class PostingConfiguration : IEntityTypeConfiguration<Posting>
     {
-        public void Configure(EntityTypeBuilder<BiographyStatus> builder)
+        public void Configure(EntityTypeBuilder<Posting> builder)
         {
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id).UseIdentityColumn().HasColumnName("Id");

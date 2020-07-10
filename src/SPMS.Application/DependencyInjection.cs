@@ -23,6 +23,7 @@ namespace SPMS.Application
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IStoryService, StoryService>();
             services.AddScoped<IAuthoringService, AuthoringService>();
+            services.AddScoped<IIdentifierMask, IdentifierMasking>();
 
             return services;
         }

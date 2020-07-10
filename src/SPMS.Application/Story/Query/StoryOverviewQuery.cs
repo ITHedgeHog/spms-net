@@ -35,6 +35,7 @@ namespace SPMS.Application.Story.Query
             public async Task<StoryOverviewDto> Handle(StoryOverviewQuery request, CancellationToken cancellationToken)
             {
                 var gameId = await _gameService.GetGameIdAsync();
+                var episodeEntryStatusPublished = await _db.EpisodeEntryStatus.FirstAsync(x => x.Name == StaticValues.Published, cancellationToken: cancellationToken);
                 var currentSeries = await _db.Series.Where(s => s.GameId == gameId && s.IsActive)
                     .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
@@ -43,7 +44,7 @@ namespace SPMS.Application.Story.Query
                     await _db.Episode.FirstAsync(x => x.SeriesId == currentSeries.Id && x.StatusId == activeStatus.Id, cancellationToken: cancellationToken);
                 var currentStories =  await _db.EpisodeEntry.Include(e => e.EpisodeEntryStatus)
                     .Include(e => e.EpisodeEntryType)
-                    .Where(x => x.EpisodeId == currentEpisode.Id).OrderByDescending(x => x.PublishedAt).Take(5).ToListAsync(cancellationToken: cancellationToken);
+                    .Where(x => x.EpisodeId == currentEpisode.Id  && x.EpisodeEntryStatusId == episodeEntryStatusPublished.Id).OrderByDescending(x => x.PublishedAt).Take(5).ToListAsync(cancellationToken: cancellationToken);
 
                 var vm = new StoryOverviewDto();
                 //TODO Pull real data

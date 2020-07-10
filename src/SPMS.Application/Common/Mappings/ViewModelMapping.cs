@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SPMS.Application.Character.Command;
@@ -7,7 +6,6 @@ using SPMS.Application.Dtos;
 using SPMS.Application.Dtos.Common;
 using SPMS.Application.Dtos.Story;
 using SPMS.Application.Services;
-using SPMS.Application.Story.Query;
 using SPMS.ViewModel;
 using SPMS.ViewModel.character;
 using SPMS.ViewModel.Common;

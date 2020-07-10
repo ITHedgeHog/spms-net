@@ -14,7 +14,7 @@ namespace SPMS.Persistence.Configuration
             builder.Property(x => x.Name).HasMaxLength(255);
             builder.Property(x => x.SiteTitle).IsRequired();
             builder.Property(x => x.Disclaimer).IsRequired();
-
+            builder.Property(x => x.GameKey).IsRequired(false);
         }
     }
 }

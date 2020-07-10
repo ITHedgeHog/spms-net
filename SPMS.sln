@@ -17,11 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Domain", "src\SPMS.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Infrastructure", "src\SPMS.Infrastructure\SPMS.Infrastructure.csproj", "{C8648523-CFEE-4372-80DB-36CBC26E9384}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Persistence.PostgreSQL", "src\SPMS.Persistence.PostgreSQL\SPMS.Persistence.PostgreSQL.csproj", "{5D5B71FC-78A9-420D-9E79-9699CF1DC3B1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{72F4309D-A139-42D1-B0F1-230E6B885904}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMS.ViewModel", "src\SPMS.ViewModel\SPMS.ViewModel.csproj", "{430881E0-F0E6-4BFD-B8BB-2808B6FDCAC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.ViewModel", "src\SPMS.ViewModel\SPMS.ViewModel.csproj", "{430881E0-F0E6-4BFD-B8BB-2808B6FDCAC0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Persistence.MSSQL", "src\SPMS.Persistence.MSSQL\SPMS.Persistence.MSSQL.csproj", "{3ED4F0F3-8476-49E4-A1E7-CD69D24E2EA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Persistence", "src\SPMS.Persistence\SPMS.Persistence.csproj", "{3476AED8-17C3-456E-B0FE-2CD2EC1353B8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Persistence", "Persistence", "{2EF904FB-BFDF-4492-B65F-58FDB783F102}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,20 +61,26 @@ Global
 		{C8648523-CFEE-4372-80DB-36CBC26E9384}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C8648523-CFEE-4372-80DB-36CBC26E9384}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C8648523-CFEE-4372-80DB-36CBC26E9384}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D5B71FC-78A9-420D-9E79-9699CF1DC3B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D5B71FC-78A9-420D-9E79-9699CF1DC3B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D5B71FC-78A9-420D-9E79-9699CF1DC3B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D5B71FC-78A9-420D-9E79-9699CF1DC3B1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{430881E0-F0E6-4BFD-B8BB-2808B6FDCAC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{430881E0-F0E6-4BFD-B8BB-2808B6FDCAC0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{430881E0-F0E6-4BFD-B8BB-2808B6FDCAC0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{430881E0-F0E6-4BFD-B8BB-2808B6FDCAC0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3ED4F0F3-8476-49E4-A1E7-CD69D24E2EA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3ED4F0F3-8476-49E4-A1E7-CD69D24E2EA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3ED4F0F3-8476-49E4-A1E7-CD69D24E2EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3ED4F0F3-8476-49E4-A1E7-CD69D24E2EA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3476AED8-17C3-456E-B0FE-2CD2EC1353B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3476AED8-17C3-456E-B0FE-2CD2EC1353B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3476AED8-17C3-456E-B0FE-2CD2EC1353B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3476AED8-17C3-456E-B0FE-2CD2EC1353B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3C35991F-18D0-48B7-B643-3D50A48423E9} = {72F4309D-A139-42D1-B0F1-230E6B885904}
+		{3ED4F0F3-8476-49E4-A1E7-CD69D24E2EA9} = {2EF904FB-BFDF-4492-B65F-58FDB783F102}
+		{3476AED8-17C3-456E-B0FE-2CD2EC1353B8} = {2EF904FB-BFDF-4492-B65F-58FDB783F102}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C7F868A4-4FCE-4310-9622-25F88F006043}

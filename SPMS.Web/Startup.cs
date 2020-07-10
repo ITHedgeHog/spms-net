@@ -1,7 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Amazon.S3;
-using AspNetCore.DataProtection.Aws.S3;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -41,35 +39,12 @@ namespace SPMS.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Environment.SetEnvironmentVariable("AWS_ACCESS_KEY_ID", Configuration["AWS:AccessKey"]);
-            Environment.SetEnvironmentVariable("AWS_SECRET_ACCESS_KEY", Configuration["AWS:SecretKey"]);
-            // Add Services
-            services.AddHttpContextAccessor();
             
             SPMS.Infrastructure.DependencyInjection.AddInfrastructure(services, Configuration);
-            SPMS.Persistence.PostgreSQL.DependencyInjection.AddPersistence(services, Configuration);
+            SPMS.Persistence.MSSQL.DependencyInjection.AddPersistence(services, Configuration);
             SPMS.Application.DependencyInjection.AddApplication(services);
-            services.AddScoped<ICurrentUserService, CurrentUserService>();
-            services.AddScoped<IIdentifierMask, IdentifierMasking>();
-
-
-
-
-
-            var s3Config = new AmazonS3Config()
-            {
-                ServiceURL = "https://ams3.digitaloceanspaces.com"
-            };
-            // Configure your AWS SDK however you usually would do so e.g. IAM roles, environment variables
-            services.TryAddSingleton<IAmazonS3>(new AmazonS3Client(s3Config)
-            {
-
-            });
-
-            // Assumes a Configuration property set as IConfigurationRoot similar to ASP.NET docs
-            services.AddDataProtection()
-                .SetApplicationName(Configuration.GetValue<string>("cluster-name")) // Not required by S3 storage but a requirement for server farms
-                .PersistKeysToAwsS3(Configuration.GetSection("S3Persistence"));
+            services.AddTransient<ICurrentUserService, CurrentUserService>();
+            services.AddHttpContextAccessor();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -163,14 +138,6 @@ namespace SPMS.Web
                 };
             });
 
-
-
-            
-            
-
-
-
-
             // Policies
             services.AddAuthorization(options =>
             {
@@ -204,58 +171,7 @@ namespace SPMS.Web
             services.AddFeatureManagement();
 
             services.AddSignalR(o => o.EnableDetailedErrors = true)
-                .AddMessagePackProtocol()
-                .AddStackExchangeRedis(o =>
-                {
-                    o.ConnectionFactory = async writer =>
-                    {
-                        var cnx = Configuration.GetConnectionString("Redis");
-                        try
-                        {
-                            var config = ConfigurationOptions.Parse(cnx);
-                            config.AbortOnConnectFail = false;
-                            config.AllowAdmin = false;
-                            config.ChannelPrefix = "SPMS"; // TODO Link to Tenant Here.
-                            config.SetDefaultPorts();   
-                            config.ReconnectRetryPolicy = new ExponentialRetry(5000);
-                            config.ConnectRetry = 5;
-                            config.Ssl = true;
-                            var connection = await ConnectionMultiplexer.ConnectAsync(config, writer);
-                            connection.ConnectionFailed += (_, e) =>
-                            {
-                                TelemetryConfiguration tc1 = TelemetryConfiguration.CreateDefault();
-                                tc1.InstrumentationKey = Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
-
-                                var client = new TelemetryClient(tc1);
-                                client.TrackException(e.Exception);
-                                //ai.
-                            };
-
-                            if (!connection.IsConnected)
-                            {
-                                Console.WriteLine("Did not connect to Redis. ");
-                            }
-                            return connection;
-                        }
-                        catch (Exception ex)
-                        {
-                            TelemetryConfiguration tc1 = TelemetryConfiguration.CreateDefault();
-                            tc1.InstrumentationKey = Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
-
-                            var client = new TelemetryClient(tc1);
-                            client.TrackException(ex);
-                            //ai.
-
-                            return null;
-                        }
-
-
-                    };
-                });
-
-            services.AddApplicationInsightsTelemetry();
-
-
+                .AddMessagePackProtocol().AddAzureSignalR();
         }
 
 
@@ -272,18 +188,6 @@ namespace SPMS.Web
             });
 
 
-            //TODO: Convert this to a Mediator Command
-            //context.Database.EnsureDeleted();
-            //if (Configuration.GetValue<bool>("MigrateAndSeed"))
-            //{
-            //    context.Database.Migrate();
-            //    Seed.SeedDefaults(context);
-            //}
-
-            //if (Configuration.GetValue<bool>("SeedBtd"))
-            //{
-            //    Seed.SeedBtd(context);
-            //}
             if (env.IsDevelopment() || Configuration.GetValue<bool>("ShowErrors"))
             {
                 app.UseDeveloperExceptionPage();

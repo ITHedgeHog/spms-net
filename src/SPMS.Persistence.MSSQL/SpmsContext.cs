@@ -1,17 +1,19 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.Services;
 using SPMS.Common;
 using SPMS.Domain.Common;
 using SPMS.Domain.Models;
+using EpisodeEntryStatus = SPMS.Domain.Models.EpisodeEntryStatus;
 
-namespace SPMS.Persistence.PostgreSQL
+namespace SPMS.Persistence.MSSQL
 {
     public class SpmsContext : DbContext, ISpmsContext
     {
+        private DbSet<Domain.Models.EpisodeEntryStatus> _episodeEntryStatus;
+
+
         private readonly ICurrentUserService _currentUser;
         private readonly IDateTime _dateTime;
 
@@ -20,11 +22,17 @@ namespace SPMS.Persistence.PostgreSQL
         {
             _currentUser = user;
             _dateTime = dateTime;
-            
+
         }
+
         public SpmsContext(DbContextOptions<SpmsContext> options)
             : base(options)
         {
+        }
+
+        public SpmsContext()
+        {
+            
         }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
@@ -58,7 +66,6 @@ namespace SPMS.Persistence.PostgreSQL
         public DbSet<Biography> Biography { get; set; }
         public DbSet<BiographyState> BiographyState { get; set; }
         public DbSet<BiographyStatus> BiographyStatus { get; set; }
-
         public DbSet<BiographyType> BiographyTypes { get; set; }
         public DbSet<Game> Game { get; set; }
         public DbSet<GameUrl> GameUrl { get; set; }
