@@ -12,6 +12,12 @@ a.navbar-brand {
     width:25px;
 }
 
+.navbar-login {
+    width: 350px;
+    padding: 10px;
+    padding-bottom: 0px;
+}
+
 /* Provide sufficient contrast against white background */
 a {
   color: #0366d6;

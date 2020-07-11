@@ -63,21 +63,26 @@ namespace SPMS.Web
                             {
                                 webBuilder.ConfigureAppConfiguration((hostingContext, config) =>
                                 {
+                                    var appConfig = Environment.GetEnvironmentVariable("APPCONFIG");
+                                    var cacheTimeout = Environment.GetEnvironmentVariable("CACHETIMEOUT");
+                                    if (string.IsNullOrEmpty(appConfig) || !int.TryParse(cacheTimeout, out var timeout)) return;
                                     var settings = config.Build();
-                                    config.AddAzureAppConfiguration(o => o.Connect(Environment.GetEnvironmentVariable("APPCONFIG"))
+                                    config.AddAzureAppConfiguration(o => o
+                                        .Connect(Environment.GetEnvironmentVariable("APPCONFIG"))
                                         // Load configuration values with no label
                                         .Select(KeyFilter.Any, LabelFilter.Null)
                                         // Override with any configuration values specific to current hosting env
                                         .Select(KeyFilter.Any, hostingContext.HostingEnvironment.EnvironmentName)
                                         .ConfigureRefresh(o =>
                                         {
-
                                             o.Register("Sentinel", refreshAll: true)
-                                                                       .SetCacheExpiration(TimeSpan.FromMinutes(int.Parse(Environment.GetEnvironmentVariable("CACHETIMEOUT"))));
+                                                .SetCacheExpiration(TimeSpan.FromMinutes(
+                                                    timeout));
                                         })
                                         .UseFeatureFlags(o =>
                                         {
-                                            o.CacheExpirationTime = TimeSpan.FromMinutes(int.Parse(Environment.GetEnvironmentVariable("CACHETIMEOUT")));
+                                            o.CacheExpirationTime =
+                                                TimeSpan.FromMinutes(timeout);
                                         }));
                                 }).UseStartup<Startup>();
                             });
