@@ -243,7 +243,7 @@ namespace SPMS.Application.System.Commands
                     DateOfBirth = "Sometime in 2351",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StateId = 3,
-                    StatusId = 1
+                    StatusId = 3
                 }, cancellationToken);
             if (!db.Biography.Any(b => b.Firstname == "Jessica" && b.Surname == "Darkly"))
                 await db.Biography.AddAsync(new Domain.Models.Biography()
@@ -258,7 +258,7 @@ namespace SPMS.Application.System.Commands
                     DateOfBirth = "Sometime in 2332",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StateId = 3,
-                    StatusId = 1
+                    StatusId = 3
                 }, cancellationToken);
             if (!db.Biography.Any(b => b.Firstname == "Nigel" && b.Surname == "Adisa"))
                 await db.Biography.AddAsync(new Domain.Models.Biography()
@@ -273,7 +273,7 @@ namespace SPMS.Application.System.Commands
                     DateOfBirth = "",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StateId = 3,
-                    StatusId = 1,
+                    StatusId = 3,
                     History = @"A black male of African/British decent, 6'0 in height and weighing in at 196 pounds. He has short cropped black hair and usually wears a short beard.
 
 General Overview		Doctor Adisa, a specialist in neurology possesses a seemingly easygoing manner which he generally uses to mask his borderline OCD issues. He is very witty however his humor can sometimes become overly Sharp. His hobbies include playing various jazz instruments, long distance running, chess, and baking.
@@ -301,7 +301,7 @@ He enrolled in Starfleet directly after graduating the University against his fa
                     DateOfBirth = "",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
                     StateId = 3,
-                    StatusId = 1,
+                    StatusId = 3,
                     History = @"Vars is best described as carrying extra weight. A rotund Bolian Male with puffy facial features and a noticeable double chin. His height is on the slightly shorter side, coming in at around 5'9&quot;.
 Vars is a vibrant individual living up to the term, 'Jolly Fat Man'.He has a distinctive laugh that can be considered quite obnoxious, not helped by his flavorful personality.Wearing his emotions like a badge on his sleeve,
 Vars rarely shy's away from expressing his opinion. To the same extent, a withdrawn Vars is often the sign of an insecurity or fear.
@@ -427,12 +427,8 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
 
         public async Task SeedAquariusAsync(ISpmsContext context, CancellationToken cancellationToken)
         {
-
-
-
-
             var game = new Game() { Name = "USS Aquarius", Description = "Aqua  Simulation", SiteTitle = "Beyond the Darkness a Star Trek RPG", Disclaimer = "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>" };
-            if (!context.Game.Any(g => g.Name == "USS Aqua"))
+            if (!context.Game.Any(g => g.Name == "USS Aquarius"))
             {
                 await context.Game.AddAsync(game, cancellationToken);
 

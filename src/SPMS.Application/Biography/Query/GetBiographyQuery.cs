@@ -29,8 +29,8 @@ namespace SPMS.Application.Biography.Query
 
             public async Task<BiographyDto> Handle(GetBiographyQuery request, CancellationToken cancellationToken)
             {
-                var biography = await _db.Biography.Include(x => x.Player).Include(x => x.State).Include(x => x.Posting).ProjectTo<BiographyDto>(_mapper.ConfigurationProvider)
-                    .FirstOrDefaultAsync(m => m.Id == request.Id, cancellationToken: cancellationToken);
+                var biography = await _db.Biography.Include(x => x.Player).Include(x => x.State).Include(x => x.Posting).Include(x => x.Status).ProjectTo<BiographyDto>(_mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync(m => m.Id == request.Id && m.Status., cancellationToken: cancellationToken);
 
                 if (biography == null)
                     throw new InvalidOperationException("Biography does not exist.");

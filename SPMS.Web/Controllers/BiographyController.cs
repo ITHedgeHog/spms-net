@@ -58,7 +58,6 @@ namespace SPMS.Web.Controllers
         // GET: Biography/Details/5
         public async Task<IActionResult> Details(string id)
         {
-
             try
             {
                 int intId = _masker.RevealId(id);
