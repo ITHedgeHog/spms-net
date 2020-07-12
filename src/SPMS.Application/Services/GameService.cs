@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -20,23 +21,22 @@ namespace SPMS.Application.Services
             _httpContext = httpContext.HttpContext;
         }
 
-        private async Task<Game> GetGameAsync()
+        public async Task<Game> GetGameAsync()
         {
             // Get Current URL
             var url = _httpContext.Request.Host.Host;
 
             // Get Matching Game
 
-            var game = await _context.GameUrl.Include(gd => gd.Game).FirstOrDefaultAsync(gu => gu.Url == url);
+            var game = await _context.Game.Include(gd => gd.Url).Where(x =>x.Url.Any(y =>y.Url == url)).FirstOrDefaultAsync();
 
-            if (game != default(GameUrl))
+            if (game != null)
             {
-                return game.Game;
+                return game;
             }
-            // Return Btd if nothing matches
-
-            var g = await _context.Game.FirstAsync(gm => gm.Name == StaticValues.BtdGame);
-            return g;
+            
+            var defaultGame = await _context.Game.Include(g => g.Url).FirstAsync(gm => gm.Name == StaticValues.TestGame);
+            return defaultGame;
         }
 
         public async Task<string> GetGameNameAsync()
@@ -87,6 +87,7 @@ namespace SPMS.Application.Services
 
     public interface IGameService
     {
+        Task<Game> GetGameAsync();
         Task<int> GetGameIdAsync();
         Task<string> GetGameNameAsync();
         Task<string> GetSiteTitleAsync();

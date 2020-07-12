@@ -363,7 +363,10 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
                 SiteTitle = "SPMS Example Site",
                 Disclaimer =
                     "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>",
-                SiteAnalytics = ""
+                SiteAnalytics = "",
+                IsSpiderable = false,
+                Author = "Dan Taylor & Evan Scown",
+                RobotsText = "User-Agent: *\n\rAllow: /"
             };
             if (!db.Game.Any(g => g.Name == StaticValues.TestGame))
             {
@@ -382,6 +385,25 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
 
             game = await db.Game.Include(x => x.Url)
                 .FirstAsync(g => g.Name == StaticValues.TestGame, cancellationToken);
+
+
+            if (game.IsSpiderable.HasValue == false || game.IsSpiderable.Value)
+            {
+                game.IsSpiderable = false;
+                await db.SaveChangesAsync(cancellationToken);
+            }
+
+            if (string.IsNullOrEmpty(game.RobotsText))
+            {
+                game.RobotsText = "User-Agent: *\n\rAllow: /";
+                await db.SaveChangesAsync(cancellationToken);
+            }
+
+            if (string.IsNullOrEmpty(game.Author))
+            {
+                game.Author = "Dan Taylor & Evan Scown";
+                await db.SaveChangesAsync(cancellationToken);
+            }
 
             await SeedBiographyStatus(_db, game.Id, cancellationToken);
             await SeedBiographyState(_db, game.Id, cancellationToken);

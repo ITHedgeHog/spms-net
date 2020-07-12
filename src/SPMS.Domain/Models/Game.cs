@@ -18,5 +18,9 @@ namespace SPMS.Domain.Models
         public string SiteAnalytics { get; set; }
         public byte[] GameKey { get; set; }
         public bool IsTest { get; set; }
+        public bool? IsSpiderable { get; set; }
+        public string Author { get; set; }
+        public string Keywords { get; set; }
+        public string RobotsText { get; set; }
     }
 }
