@@ -12,6 +12,7 @@ namespace SPMS.Persistence.Configuration
             builder.Property(e => e.Id).UseIdentityColumn().HasColumnName("Id");
             builder.Property(x => x.Name).IsRequired();
             builder.Property(x => x.GameId).IsRequired(false);
+            builder.Property(x => x.IsPlayable).HasDefaultValue(false);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SPMS.Domain.Models;
 
@@ -15,6 +16,9 @@ namespace SPMS.Persistence.Configuration
             builder.Property(x => x.SiteTitle).IsRequired();
             builder.Property(x => x.Disclaimer).IsRequired();
             builder.Property(x => x.GameKey).IsRequired(false);
+            builder.Property(x => x.IsTest).HasDefaultValue(false);
+            builder.Property(x => x.Uuid).HasDefaultValueSql("NEWID()");
+
         }
     }
 }

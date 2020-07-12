@@ -29,7 +29,7 @@
         public int PostingId { get; set; }
         public Posting Posting { get; set; }
 
-        public int PlayerId { get; set; }
+        public int? PlayerId { get; set; }
         public Player Player { get; set; }
         public string History { get; set; }
 

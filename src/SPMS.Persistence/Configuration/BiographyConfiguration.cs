@@ -10,6 +10,7 @@ namespace SPMS.Persistence.Configuration
         {
             builder.HasKey(e => e.Id);
             builder.Property(e => e.Id).UseIdentityColumn().HasColumnName("Id");
+            builder.Property(x => x.PlayerId).IsRequired(false);
         }
     }
 }
