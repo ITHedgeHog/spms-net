@@ -1,24 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Character.Command;
 using SPMS.Application.Character.Query;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.Dtos;
-using SPMS.Domain.Models;
 using SPMS.ViewModel.character;
 
 namespace SPMS.Web.Areas.player.Controllers
 {
     [Area("player")]
+    [Authorize(Policy = "Player")]
     public class CharacterController : Controller
     {
         private readonly ISpmsContext _context;

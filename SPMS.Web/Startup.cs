@@ -1,15 +1,18 @@
 using System;
+using System.Linq;
+using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Web.Areas.player.Hubs;
 using SPMS.Web.Filter;
@@ -170,32 +173,33 @@ namespace SPMS.Web
 
 
 
-            // services.AddRazorPages();
-
-            services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter))).AddMicrosoftIdentityUI()
+            services.AddRazorPages();
+            //services.AddControllersWithViews();
+            services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter)))
                 .AddRazorRuntimeCompilation().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
 
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
             services.AddFeatureManagement();
 
             services.AddSignalR(o => o.EnableDetailedErrors = true)
-                .AddMessagePackProtocol().AddAzureSignalR();
+               .AddMessagePackProtocol().AddAzureSignalR();
 
-            services.Configure<OpenIdConnectOptions>(Configuration.GetSection("AzureAdB2C"));
+            var cfg = Configuration.GetSection("AzureAdB2C");
+            services.Configure<OpenIdConnectOptions>(cfg);
         }
 
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.Use((httpContext, next) =>
-            {
-                if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
-                {
-                    httpContext.Request.Scheme = "https";
-                }
-                return next();
-            });
+            //app.Use(async (httpContext, next) =>
+            //{
+            //    if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
+            //    {
+            //        httpContext.Request.Scheme = "https";
+            //    }
+            //    await next();
+            //});
 
 
             if (env.IsDevelopment() || Configuration.GetValue<bool>("ShowErrors"))
@@ -208,29 +212,64 @@ namespace SPMS.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
+
+
+            app.UseAzureAppConfiguration();
             app.UseMiniProfiler();
             app.UseHttpsRedirection();
             app.UseMarkdown();
             app.UseStaticFiles();
 
-            app.UseRouting();
+            
+
+
             app.UseCookiePolicy();
             app.UseAuthentication();
-            app.UseAuthorization();
+            
+            
+            
+            app.UseRouting();
+            //app.Use(async (ctx, next) =>
+            //{
+            //    // using Microsoft.AspNetCore.Http;
+            //    var endpoint = ctx.GetEndpoint();
 
+            //    if (endpoint != null)
+            //    {
+            //        // An endpoint was matched.
+            //        // ...
+            //    }
+
+            //    await next();
+            //});
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapRouteAnalyzer("/routes"); // Add
+                endpoints.MapRazorPages();
 
-                endpoints.MapControllerRoute(
-                    name: "admin",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
-                );
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapHub<AuthoringHub>("/authoringHub");
+                endpoints.MapAreaControllerRoute(name: "MicrosoftIdentity",
+                    pattern: "MicrosoftIdentity/{controller}/{action}/{id?}",
+                    areaName: "MicrosoftIdentity"
+                );
+
+                endpoints.MapAreaControllerRoute(name: "admin",
+                    pattern: "admin/{controller=Home}/{action=Index}/{id?}",
+                    areaName: "admin"
+                );
+                endpoints.MapAreaControllerRoute(name: "player",
+                    pattern: "player/{controller=Home}/{action=Index}/{id?}",
+                    areaName: "player"
+                );
+                //endpoints.MapControllerRoute(
+                //    name: "default",
+                //    pattern: "{controller=Home}/{action=Index}/{id?}");
+                //
+                //endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
-            app.UseAzureAppConfiguration();
+            
         }
 
 

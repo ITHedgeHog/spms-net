@@ -23,12 +23,14 @@ namespace SPMS.Web.Controllers
             _gameService = gameService;
         }
 
-        [Route("")]
-        [Route("Home")]
-        [Route("Home/Index")]
+        //[Route("")]
+        //[Route("Home")]
+        //[Route("Home/Index")]
         public async Task<IActionResult> Index()
         {
+            var routers = this.RouteData.Routers.ToList();
             var vm = new HomeViewModel();
+
             return View(vm);
         }
 

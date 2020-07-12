@@ -1,20 +1,8 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility.Implementation;
-using Microsoft.AspNet.SignalR.Infrastructure;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.Services;
-using SPMS.Domain.Models;
-using SPMS.Web.Models;
-using SPMS.Web.Service;
-using SPMS.Web.TagHelper;
 
 namespace SPMS.Web.Areas.player.Hubs
 {
