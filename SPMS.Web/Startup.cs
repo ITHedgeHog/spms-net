@@ -1,13 +1,8 @@
-using System;
-using System.Linq;
-using System.Text.Json;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -41,16 +36,6 @@ namespace SPMS.Web
             services.AddTransient<ICurrentUserService, CurrentUserService>();
             services.AddHttpContextAccessor();
 
-            //services.Configure<CookiePolicyOptions>(options =>
-            //{
-            //    options.CheckConsentNeeded = context => true;
-            //    options.MinimumSameSitePolicy = SameSiteMode.Unspecified;
-            //    options.OnAppendCookie = cookieContext =>
-            //        CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
-            //    options.OnDeleteCookie = cookieContext =>
-            //        CheckSameSite(cookieContext.Context, cookieContext.CookieOptions);
-            //});
-
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
@@ -60,88 +45,6 @@ namespace SPMS.Web
             });
 
             services.AddSignIn(Configuration, "AzureAdB2C");
-            //// Add authentication services
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            //})
-            //.AddCookie()
-            //.AddOpenIdConnect("Auth0", options =>
-            //{
-            //    // Set the authority to your Auth0 domain
-            //    options.Authority = $"https://{Configuration["Auth0:Domain"]}";
-
-            //    // Configure the Auth0 Client ID and Client Secret
-            //    options.ClientId = Configuration["Auth0:ClientId"];
-            //    options.ClientSecret = Configuration["Auth0:ClientSecret"];
-
-            //    // Set response type to code
-            //    options.ResponseType = OpenIdConnectResponseType.Code;
-
-            //    // Configure the scope
-            //    options.Scope.Add("openid");
-
-            //    // Set the callback path, so Auth0 will call back to http://localhost:3000/callback
-            //    // Also ensure that you have added the URL as an Allowed Callback URL in your Auth0 dashboard
-            //    options.CallbackPath = new PathString("/callback");
-
-            //    // Configure the Claims Issuer to be Auth0
-            //    options.ClaimsIssuer = "Auth0";
-
-            //    // Configure the scope
-            //    options.Scope.Clear();
-            //    options.Scope.Add("openid");
-            //    options.Scope.Add("profile");
-            //    options.Scope.Add("email");
-            //    //     options.Scope.Add("roles");
-
-            //    // Set the correct name claim type
-            //    options.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        NameClaimType = "name",
-            //        RoleClaimType = "https://schemas.quickstarts.com/roles"
-            //    };
-
-            //    options.Events = new OpenIdConnectEvents
-            //    {
-            //        // handle the logout redirection
-            //        OnRedirectToIdentityProviderForSignOut = (context) =>
-            //        {
-            //            var logoutUri = $"https://{Configuration["Auth0:Domain"]}/v2/logout?client_id={Configuration["Auth0:ClientId"]}";
-
-            //            var postLogoutUri = context.Properties.RedirectUri;
-            //            if (!string.IsNullOrEmpty(postLogoutUri))
-            //            {
-            //                if (postLogoutUri.StartsWith("/"))
-            //                {
-            //                    // transform to absolute
-            //                    var request = context.Request;
-            //                    postLogoutUri = request.Scheme + "://" + request.Host + request.PathBase + postLogoutUri;
-            //                }
-            //                logoutUri += $"&returnTo={ Uri.EscapeDataString(postLogoutUri)}";
-            //            }
-
-            //            context.Response.Redirect(logoutUri);
-            //            context.HandleResponse();
-
-            //            return Task.CompletedTask;
-            //        },
-            //        OnRemoteFailure = (ctx) =>
-            //        {
-            //            TelemetryConfiguration tc1 = TelemetryConfiguration.CreateDefault();
-            //            tc1.InstrumentationKey = Configuration.GetValue<string>("APPINSIGHTS_INSTRUMENTATIONKEY");
-
-            //            var client = new TelemetryClient(tc1);
-            //            client.TrackException(ctx.Failure);
-            //            //ai.
-            //            // React to the error here. See the notes below.
-            //            return Task.CompletedTask;
-            //        }
-            //    };
-            //});
-
 
             // Policies
             services.AddAuthorization(options =>
@@ -174,7 +77,6 @@ namespace SPMS.Web
 
 
             services.AddRazorPages();
-            //services.AddControllersWithViews();
             services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter)))
                 .AddRazorRuntimeCompilation().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
 
@@ -192,6 +94,7 @@ namespace SPMS.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            //TODO: Enable if we're on Kubernetes, with SSL terminated else where.
             //app.Use(async (httpContext, next) =>
             //{
             //    if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
@@ -229,23 +132,9 @@ namespace SPMS.Web
             
             
             app.UseRouting();
-            //app.Use(async (ctx, next) =>
-            //{
-            //    // using Microsoft.AspNetCore.Http;
-            //    var endpoint = ctx.GetEndpoint();
-
-            //    if (endpoint != null)
-            //    {
-            //        // An endpoint was matched.
-            //        // ...
-            //    }
-
-            //    await next();
-            //});
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapRouteAnalyzer("/routes"); // Add
                 endpoints.MapRazorPages();
 
                 endpoints.MapHub<AuthoringHub>("/authoringHub");
@@ -262,74 +151,9 @@ namespace SPMS.Web
                     pattern: "player/{controller=Home}/{action=Index}/{id?}",
                     areaName: "player"
                 );
-                //endpoints.MapControllerRoute(
-                //    name: "default",
-                //    pattern: "{controller=Home}/{action=Index}/{id?}");
-                //
-                //endpoints.MapControllers();
                 endpoints.MapDefaultControllerRoute();
             });
             
-        }
-
-
-
-
-        private void CheckSameSite(HttpContext httpContext, CookieOptions options)
-        {
-            if (options.SameSite == SameSiteMode.None)
-            {
-                var userAgent = httpContext.Request.Headers["User-Agent"].ToString();
-                if (DisallowsSameSiteNone(userAgent))
-                {
-                    options.SameSite = SameSiteMode.Unspecified;
-                }
-            }
-        }
-
-
-        //  Read comments in https://docs.microsoft.com/en-us/aspnet/core/security/samesite?view=aspnetcore-3.1
-        public bool DisallowsSameSiteNone(string userAgent)
-        {
-            // Check if a null or empty string has been passed in, since this
-            // will cause further interrogation of the useragent to fail.
-            if (String.IsNullOrWhiteSpace(userAgent))
-                return false;
-
-            // Cover all iOS based browsers here. This includes:
-            // - Safari on iOS 12 for iPhone, iPod Touch, iPad
-            // - WkWebview on iOS 12 for iPhone, iPod Touch, iPad
-            // - Chrome on iOS 12 for iPhone, iPod Touch, iPad
-            // All of which are broken by SameSite=None, because they use the iOS networking
-            // stack.
-            if (userAgent.Contains("CPU iPhone OS 12") ||
-                userAgent.Contains("iPad; CPU OS 12"))
-            {
-                return true;
-            }
-
-            // Cover Mac OS X based browsers that use the Mac OS networking stack. 
-            // This includes:
-            // - Safari on Mac OS X.
-            // This does not include:
-            // - Chrome on Mac OS X
-            // Because they do not use the Mac OS networking stack.
-            if (userAgent.Contains("Macintosh; Intel Mac OS X 10_14") &&
-                userAgent.Contains("Version/") && userAgent.Contains("Safari"))
-            {
-                return true;
-            }
-
-            // Cover Chrome 50-69, because some versions are broken by SameSite=None, 
-            // and none in this range require it.
-            // Note: this covers some pre-Chromium Edge versions, 
-            // but pre-Chromium Edge does not require SameSite=None.
-            if (userAgent.Contains("Chrome/5") || userAgent.Contains("Chrome/6"))
-            {
-                return true;
-            }
-
-            return false;
         }
     }
 }
