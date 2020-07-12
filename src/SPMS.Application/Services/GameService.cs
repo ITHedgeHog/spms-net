@@ -35,7 +35,7 @@ namespace SPMS.Application.Services
             }
             // Return Btd if nothing matches
 
-            var g = await _context.Game.FirstAsync(gm => gm.Name == StaticValues.DefaultGameName);
+            var g = await _context.Game.FirstAsync(gm => gm.Name == StaticValues.BtdGame);
             return g;
         }
 

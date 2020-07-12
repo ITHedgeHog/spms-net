@@ -1,10 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace SPMS.Domain.Models
 {
     public class Game
     {
         public int Id { get; set; }
+        public Guid Uuid { get; set; }
         public string Name { get; set; }
 
         public string Description { get; set; }
@@ -15,5 +17,6 @@ namespace SPMS.Domain.Models
         public bool IsReadonly { get; set; }
         public string SiteAnalytics { get; set; }
         public byte[] GameKey { get; set; }
+        public bool IsTest { get; set; }
     }
 }

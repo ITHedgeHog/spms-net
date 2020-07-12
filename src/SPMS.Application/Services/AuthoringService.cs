@@ -171,7 +171,11 @@ namespace SPMS.Application.Services
         {
             var post = await _context.EpisodeEntry.Include(p => p.EpisodeEntryPlayer).FirstAsync(x => x.Id == id, cancellationToken: cancellationToken);
 
-            var authors = await _context.Player.Include(x => x.EpisodeEntries).ProjectTo<AuthorToInviteViewModel>(_mapper.ConfigurationProvider)
+            var authors = await _context.Player.Include(x => x.EpisodeEntries)
+                .Include(x => x.Roles).ThenInclude(x => x.PlayerRole)
+                .Where(x => x.Roles.Any(y => y.PlayerRole.Name == StaticValues.PlayerRole))
+                .OrderBy(x => x.DisplayName)
+                .ProjectTo<AuthorToInviteViewModel>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken: cancellationToken);
 
             foreach (var a in authors.Where(a => post.EpisodeEntryPlayer.Any(x => x.PlayerId == a.Id)))

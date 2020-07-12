@@ -9,6 +9,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200629193738_ReAddBiographyStatus.cs" />
     <Compile Remove="Migrations\20200629193738_ReAddBiographyStatus.Designer.cs" />
+    <Compile Remove="Migrations\20200712190937_ExtraGameFlags.cs" />
+    <Compile Remove="Migrations\20200712190937_ExtraGameFlags.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

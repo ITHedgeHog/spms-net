@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,7 +31,8 @@ namespace SPMS.Application.System.Commands
 
 
             await SeedBeyondTheDarknessAsync(_db, cancellationToken);
-            await SeedAquariusAsync(_db, cancellationToken);
+            //await SeedAquariusAsync(_db, cancellationToken);
+            await SeedRing0Async(_db, cancellationToken);
         }
 
         public async Task SeedPlayerRoleAsync(ISpmsContext db, CancellationToken cancellationToken)
@@ -129,9 +131,9 @@ namespace SPMS.Application.System.Commands
 
             // Posting
             if (!db.Posting.Any(p => p.Name == "Starbase Gamma" && p.GameId == game))
-                await db.Posting.AddAsync(new Posting() { Name = "Starbase Gamma", Default = true, GameId = game }, cancellationToken);
+                await db.Posting.AddAsync(new Posting() { Name = "Starbase Gamma", Default = true, GameId = game, IsPlayable = true}, cancellationToken);
             if (!db.Posting.Any(p => p.Name == "USS Sovereign" && p.GameId == game))
-                await db.Posting.AddAsync(new Posting() { Name = "USS Sovereign", GameId = game }, cancellationToken);
+                await db.Posting.AddAsync(new Posting() { Name = "USS Sovereign", GameId = game, IsPlayable = true}, cancellationToken);
 
             await db.SaveChangesAsync(cancellationToken);
         }
@@ -142,15 +144,15 @@ namespace SPMS.Application.System.Commands
             {
                 if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypePlayer))
                     await db.BiographyTypes.AddAsync(
-                        new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypePlayer},
+                        new BiographyType() { Default = true, GameId = gameId, Name = StaticValues.BioTypePlayer },
                         cancellationToken);
                 if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypeNpc))
                     await db.BiographyTypes.AddAsync(
-                        new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypeNpc},
+                        new BiographyType() { Default = true, GameId = gameId, Name = StaticValues.BioTypeNpc },
                         cancellationToken);
                 if (!db.BiographyTypes.Any(x => x.GameId == gameId && x.Name == StaticValues.BioTypePoc))
                     await db.BiographyTypes.AddAsync(
-                        new BiographyType() {Default = true, GameId = gameId, Name = StaticValues.BioTypePoc},
+                        new BiographyType() { Default = true, GameId = gameId, Name = StaticValues.BioTypePoc },
                         cancellationToken);
 
                 await db.SaveChangesAsync(cancellationToken);
@@ -163,7 +165,7 @@ namespace SPMS.Application.System.Commands
 
         public async Task SeedBeyondTheDarknessAsync(ISpmsContext db, CancellationToken cancellationToken)
         {
-            var game = new Game() { Name = StaticValues.DefaultGameName, Description = "BtD Simulation", SiteTitle = "Beyond the Darkness a Star Trek RPG", Disclaimer = "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>", SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
+            var game = new Game() { Name = StaticValues.BtdGame, Description = "BtD Simulation", SiteTitle = "Beyond the Darkness a Star Trek RPG", Disclaimer = "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>", SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src='https://www.googletagmanager.com/gtag/js?id=UA-167297746-1'></script>
                 <script>
                 window.dataLayer = window.dataLayer || [];
@@ -172,7 +174,7 @@ namespace SPMS.Application.System.Commands
 
             gtag('config', 'UA-167297746-1');
                 </script> " };
-            if (!db.Game.Any(g => g.Name == StaticValues.DefaultGameName))
+            if (!db.Game.Any(g => g.Name == StaticValues.BtdGame))
             {
                 await db.Game.AddAsync(game, cancellationToken);
 
@@ -181,8 +183,10 @@ namespace SPMS.Application.System.Commands
                 // Add Game URL's
 
                 await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "www.beyond-the-darkness.com" }, cancellationToken);
-                await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "spms0.rpg-hosting.net" }, cancellationToken);
+                //await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "spms0.rpg-hosting.net" }, cancellationToken);
                 await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "btd.beyond-the-darkness.com" }, cancellationToken);
+                await db.SaveChangesAsync(cancellationToken);
+
             }
             else
             {
@@ -190,27 +194,24 @@ namespace SPMS.Application.System.Commands
 
                 try
                 {
-                    game = await db.Game.Include(x => x.Url).FirstOrDefaultAsync(g => g.Name == StaticValues.DefaultGameName,
+                    game = await db.Game.Include(x => x.Url).FirstOrDefaultAsync(g => g.Name == StaticValues.BtdGame,
                         cancellationToken: cancellationToken);
 
 
-                    if (!game.Url.Any(x => x.Url == "spms0.rpg-hosting.net"))
+                    if (game.Url.Any(x => x.Url == "spms0.rpg-hosting.net"))
                     {
-                        await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "spms0.rpg-hosting.net" }, cancellationToken);
+                        var urlToRemove = await db.GameUrl.FirstAsync(x => x.GameId == game.Id && x.Url == "spms0.rpg-hosting.net", cancellationToken: cancellationToken);
+                        db.GameUrl.Remove(urlToRemove);
+                        await db.SaveChangesAsync(cancellationToken);
                     }
 
-                    // Ensure Analyitics is set.
+                    if (game.Url.Any(x => x.Url == "localhost"))
+                    {
+                        var urlToRemove = await db.GameUrl.FirstAsync(x => x.GameId == game.Id && x.Url == "localhost", cancellationToken: cancellationToken);
+                        db.GameUrl.Remove(urlToRemove);
+                        await db.SaveChangesAsync(cancellationToken);
+                    }
 
-                    game.SiteAnalytics = @"<!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src='https://www.googletagmanager.com/gtag/js?id=UA-167297746-1'></script>
-                <script>
-                window.dataLayer = window.dataLayer || [];
-                function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', 'UA-167297746-1');
-                </script> ";
-
-                    db.Game.Update(game);
                 }
                 catch (Exception ex)
                 {
@@ -219,8 +220,7 @@ namespace SPMS.Application.System.Commands
 
             }
 
-            await db.SaveChangesAsync(cancellationToken);
-
+            
             await SeedBiographyStatus(_db, game.Id, cancellationToken);
             await SeedBiographyState(_db, game.Id, cancellationToken);
             await SeedPostings(_db, game.Id, cancellationToken);
@@ -241,9 +241,8 @@ namespace SPMS.Application.System.Commands
                     PostingId = db.Posting.First(p => p.Name == "Starbase Gamma").Id,
                     Rank = "Captain",
                     DateOfBirth = "Sometime in 2351",
-                    PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                    StateId = 3,
-                    StatusId = 1
+                    StateId = (await db.BiographyState.FirstAsync(x => x.GameId == game.Id && x.Name == StaticValues.Published, cancellationToken)).Id,
+                    StatusId = (await db.BiographyState.FirstAsync(x => x.GameId == game.Id && x.Name == StaticValues.BioStatusAlive, cancellationToken)).Id
                 }, cancellationToken);
             if (!db.Biography.Any(b => b.Firstname == "Jessica" && b.Surname == "Darkly"))
                 await db.Biography.AddAsync(new Domain.Models.Biography()
@@ -256,9 +255,8 @@ namespace SPMS.Application.System.Commands
                     PostingId = db.Posting.First(p => p.Name == "Starbase Gamma").Id,
                     Rank = "Admiral",
                     DateOfBirth = "Sometime in 2332",
-                    PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                    StateId = 3,
-                    StatusId = 1
+                    StateId = (await db.BiographyState.FirstAsync(x => x.GameId == game.Id && x.Name == StaticValues.Published, cancellationToken)).Id,
+                    StatusId = (await db.BiographyState.FirstAsync(x => x.GameId == game.Id && x.Name == StaticValues.BioStatusAlive, cancellationToken)).Id,
                 }, cancellationToken);
             if (!db.Biography.Any(b => b.Firstname == "Nigel" && b.Surname == "Adisa"))
                 await db.Biography.AddAsync(new Domain.Models.Biography()
@@ -271,9 +269,8 @@ namespace SPMS.Application.System.Commands
                     PostingId = db.Posting.First(p => p.Name == "Starbase Gamma").Id,
                     Rank = "Lieutenant",
                     DateOfBirth = "",
-                    PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                    StateId = 3,
-                    StatusId = 1,
+                    StateId = (await db.BiographyState.FirstAsync(x => x.GameId == game.Id && x.Name == StaticValues.Published, cancellationToken)).Id,
+                    StatusId = (await db.BiographyState.FirstAsync(x => x.GameId == game.Id && x.Name == StaticValues.BioStatusAlive, cancellationToken)).Id,
                     History = @"A black male of African/British decent, 6'0 in height and weighing in at 196 pounds. He has short cropped black hair and usually wears a short beard.
 
 General Overview		Doctor Adisa, a specialist in neurology possesses a seemingly easygoing manner which he generally uses to mask his borderline OCD issues. He is very witty however his humor can sometimes become overly Sharp. His hobbies include playing various jazz instruments, long distance running, chess, and baking.
@@ -300,8 +297,8 @@ He enrolled in Starfleet directly after graduating the University against his fa
                     Rank = "Lieutenant Commander",
                     DateOfBirth = "",
                     PlayerId = db.Player.First(p => p.DisplayName == "Dan Taylor").Id,
-                    StateId = 3,
-                    StatusId = 1,
+                    StateId = (await db.BiographyState.FirstAsync(x => x.GameId == game.Id && x.Name == StaticValues.Published, cancellationToken)).Id,
+                    StatusId = (await db.BiographyState.FirstAsync(x => x.GameId == game.Id && x.Name == StaticValues.BioStatusAlive, cancellationToken)).Id,
                     History = @"Vars is best described as carrying extra weight. A rotund Bolian Male with puffy facial features and a noticeable double chin. His height is on the slightly shorter side, coming in at around 5'9&quot;.
 Vars is a vibrant individual living up to the term, 'Jolly Fat Man'.He has a distinctive laugh that can be considered quite obnoxious, not helped by his flavorful personality.Wearing his emotions like a badge on his sleeve,
 Vars rarely shy's away from expressing his opinion. To the same extent, a withdrawn Vars is often the sign of an insecurity or fear.
@@ -337,7 +334,7 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
                 if (!series.IsActive)
                 {
                     series.IsActive = true;
-                    db.SaveChanges();
+                    await db.SaveChangesAsync(cancellationToken);
                 }
             }
 
@@ -357,11 +354,121 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
             await db.SaveChangesAsync(cancellationToken);
         }
 
+        public async Task SeedRing0Async(ISpmsContext db, CancellationToken cancellationToken)
+        {
+            var game = new Game()
+            {
+                Name = StaticValues.TestGame,
+                Description = "USS Voyager Test SPMS Site",
+                SiteTitle = "SPMS Example Site",
+                Disclaimer =
+                    "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>",
+                SiteAnalytics = ""
+            };
+            if (!db.Game.Any(g => g.Name == StaticValues.TestGame))
+            {
+                await db.Game.AddAsync(game, cancellationToken);
+
+                await db.SaveChangesAsync(cancellationToken);
+
+                // Add Game URL's
+
+                await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "localhost" }, cancellationToken);
+                await db.GameUrl.AddAsync(new GameUrl() { GameId = game.Id, Url = "spms0.rpg-hosting.net" },
+                    cancellationToken);
+
+                await db.SaveChangesAsync(cancellationToken);
+            }
+
+            game = await db.Game.Include(x => x.Url)
+                .FirstAsync(g => g.Name == StaticValues.TestGame, cancellationToken);
+
+            await SeedBiographyStatus(_db, game.Id, cancellationToken);
+            await SeedBiographyState(_db, game.Id, cancellationToken);
+            //await SeedPostings(_db, game.Id, cancellationToken);
+
+            // Posting
+            if (!db.Posting.Any(p => p.Name == "USS Voyager" && p.GameId == game.Id))
+                await db.Posting.AddAsync(new Posting() { Name = "USS Voyager", Default = true, GameId = game.Id, IsPlayable = true}, cancellationToken);
+            
+
+            await db.SaveChangesAsync(cancellationToken);
+            await SeedBiographyTypes(_db, game.Id, cancellationToken);
+
+            if (await db.Posting.AnyAsync(x => x.Name == "USS Voyager" && x.GameId == game.Id,
+                cancellationToken: cancellationToken))
+            {
+                await db.Posting.AddAsync(new Posting()
+                {
+                    GameId = game.Id,
+                    Default = true,
+                    Name = "USS Voyager"
+                }, cancellationToken);
+
+                await db.SaveChangesAsync(cancellationToken);
+            }
+
+            var posting = await db.Posting.FirstAsync(x => x.GameId == game.Id && x.Name == "USS Voyager", cancellationToken);
+
+
+            // Add Biographies
+
+            // Character
+            if (!await db.Biography.AnyAsync(b => b.Firstname == "Kathryn" && b.Surname == "Janeway", cancellationToken: cancellationToken))
+                await db.Biography.AddAsync(new Domain.Models.Biography()
+                {
+                    Firstname = "Kathryn",
+                    Surname = "Janeway",
+                    Born = "Earth",
+                    Gender = "Female",
+                    Assignment = "Starbase Gamma",
+                    PostingId = db.Posting.First(p => p.Name == "Starbase Gamma").Id,
+                    Rank = "Captain",
+                    StateId = (await db.BiographyState.FirstAsync(x => x.GameId == game.Id && x.Name == StaticValues.Published, cancellationToken)).Id,
+                    StatusId = (await db.BiographyState.FirstAsync(x => x.GameId == game.Id && x.Name == StaticValues.BioStatusAlive, cancellationToken)).Id
+                }, cancellationToken);
+
+
+            // Series
+            var series = new Series() { Title = "Series 1", GameId = game.Id, IsActive = true };
+            if (!db.Series.Any(x => x.Title == "Series 1" && x.GameId == game.Id))
+            {
+                await db.Series.AddAsync(series, cancellationToken);
+
+                await db.SaveChangesAsync(cancellationToken);
+            }
+            else
+            {
+                series = await _db.Series.FirstAsync(x => x.Title == "Series 1" && x.GameId == game.Id,
+                    cancellationToken: cancellationToken);
+
+                if (!series.IsActive)
+                {
+                    series.IsActive = true;
+                    await db.SaveChangesAsync(cancellationToken);
+                }
+            }
+
+            if (!await db.Episode.AnyAsync(x => x.Title == "Prologue", cancellationToken: cancellationToken))
+            {
+                EpisodeStatus episodeStatus = await db.EpisodeStatus.AsNoTracking().FirstAsync(x => x.Name == StaticValues.Published, cancellationToken: cancellationToken);
+                await db.Episode.AddAsync(new Episode()
+                {
+                    Title = "Caretaker",
+                    SeriesId = series.Id,
+                    StatusId = episodeStatus.Id
+                }, cancellationToken);
+
+
+            }
+
+            await db.SaveChangesAsync(cancellationToken);
+        }
+
+
 
         public static void SeedDefaults(ISpmsContext context)
         {
-
-
 
             // Episode Status
             if (!context.EpisodeStatus.Any(n => n.Name == StaticValues.Draft))
@@ -376,7 +483,7 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
             // EpisodeEntryType
             if (!context.EpisodeEntryType.Any(e => e.Name == StaticValues.Post))
                 context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.Post });
-            context.SaveChanges();
+
             if (!context.EpisodeEntryType.Any(e => e.Name == StaticValues.PersonalLog))
                 context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.PersonalLog });
             if (!context.EpisodeEntryType.Any(e => e.Name == StaticValues.Fiction))
@@ -393,46 +500,15 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
                 context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Archived });
 
 
-
-
-
-            // Players
-            if (!context.Player.Any(p => p.DisplayName == "Dan Taylor"))
-            {
-                var danPlayer = new Player()
-                { AuthString = "auth0|5ed6862a0889640b8ab94b9f", DisplayName = "Dan Taylor" };
-                context.Player.Add(danPlayer);
-                context.SaveChanges();
-            }
-
-            var roles = context.PlayerRole.ToList();
-            var dan = context.Player.Include(p => p.Roles).First(x => x.DisplayName == "Dan Taylor");
-            foreach (var role in roles.Where(role => dan.Roles.All(r => r.PlayerRoleId != role.Id)))
-            {
-                dan.Roles.Add(new PlayerRolePlayer() { PlayerId = dan.Id, PlayerRoleId = role.Id });
-            }
-
             context.SaveChanges();
 
 
-            if (!context.Player.Any(p => p.DisplayName == "Test Monkey"))
-                context.Player.Add(new Player() { AuthString = "google-oauth2|112524236910874285641", DisplayName = "Test Monkey" });
-            foreach (var role in roles.Where(role => dan.Roles.All(r => r.PlayerRoleId != role.Id) && role.Name == StaticValues.PlayerRole))
-            {
-                dan.Roles.Add(new PlayerRolePlayer() { PlayerId = dan.Id, PlayerRoleId = role.Id });
-            }
-
-            //context.SaveChanges();
         }
 
         public async Task SeedAquariusAsync(ISpmsContext context, CancellationToken cancellationToken)
         {
-
-
-
-
             var game = new Game() { Name = "USS Aquarius", Description = "Aqua  Simulation", SiteTitle = "Beyond the Darkness a Star Trek RPG", Disclaimer = "<p>Star Trek, Star Trek TAS, Star Trek: The Next Generation, Star Trek: Deep Space 9, Star Trek: Voyager, Star Trek Enterprise, and all Star Trek Movies are registered trademarks of Paramount Pictures and their respective owners; no copyright violation is intended or desired.</p><p>All material contained within this site is the property of Dan Taylor, Evan Scown &amp; Beyond the Darkness.</p>" };
-            if (!context.Game.Any(g => g.Name == "USS Aqua"))
+            if (!context.Game.Any(g => g.Name == "USS Aquarius"))
             {
                 await context.Game.AddAsync(game, cancellationToken);
 

@@ -2,7 +2,9 @@
 {
     public static class StaticValues
     {
-        public static string DefaultGameName => "Beyond the Darkness";
+        public static string BtdGame => "Beyond the Darkness";
+        public static string TestGame => "USS Voyager";
+
 
         public static string Fiction => "Fiction";
 
