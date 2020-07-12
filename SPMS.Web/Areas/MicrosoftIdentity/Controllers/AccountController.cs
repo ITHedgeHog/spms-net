@@ -58,11 +58,7 @@ namespace SPMS.Web.Areas.MicrosoftIdentity.Controllers
         {
             scheme ??= OpenIdConnectDefaults.AuthenticationScheme;
             TempData["Message"] = "You are signed out";
-            var callbackUrl = Url.Content("~/"); //Url.Page("/Home/Index", pageHandler: null, values: new
-            //{
-
-            //    area = ""
-            //}, protocol: Request.Scheme);
+            var callbackUrl = Url.Content("~/");
             return SignOut(
                  new AuthenticationProperties
                  {
