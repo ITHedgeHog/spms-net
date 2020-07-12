@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPMS.Persistence.MSSQL;
 
 namespace SPMS.Persistence.MSSQL.Migrations
 {
     [DbContext(typeof(SpmsContext))]
-    partial class SpmsContextModelSnapshot : ModelSnapshot
+    [Migration("20200712201022_IsGameSpiderable")]
+    partial class IsGameSpiderable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -361,9 +363,6 @@ namespace SPMS.Persistence.MSSQL.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Author")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
@@ -387,15 +386,9 @@ namespace SPMS.Persistence.MSSQL.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
 
-                    b.Property<string>("Keywords")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(255)")
                         .HasMaxLength(255);
-
-                    b.Property<string>("RobotsText")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SiteAnalytics")
                         .HasColumnType("nvarchar(max)");

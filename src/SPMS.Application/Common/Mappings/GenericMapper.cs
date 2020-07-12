@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using AutoMapper;
 using SPMS.Application.Dtos;
+using SPMS.Application.Dtos.Admin;
 using SPMS.Domain.Models;
 
 namespace SPMS.Application.Common.Mappings
@@ -9,7 +10,7 @@ namespace SPMS.Application.Common.Mappings
     {
         public GenericMapper()
         {
-           
+            CreateMap<Game, SeoDto>();
             CreateMap<PlayerRole, PlayerRoleDto>().ForMember(x => x.Name, opt => opt.MapFrom(y => y.Name))
                 .ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id));
             CreateMap<Player, PlayerDto>()
@@ -21,7 +22,6 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x=>x.Email, o=>o.Ignore())
                 .ForMember(x => x.Firstname, o => o.Ignore())
                 .ForMember(x => x.Surname, o => o.Ignore());
-
         }
     }
 }
