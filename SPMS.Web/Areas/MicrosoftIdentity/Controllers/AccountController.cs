@@ -42,7 +42,7 @@ namespace SPMS.Web.Areas.MicrosoftIdentity.Controllers
         public IActionResult SignIn([FromRoute] string scheme)
         {
             scheme ??= OpenIdConnectDefaults.AuthenticationScheme;
-            var redirectUrl = Url.Content("~/");
+            var redirectUrl = Url.Action("Index", "Home", new {area = ""}, Request.Scheme); // Url.Content("~/");
             return Challenge(
                 new AuthenticationProperties { RedirectUri = redirectUrl },
                 scheme);

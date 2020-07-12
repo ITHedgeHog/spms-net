@@ -1,0 +1,53 @@
+﻿@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Dan Taylor, Evan Scown and SPMS.Net contributors">
+    <meta name="generator" content="SPMS.Net">
+    <title>@ViewData["Title"] -</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    @RenderSection("Style", false)
+
+    @if (Model.UseAnalytics)
+    {
+        @Html.Raw(Model.SiteAnalytics)
+    }
+    else
+    {
+        <!-- Analytics Omitted -->
+    }
+    <script src="https://kit.fontawesome.com/6bb2ef40e5.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+       
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <mini-profiler position="RenderPosition.BottomLeft" />
+    <footer class="border-top text-muted">
+        <div class="container">
+        
+        </div>
+    </footer>   <div class="disclaimer text-muted">
+        <div class="container">
+            @Html.Raw(Model.SiteDisclaimer)
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
