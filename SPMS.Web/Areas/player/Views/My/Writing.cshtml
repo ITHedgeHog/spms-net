@@ -37,7 +37,7 @@
                             <li class="list-group-item">
                                 <div class="float-right btn-group-vertical">
                                     <a asp-area="player" asp-controller="Authoring" asp-action="Invite" asp-route-id="@post.Id" class="btn btn-outline-primary"><i class="fas fa-user-edit"></i> Authors</a>
-                                    <a class="btn btn-outline-danger" data-toggle="modal" data-target="@scheduleTarget"><i class="fas fa-trash-alt"></i> Schedule</a>
+                                    <a class="btn btn-outline-danger disabled" disabled="disabled" data-toggle="modal" data-target="@scheduleTarget"><i class="fas fa-trash-alt"></i> Schedule</a>
                                     <a data-toggle="modal" data-target="@publishTarget" class="btn btn-outline-warning"><i class="fas fa-file-export"></i> Publish</a>
                                 </div>
                                 <div class="float-left">
@@ -125,7 +125,7 @@
                         <input type="hidden" name="Id" value="@post.Id" />
                         <input type="text" name="PublishAt" Id="@schedulepicker" />
                         <div class="float-right">
-                            <button type="submit" class="btn btn-primary">Schedule Post</button>
+                            <button type="submit" class="btn btn-primary disabled" disabled="disabled">Schedule Post</button>
                         </div>
                     </form>
                 </div>
