@@ -18,6 +18,8 @@ namespace SPMS.Application.Dtos.Story
         public List<EpisodeDto> ForthComingEpisodes { get; set; }
         public SeriesDto CurrentSeries { get; set; }
         public EpisodeDto CurrentEpisode { get; set; }
+        public int SeriesNumber { get; set; }
+        public int EpisodeNumber { get; set; }
     }
 
     public class SeriesDto

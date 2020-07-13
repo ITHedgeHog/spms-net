@@ -1,8 +1,9 @@
-﻿namespace SPMS.Application.Dtos
+﻿using SPMS.Application.Dtos.Common;
+
+namespace SPMS.Application.Dtos
 {
-    public class BiographyDto
-    {   
-        public int Id { get; set; }
+    public class BiographyDto : DtoWithId
+    {
         public string Firstname { get; set; }
         public string Surname { get; set; }
 

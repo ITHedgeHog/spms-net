@@ -23,19 +23,20 @@ namespace SPMS.Application.Admin.Query
         {
             private readonly ISpmsContext _db;
             private readonly IMapper _mapper;
+            private readonly ITenantProvider _tenant;
 
-            public SeoQueryHandler(ISpmsContext db, IMapper mapper)
+            public SeoQueryHandler(ISpmsContext db, IMapper mapper, ITenantProvider tenant)
             {
                 _db = db;
                 _mapper = mapper;
+                _tenant = tenant;
             }
 
             public async Task<SeoDto> Handle(SeoQuery request, CancellationToken cancellationToken)
             {
 
                 // Get Matching Game
-                var game = await _db.Game.Include(gd => gd.Url).Where(x => x.Url.Any(y => y.Url == request.Url)).FirstOrDefaultAsync(cancellationToken: cancellationToken) ??
-                           await _db.Game.Include(g => g.Url).FirstAsync(gm => gm.Name == StaticValues.TestGame, cancellationToken: cancellationToken);
+                var game = await _tenant.GetTenantAsync(cancellationToken);
 
 
                 var seoDto = _mapper.Map<SeoDto>(game);

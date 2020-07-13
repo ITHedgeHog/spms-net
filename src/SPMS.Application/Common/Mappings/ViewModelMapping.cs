@@ -6,7 +6,7 @@ using SPMS.Application.Dtos;
 using SPMS.Application.Dtos.Common;
 using SPMS.Application.Dtos.Story;
 using SPMS.Application.Services;
-
+using SPMS.Domain.Models;
 using SPMS.ViewModel;
 using SPMS.ViewModel.character;
 using SPMS.ViewModel.Common;
@@ -23,7 +23,9 @@ namespace SPMS.Application.Common.Mappings
             CreateMap<ListItemDto, SelectListItem>()
                 .ForMember(x => x.Group, o => o.Ignore())
                 .ForMember(x => x.Disabled, o => o.Ignore());
+            CreateMap<Posting, PostingViewModel>();
             CreateMap<SPMS.Application.Dtos.BiographyDto, BiographyViewModel>()
+                .ForMember(x => x.Id, o => o.MapFrom<DtoIdHiderResolver>())
                 .ForMember(x => x.gravatar, o => o.Ignore())
                 .ForMember(x => x.IsReadOnly, o => o.Ignore())
                 .ForMember(x => x.SiteAnalytics, o => o.Ignore())
@@ -35,10 +37,11 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.CommitSha, o => o.Ignore())
                 .ForMember(x => x.CommitShaLink, o => o.Ignore())
                 .ForMember(x => x.GameName, o => o.Ignore());
+            CreateMap<BiographiesDto, BiographyListViewModel>();
+
             CreateMap<PlayerRoleDto, PlayerRoleViewModel>();
-            CreateMap<PlayerDto, PlayerViewModel>();
+            CreateMap<PlayerDto, PlayerViewModel>(); 
             CreateMap<EditBiographyDto, EditCharacterViewModel>()
-                .ForMember(x => x.Types, o=>o.Ignore())
                 .ForMember(x => x.TypeId, o => o.MapFrom(y => y.Types.FirstOrDefault(x => x.Selected).Value))
                 .ForMember(x => x.PostingId, o => o.MapFrom(y => y.Postings.FirstOrDefault(x => x.Selected).Value))
                 .ForMember(x => x.StateId, o => o.MapFrom(y => y.States.FirstOrDefault(x => x.Selected).Value))
@@ -87,6 +90,22 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.EpisodeId, o => o.Ignore())
                 .ForMember(x => x.Episode, o => o.Ignore())
                 .ForMember(x=>x.PostedBy, o =>o.Ignore());
+        }
+    }
+
+
+    public class DtoIdHiderResolver : IValueResolver<DtoWithId, ViewModelWithId, string>
+    {
+        private readonly IIdentifierMask _masker;
+
+        public DtoIdHiderResolver(IIdentifierMask masker)
+        {
+            _masker = masker;
+        }
+
+        public string Resolve(DtoWithId source, ViewModelWithId destination, string destMember, ResolutionContext context)
+        {
+            return _masker.HideId(source.Id);
         }
     }
 

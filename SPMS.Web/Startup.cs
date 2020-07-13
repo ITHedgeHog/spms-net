@@ -34,6 +34,7 @@ namespace SPMS.Web
             SPMS.Persistence.MSSQL.DependencyInjection.AddPersistence(services, Configuration);
             SPMS.Application.DependencyInjection.AddApplication(services);
             services.AddTransient<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IHostProvider, HostProvider>();
             services.AddHttpContextAccessor();
 
             services.Configure<CookiePolicyOptions>(options =>

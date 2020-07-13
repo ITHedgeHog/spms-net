@@ -43,6 +43,7 @@ namespace SPMS.ViewModel.character
         public int StateId { get; set; }
 
         public List<SelectListItem> States { get; set; }
+        [Display(Name = "Type")]
         public int TypeId { get; set; }
         public List<SelectListItem> Types { get; set; }
     }

@@ -28,7 +28,6 @@ namespace SPMS.Web.Controllers
         //[Route("Home/Index")]
         public async Task<IActionResult> Index()
         {
-            var routers = this.RouteData.Routers.ToList();
             var vm = new HomeViewModel();
 
             return View(vm);

@@ -61,7 +61,7 @@ namespace SPMS.Web.Areas.player.Controllers
 
         [HttpPost()]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ProcessEdit(int id, [Bind("Id,Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,PlayerId,History,StatusId,StateId,PlayerId")] EditCharacterViewModel biography, CancellationToken cancellationToken)
+        public async Task<IActionResult> ProcessEdit(int id, [Bind("Id,Firstname,Surname,DateOfBirth,Species,Homeworld,Gender,Born,Eyes,Hair,Height,Weight,Affiliation,Assignment,Rank,RankImage,PostingId,PlayerId,History,StatusId,StateId,PlayerId,TypeId")] EditCharacterViewModel biography, CancellationToken cancellationToken)
         {
             if (id != biography.Id)
             {
