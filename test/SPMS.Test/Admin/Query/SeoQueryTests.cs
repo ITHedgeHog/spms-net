@@ -59,7 +59,7 @@ namespace SPMS.Application.Tests.Admin.Query
             
             var configurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<GenericMapper>();
+                cfg.AddProfile<ApplicationMapper>();
             });
 
             Mapper = configurationProvider.CreateMapper();

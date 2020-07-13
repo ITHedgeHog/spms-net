@@ -1,41 +1,40 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using SPMS.Application.Common.Mappings;
 using Xunit;
+using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
 namespace SPMS.Application.Tests.Mapping
 {
-    public class StoryMappingTests : IClassFixture<StoryMappingFixture>
+    public class ApplicationMappingsTest : IClassFixture<ApplicationMappingsFixture>
     {
         private readonly IConfigurationProvider _configuration;
         private readonly IMapper _mapper;
 
-        public StoryMappingTests(StoryMappingFixture fixture)
+        public ApplicationMappingsTest(ApplicationMappingsFixture fixture) 
         {
             _configuration = fixture.ConfigurationProvider;
             _mapper = fixture.Mapper;
         }
 
-        [Fact(DisplayName = "StoryMapping Mapper is valid")]
+        [Fact()]
         public void ShouldHaveValidConfiguration()
         {
+
             _mapper.ConfigurationProvider.AssertConfigurationIsValid();
         }
     }
 
-    public class StoryMappingFixture
+    public class ApplicationMappingsFixture
     {
-        public StoryMappingFixture()
+        public ApplicationMappingsFixture()
         {
             ConfigurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<StoryMapping>();
+                cfg.AddProfile<ApplicationMapper>();
+                //cfg.AddProfile<BiographyMapper>();
+                //cfg.AddProfile<AuthorProfile>();
 
-            });
-
-            Mapper = ConfigurationProvider.CreateMapper();
+            }); Mapper = ConfigurationProvider.CreateMapper();
         }
 
         public IConfigurationProvider ConfigurationProvider { get; }

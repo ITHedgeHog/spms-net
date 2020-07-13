@@ -91,7 +91,7 @@ namespace SPMS.Application.Tests.Character.Command
 
             var configurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<CharacterMapperProfile>();
+                cfg.AddProfile<ApplicationMapper>();
 
             });
 

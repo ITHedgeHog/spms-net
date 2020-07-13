@@ -97,8 +97,7 @@ namespace SPMS.Application.Tests.Story.Query
 
             var configurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<StoryMapping>();
-                //cfg.AddProfile<BiographyMapperProfile>();
+                cfg.AddProfile<ApplicationMapper>();
 
             });
 
