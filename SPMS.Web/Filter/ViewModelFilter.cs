@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Configuration;
@@ -17,11 +18,13 @@ namespace SPMS.Web.Filter
         private readonly IGameService _gameService;
         private readonly IUserService _userService;
         private readonly bool _useAnalytics;
+        private readonly IMediator _mediator;
 
-        public ViewModelFilter(IGameService gameService, IConfiguration config, IUserService userService)
+        public ViewModelFilter(IGameService gameService, IConfiguration config, IUserService userService, IMediator mediator)
         {
             _gameService = gameService;
             _userService = userService;
+            _mediator = mediator;
             _useAnalytics = config.GetValue("UseAnalytics", false);
         }
 

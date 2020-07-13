@@ -119,8 +119,7 @@ namespace SPMS.Application.Tests.Character.Query
 
             var configurationProvider = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfile<CharacterMapperProfile>();
-                cfg.AddProfile<BiographyMapperProfile>();
+                cfg.AddProfile<ApplicationMapper>();
 
             });
 
