@@ -8,6 +8,7 @@ using SPMS.Application.Admin.Query;
 using SPMS.Application.Character.Query;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Mappings;
+using SPMS.Application.Common.Provider;
 using SPMS.Application.Dtos;
 using SPMS.Application.Dtos.Admin;
 using SPMS.Application.Services;
@@ -34,7 +35,7 @@ namespace SPMS.Application.Tests.Admin.Query
         public async void GetSeoStatusQueryTest()
         {
             var request = new SeoQuery() { Url = "localhost" };
-            var sut = new SeoQuery.SeoQueryHandler(_context,_mapper);
+            var sut = new SeoQuery.SeoQueryHandler(_context,_mapper, new TenantProvider(_context));
 
             var result = await sut.Handle(request, CancellationToken.None);
 
