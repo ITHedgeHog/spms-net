@@ -35,7 +35,7 @@ namespace SPMS.Application.Character.Query
 
             public async Task<EditBiographyDto> Handle(GetCharacterQuery request, CancellationToken cancellationToken)
             {
-                var game = await _tenant.GetTenantAsync(request.Url, cancellationToken);
+                var game = await _tenant.GetTenantAsync(cancellationToken);
                 var dto = await _db.Biography.Include(b => b.Player)
                     .Include(b => b.Posting)
                     .Include(b => b.State).Where(x => x.Id == request.Id).ProjectTo<EditBiographyDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken: cancellationToken);

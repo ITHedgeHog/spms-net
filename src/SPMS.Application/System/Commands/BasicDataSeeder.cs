@@ -471,7 +471,7 @@ He keeps with him a Hair piece that he wears on 'special occasions' or on Thursd
                 }
             }
 
-            if (!await db.Episode.AnyAsync(x => x.Title == "Prologue", cancellationToken: cancellationToken))
+            if (!await db.Episode.Include(x => x.Series).AnyAsync(x => x.Title == "Caretaker" && x.Series.GameId == game.Id, cancellationToken: cancellationToken))
             {
                 EpisodeStatus episodeStatus = await db.EpisodeStatus.AsNoTracking().FirstAsync(x => x.Name == StaticValues.Published, cancellationToken: cancellationToken);
                 await db.Episode.AddAsync(new Episode()

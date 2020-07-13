@@ -6,6 +6,8 @@ namespace SPMS.Application.Common.Interfaces
 {
     public interface ITenantProvider
     {
-        Task<Game> GetTenantAsync(string url, CancellationToken cancellationToken);
+        Task<Game> GetTenantAsync(CancellationToken cancellationToken);
+        Task<string> ProtectIdAsync(int id, CancellationToken cancellationToken);
+        Task<int> UnprotectAsync(string identifier, CancellationToken cancellationToken);
     }
 }

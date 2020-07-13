@@ -14,13 +14,30 @@ namespace SPMS.Application.Services
             _key = key;
         }
 
+        public IdentifierMasking()
+        {
+
+        }
+
         public int RevealId(string identifier)
         {
             return int.Parse((string) RevealIdentifier(identifier));
         }
 
+        public int RevealId(string identifier, byte[] key)
+        {
+            _key = key;
+            return int.Parse((string)RevealIdentifier(identifier));
+        }
+
         public string HideId(int id)
         {
+            return HideIdentifier(id.ToString());
+        }
+
+        public string HideId(int id, byte[] key)
+        {
+            _key = key;
             return HideIdentifier(id.ToString());
         }
 

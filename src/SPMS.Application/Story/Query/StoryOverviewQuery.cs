@@ -48,6 +48,11 @@ namespace SPMS.Application.Story.Query
 
                 var vm = new StoryOverviewDto();
                 //TODO Pull real data
+                vm.SeriesNumber = await _db.Series.Where(s => s.GameId == gameId && s.IsActive)
+                    .CountAsync(cancellationToken: cancellationToken);
+                vm.EpisodeNumber = await _db.Episode.CountAsync(
+                    x => x.SeriesId == currentSeries.Id && x.StatusId == activeStatus.Id,
+                    cancellationToken: cancellationToken);
                 vm.CurrentSeries = _mapper.Map<SeriesDto>(currentSeries);
                 vm.CurrentEpisode = _mapper.Map<EpisodeDto>(currentEpisode);
                 vm.CurrentEpisode.Story = _mapper.Map<List<StoryPostDto>>(currentStories);

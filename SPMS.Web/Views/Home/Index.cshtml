@@ -1,33 +1,47 @@
-﻿@model SPMS.ViewModel.Home.HomeViewModel
+﻿@using SPMS.Common
+@model SPMS.ViewModel.Home.HomeViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="row">
-    <div class="col">
-        <div class="text-center">
-            <h1 class="display-4">Welcome to Beyond the Darkness a Star Trek Role Play Game</h1>
-            <p>Starbase Gamma is home to many different species from all corners of the Galaxy, built to extend Starfleet’s reach into the Gamma Quadrant the station is only allowed to exist due to an uneasy alliance with the Dominion that grows weaker by the day.</p>
+@if (Model.SiteTitle != "SPMS Example Site")
+{
+    <div class="row">
+        <div class="col">
+            <div class="text-center">
+                <h1 class="display-4">Welcome to Beyond the Darkness a Star Trek Role Play Game</h1>
+                <p>Starbase Gamma is home to many different species from all corners of the Galaxy, built to extend Starfleet’s reach into the Gamma Quadrant the station is only allowed to exist due to an uneasy alliance with the Dominion that grows weaker by the day.</p>
 
-            <p>Things in the Gamma Quadrant are not going smoothly, people, ships and even whole settlements are going missing across the quadrant and no one quite knows what is going on.</p>
+                <p>Things in the Gamma Quadrant are not going smoothly, people, ships and even whole settlements are going missing across the quadrant and no one quite knows what is going on.</p>
 
-            <p>Reinforcing Starbase Gamma Captain Marcus Brightstar and the USS Sovereign have joined Task Force Aegis, Marcus is taking over the day to day affairs of the starbase to allow Vice Admiral Darkly to focus the task force on discovering what is going on.</p>
+                <p>Reinforcing Starbase Gamma Captain Marcus Brightstar and the USS Sovereign have joined Task Force Aegis, Marcus is taking over the day to day affairs of the starbase to allow Vice Admiral Darkly to focus the task force on discovering what is going on.</p>
 
-            <p>Join the crew of Starbase Gamma and help Starfleet get to the bottom of a mystery that plagues an entire quadrant.</p>
+                <p>Join the crew of Starbase Gamma and help Starfleet get to the bottom of a mystery that plagues an entire quadrant.</p>
+            </div>
+        </div>
+        <div class="d-none d-sm-none d-md-block col-md-4 col-4">
+            <h3 class="text-center text-capitalize">Interested in joining?</h3>
+            <p><a href="https://discord.gg/rYuXncM">Join our discord</a> to discuss joining our game or just to hang out.</p>
+            <div class="embed-responsive embed-responsive-1by1">
+                <iframe src="https://discordapp.com/widget?id=592903525722488832&theme=dark" allowtransparency="true" class="embed-responsive-item"></iframe>
+            </div>
+
         </div>
     </div>
-    <div class="d-none d-sm-none d-md-block col-md-4 col-4">
-        <h3 class="text-center text-capitalize">Interested in joining?</h3>
-        <p><a href="https://discord.gg/rYuXncM">Join our discord</a> to discuss joining our game or just to hang out.</p>
-        <div class="embed-responsive embed-responsive-1by1">
-            <iframe src="https://discordapp.com/widget?id=592903525722488832&theme=dark" allowtransparency="true" class="embed-responsive-item"></iframe>
+}
+else
+{
+    <div class="row">
+        <div class="col">
+            <div class="text-center">
+                <h1 class="display-4">Welcome to the SPMS test site</h1>
+            </div>
         </div>
-
     </div>
-</div>
-<div class="row">
+}
+@*<div class="row">
     <div class="col">
         <h2 class="h3">Recent Posts</h2>
     </div>
-</div>
+</div>*@
 

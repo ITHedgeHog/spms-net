@@ -33,7 +33,7 @@ namespace SPMS.Application.Biography.Query
 
             public async Task<BiographiesDto> Handle(BiographyListQuery request, CancellationToken cancellationToken)
             {
-                var game = await _tenant.GetTenantAsync(request.Url, cancellationToken);
+                var game = await _tenant.GetTenantAsync(cancellationToken);
                 //var bio = await _db.Biography.Include(x => x.State).Include(x => x.Status).ToListAsync(cancellationToken: cancellationToken);
                 //var bioDto = await _db.Biography.Include(x => x.State)
                 //    .Include(x => x.Status)

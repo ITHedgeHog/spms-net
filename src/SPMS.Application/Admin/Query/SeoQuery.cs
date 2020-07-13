@@ -36,7 +36,7 @@ namespace SPMS.Application.Admin.Query
             {
 
                 // Get Matching Game
-                var game = await _tenant.GetTenantAsync(request.Url, cancellationToken);
+                var game = await _tenant.GetTenantAsync(cancellationToken);
 
 
                 var seoDto = _mapper.Map<SeoDto>(game);
