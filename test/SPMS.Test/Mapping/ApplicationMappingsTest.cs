@@ -16,7 +16,7 @@ namespace SPMS.Application.Tests.Mapping
             _mapper = fixture.Mapper;
         }
 
-        [Fact()]
+        [Fact(DisplayName = "Application Mapping Should Be Valid")]
         public void ShouldHaveValidConfiguration()
         {
 

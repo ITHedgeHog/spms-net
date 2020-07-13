@@ -14,16 +14,28 @@ namespace SPMS.Application.Common.Mappings
     {
         public ApplicationMapper()
         {
-           GenericMappings();
-           AuthorMappings();
-           BiographyMapper();
-           CharacterMappings();
-           StoryMappings();
+            GenericMappings();
+            AuthorMappings();
+            BiographyMapper();
+            CharacterMappings();
+            StoryMappings();
         }
 
         public void GenericMappings()
         {
             CreateMap<Game, SeoDto>();
+            CreateMap<Game, TenantDto>()
+                .ForMember(x => x.GameName, o => o.MapFrom(y => y.Name))
+                .ForMember(x => x.gravatar, o => o.Ignore())
+                .ForMember(x => x.SiteDisclaimer, o => o.MapFrom(y => y.Disclaimer))
+                .ForMember(x => x.UseAnalytics, o => o.MapFrom(y => !string.IsNullOrEmpty(y.SiteAnalytics)))
+                .ForMember(x => x.IsAdmin, o => o.Ignore())
+                .ForMember(x => x.IsPlayer, o => o.Ignore())
+                .ForMember(x => x.CommitShaLink, o => o.Ignore())
+                .ForMember(x => x.CommitSha, o => o.Ignore());
+
+
+
             CreateMap<PlayerRole, PlayerRoleDto>().ForMember(x => x.Name, opt => opt.MapFrom(y => y.Name))
                 .ForMember(x => x.Id, opt => opt.MapFrom(y => y.Id));
             CreateMap<Player, PlayerDto>()

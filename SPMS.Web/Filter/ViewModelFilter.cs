@@ -3,29 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Configuration;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Application.Services;
+using SPMS.Application.System.Query;
 using SPMS.Web.Service;
 
 namespace SPMS.Web.Filter
 {
     public class ViewModelFilter : ActionFilterAttribute
     {
-        private readonly IGameService _gameService;
-        private readonly IUserService _userService;
-        private readonly bool _useAnalytics;
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
+        private readonly IUserService _userService;
 
-        public ViewModelFilter(IGameService gameService, IConfiguration config, IUserService userService, IMediator mediator)
+        public ViewModelFilter(IMediator mediator, IMapper mapper, IUserService userService)
         {
-            _gameService = gameService;
-            _userService = userService;
             _mediator = mediator;
-            _useAnalytics = config.GetValue("UseAnalytics", false);
+            _mapper = mapper;
+            _userService = userService;
         }
 
         public override async Task OnActionExecutionAsync(
@@ -44,32 +43,9 @@ namespace SPMS.Web.Filter
             {
                 if (controller.ViewData.Model is Common.ViewModels.ViewModel model)
                 {
-                    model.GameName = await _gameService.GetGameNameAsync();
-                    model.SiteTitle = await _gameService.GetSiteTitleAsync();
-                    model.SiteDisclaimer = await _gameService.GetSiteDisclaimerAsync();
-                    model.IsReadOnly = await _gameService.GetReadonlyStatusAsync();
-                    model.SiteAnalytics = await _gameService.GetAnalyticsAsyncTask();
-                    model.UseAnalytics = _useAnalytics;
-                    if (_userService.IsAuthenticated())
-                    {
-                        model.IsAdmin = _userService.IsAdmin();
-                        model.IsPlayer = _userService.IsPlayer();
-                        model.gravatar = await _userService.GetEmailAsync(CancellationToken.None);
-                    }
+                    var dto = await _mediator.Send(new TenantQuery() { Url = context.HttpContext.Request.Host.Host }, CancellationToken.None);
 
-                    var sha = Environment.GetEnvironmentVariable("COMMIT_SHA");
-                    if (!string.IsNullOrEmpty(sha))
-                    {
-                        var last = 7;
-                        if (sha.Length < 7)
-                        {
-                            last = sha.Length;
-                        }
-                        model.CommitShaLink = "https://github.com/ITHedgeHog/getspms/commit/" + sha.Substring(0, last);
-                        model.CommitSha = sha.Substring(0, last);
-                    }
-
-                    var i = 1;
+                    _mapper.Map(dto, model);
                 }
             }
         }

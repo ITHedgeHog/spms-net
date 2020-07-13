@@ -18,6 +18,8 @@ namespace SPMS.Application.Common.Mappings
     {
         public ViewModelMapping()
         {
+            CreateMap<TenantDto, SPMS.Common.ViewModels.ViewModel>();
+
             CreateMap<ListItemDto, SelectListItem>()
                 .ForMember(x => x.Group, o => o.Ignore())
                 .ForMember(x => x.Disabled, o => o.Ignore());
