@@ -1,3 +1,5 @@
+name: Bug Branch CI
+
 on:
   push:
     branches:
