@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "https://localhost:32776",
+            "webRoot": "${workspaceFolder}",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation",
+                "ASPNETCORE_URLS":"https://+32776",
+                "CACHETIMEOUT": "5",
+                "APPCONFIG":  "Endpoint=https://spms-net.azconfig.io;Id=zDE9-lo-s0:XrvZ8ylNfk+zr3s0HNVk;Secret=bKGuHMNLKR8sXJrwc7EP1/vNaSg8AQBUR3qclc1nIHI="
+            }
+        }
+    ]
+}
