@@ -36,32 +36,35 @@ jobs:
   pull-request:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET Core SDK
-      uses: actions/setup-dotnet@v1.5.0
-      with:
-        # SDK version to use. Examples: 2.2.104, 3.1, 3.1.x
-        dotnet-version: 3.1.x
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v1.4.2
-    - run: echo $GITHUB_WORKSPACE
-    - name: Restore Node Packages
-      run: npm install -cwd $GITHUB_WORKSPACE/SPMS.Web/
-    - run: dotnet build SPMS.sln
-    - run: dotnet test SPMS.sln
+      - uses: actions/checkout@v2
+      - name: Fetch all history for all tags and branches
+        run:  git fetch --prune --unshallow
+      - uses: GitTools/actions@v0.9.4
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1.5.0
+        with:
+          # SDK version to use. Examples: 2.2.104, 3.1, 3.1.x
+          dotnet-version: 3.1.x
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1.4.2
+      - run: echo $GITHUB_WORKSPACE
+      - name: Restore Node Packages
+        run: npm install -cwd $GITHUB_WORKSPACE/SPMS.Web/
+      - run: dotnet build SPMS.sln
+      - run: dotnet test SPMS.sln
   create_pr:
     runs-on: ubuntu-latest
     steps:
-    - name: pull-request
-    - uses: actions/checkout@v2
-    - uses: repo-sync/pull-request@v2
-      with:
-        source_branch: ""                                 # If blank, default: triggered branch
-        destination_branch: "main"                      # If blank, default: master
-        pr_title: "Pulling ${{ github.ref }} into main" # Title of pull request
-        pr_template: ".github/feature_pr_template.md"   # Path to pull request template, requires pr_title to be set, excludes pr_body
-        pr_label: "auto-pr"                               # Comma-separated list (no spaces)
-        pr_milestone: "Beta"                              # Milestone name
-        pr_draft: true                                    # Creates pull request as draft
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: ""                                 # If blank, default: triggered branch
+          destination_branch: "main"                      # If blank, default: master
+          pr_title: "Pulling ${{ github.ref }} into main" # Title of pull request
+          pr_template: ".github/feature_pr_template.md"   # Path to pull request template, requires pr_title to be set, excludes pr_body
+          pr_label: "auto-pr"                               # Comma-separated list (no spaces)
+          pr_milestone: "Beta"                              # Milestone name
+          pr_draft: true                                    # Creates pull request as draft
+          github_token: ${{ secrets.GITHUB_TOKEN }}
     
