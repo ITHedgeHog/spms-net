@@ -10,6 +10,8 @@
 *.userosscache
 *.sln.docstates
 
+.vscode/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -344,3 +346,4 @@ healthchecksdb
 /docker-compose.override.yml
 /.vscode
 /SPMS.Web/Properties/launchSettings.json
+/SPMS.Web/.vscode
