@@ -4,193 +4,68 @@
     ViewData["Title"] = $"Biography for {Model.Firstname} {Model.Surname}";
 }
 
-<h1>Biography for @Model.Firstname @Model.Surname</h1>
-
-<div class="row">
-    <div class="col-9 col-md-9">
-        <markdown markdown="History" />
+    <div class="row">
+        <div class="col">
+            <h1>Biography for @Model.Firstname @Model.Surname</h1>
+        </div>
     </div>
-
-    <div class="col-3 col-md-3">
-        <table width="200" align="right" cellpadding="3" cellspacing="0" style="border: 1px #10110F solid; background: #10110F; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; -moz-border-radius-topleft: 1em; -moz-border-radius-bottomleft: 1em; -moz-border-radius-topright: 1em; -moz-border-radius-bottomright: 1em; width: 200; margin-top: -1.4em; margin: 0 0 1em 1em; font-family: Arial, Helvetica, sans-serif; font-size: 12px;color: #ffffff;">
-
-            <tbody>
-                <tr>
-                    <td colspan="2" style="-moz-border-radius-topleft: 1em; -moz-border-radius-topright: 1em; text-align: center; color: #e5e5ed; font-variant:small-caps; font-size:larger; background-color:  #8C0000; text-align:center;">
-                        @Html.DisplayFor(m => m.Firstname)  @Html.DisplayFor(m => m.Surname)
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" class="issn style1" style="background-color: #10100F; text-align: center; font-size: larger; color: #cccccc;">
-                        <img src="~/img/default-avatar.png" alt="@Model.Firstname @Model.Surname Avatar" width="200" height="250"/>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center" style="padding-left:5px; padding-right:5px; background:#0A2B00; color:#cccccc;">
-                        &nbsp;
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#1B2912;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Species:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Species)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#1B2912;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Homeworld:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Homeworld)
-                        </p>
-                    </td>
-                </tr>
-
-
-                <tr>
-                    <td bgcolor="#1B2912;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Gender:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Gender)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#1B2912" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Born:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Born)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#1B2912;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Eyes:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Eyes)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#1B2912;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Hair:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Hair)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#122d0e;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Height:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Height)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#122d0e;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Weight:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Weight)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#122d0e;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Affiliation:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Affiliation)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#122d0e;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Assignment:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Assignment)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#122d0e;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Position:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Assignment)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#122d0e;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Rank:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Rank)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#122d0e;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Insignia:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.RankImage)
-                        </p>
-                    </td>
-                </tr>
-
-
-
-
-
-
-                <tr>
-                    <td bgcolor="#122d0e;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>Player:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Player)
-                        </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td bgcolor="#122d0e;" style="background: #0E1F0C; padding-left:6px; padding-right:6px; border-top: 1px solid #041003; color: #cccccc;" class="left">
-                        <b>State:</b>
-                    </td>
-                    <td bgcolor="#f7f7f7" style="background: #0C1603; padding-left:6px; padding-right:6px; border-top: 1px solid #000000;" class="righta">
-                        <p>
-                            @Html.DisplayFor(m => m.Status)
-                        </p>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
+    <div class="row">
+        <div class="col-sm-12 col-md-9 order-2 order-md-1">
+            <markdown markdown="History" />
+        </div>
+        <div class="col-sm-12 col-md-3 order-1 order-md-2">
+            <div class="card">
+                <img src="~/img/default-avatar.png" alt="@Model.Firstname @Model.Surname Avatar" class="card-img-top bg-dark" />
+                <div class="card-body">
+                    <h4 class="card-title">@Html.DisplayFor(m => m.Firstname)  @Html.DisplayFor(m => m.Surname)</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Species:</strong>&nbsp;@Html.DisplayFor(m => m.Species)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Homeworld:</strong>&nbsp;@Html.DisplayFor(m => m.Homeworld)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Gender:</strong>&nbsp;@Html.DisplayFor(m => m.Gender)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Born:</strong>&nbsp;@Html.DisplayFor(m => m.Born)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Eyes:</strong>&nbsp;@Html.DisplayFor(m => m.Eyes)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Hair:</strong>&nbsp;@Html.DisplayFor(m => m.Hair)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Height:</strong>&nbsp;@Html.DisplayFor(m => m.Height)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Weight:</strong>&nbsp;@Html.DisplayFor(m => m.Weight)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Affiliation:</strong>&nbsp;@Html.DisplayFor(m => m.Affiliation)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Assignment:</strong>&nbsp;@Html.DisplayFor(m => m.Assignment)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Position:</strong>&nbsp;@Html.DisplayFor(m => m.Assignment)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Rank:</strong>&nbsp;@Html.DisplayFor(m => m.Rank)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Insignia:</strong>&nbsp;@Html.DisplayFor(m => m.RankImage)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Player:</strong>&nbsp;@Html.DisplayFor(m => m.Player)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>State:</strong>&nbsp;@Html.DisplayFor(m => m.Status)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
