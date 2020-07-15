@@ -48,28 +48,23 @@ jobs:
         run: npm install -cwd $GITHUB_WORKSPACE/SPMS.Web/
       - run: dotnet build SPMS.sln
       - run: dotnet test SPMS.sln
-  docker_build:
-    name: Build Docker Image
-    runs-on: ubuntu-latest
-    needs: [build-and-test]
-    steps:
-    - name: Build and push Docker images
-      uses: docker/build-push-action@v1.1.0
-      with:
-        # Username used to log in to a Docker registry. If not set then no login will occur
-        username: ITHedgeHog
-        # Password or personal access token used to log in to a Docker registry. If not set then no login will occur
-        password: ${{ secrets.GITHUB_TOKEN }}
-        # Server address of Docker registry. If not set then will default to Docker Hub
-        registry: https://docker.pkg.github.com
-        # Docker repository to tag the image with
-        repository: ithedgehog
-        tags: ${{ steps.gitversion.outputs.informationalVersion }}
-        tag_with_ref: true
-        # Path to the build context
-        path: .
-        # Path to the Dockerfile (Default is '{path}/Dockerfile')
-        dockerfile: SPMS.Web/Dockerfile
-        # Whether to push the image
-        push: true
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1.1.0
+        with:
+          # Username used to log in to a Docker registry. If not set then no login will occur
+          username: ITHedgeHog
+          # Password or personal access token used to log in to a Docker registry. If not set then no login will occur
+          password: ${{ secrets.GITHUB_TOKEN }}
+          # Server address of Docker registry. If not set then will default to Docker Hub
+          registry: https://docker.pkg.github.com
+          # Docker repository to tag the image with
+          repository: ithedgehog
+          tags: ${{ steps.gitversion.outputs.informationalVersion }}
+          tag_with_ref: true
+          # Path to the build context
+          path: .
+          # Path to the Dockerfile (Default is '{path}/Dockerfile')
+          dockerfile: SPMS.Web/Dockerfile
+          # Whether to push the image
+          push: true
 
