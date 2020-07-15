@@ -42,10 +42,10 @@ jobs:
     needs: [pre-ci, scanning]
     steps:
       - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      #- name: Fetch all history for all tags and branches
-      #  run:  git fetch --prune --unshallow
+        #with:
+        #  fetch-depth: 0
+      - name: Fetch all history for all tags and branches
+        run:  git fetch --prune --unshallow
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0.9.2
         with:
