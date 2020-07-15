@@ -36,6 +36,7 @@ jobs:
           GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
           GITGUARDIAN_API_KEY: ${{ secrets.GITGUARDIAN_API_KEY }}
   pull-request:
+    name: Build & Run Tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -61,15 +62,17 @@ jobs:
       - run: dotnet build SPMS.sln
       - run: dotnet test SPMS.sln
   create_pr:
+    name: Open Draft PR for bug fix
     runs-on: ubuntu-latest
     steps:
-    - name: pull-request
-      uses: repo-sync/pull-request@v2
-      with:
-        pr_title: "Pulling ${{ github.ref }} into main" # Title of pull request
-        pr_template: ".github/bug_pr_template.md"   # Path to pull request template, requires pr_title to be set, excludes pr_body
-        pr_label: "auto-pr"                               # Comma-separated list (no spaces)
-        pr_milestone: "Beta"                              # Milestone name
-        pr_draft: true                                    # Creates pull request as draft
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: pull-request
+        uses: repo-sync/pull-request@v2
+        with:
+          pr_title: "Merge bug fix ${{ github.ref }} into master" # Title of pull request
+          pr_template: ".github/bug_pr_template.md"   # Path to pull request template, requires pr_title to be set, excludes pr_body
+          pr_label: "auto-pr"                               # Comma-separated list (no spaces)
+          pr_milestone: "Beta"                              # Milestone name
+          pr_draft: true                                    # Creates pull request as draft
+          github_token: ${{ secrets.GITHUB_TOKEN }}
     
