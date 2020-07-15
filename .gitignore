@@ -346,3 +346,4 @@ healthchecksdb
 /docker-compose.override.yml
 /.vscode
 /SPMS.Web/Properties/launchSettings.json
+/SPMS.Web/.vscode
