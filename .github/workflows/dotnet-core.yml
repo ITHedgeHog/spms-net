@@ -59,8 +59,8 @@ jobs:
           registry: https://docker.pkg.github.com
           # Docker repository to tag the image with
           repository: ithedgehog
-          tags: ${{ steps.gitversion.outputs.informationalVersion }}
-          tag_with_ref: true
+          tags: $GITHUB_RUN_ID
+          tag_with_ref: false
           # Path to the build context
           path: .
           # Path to the Dockerfile (Default is '{path}/Dockerfile')
