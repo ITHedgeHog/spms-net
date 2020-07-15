@@ -1,13 +1,12 @@
-name: .NET Core
+name: Build Docker Image
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [workflow_dispatch]
+  #push:
+  #  branches: [ master ]
+  #pull_request:
+  #  branches: [ master ]
 
 jobs:
-  jobs:
   pre-ci:
     runs-on: ubuntu-latest
     timeout-minutes: 15
