@@ -29,13 +29,14 @@ namespace SPMS.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var vm = new HomeViewModel();
-
             return View(vm);
         }
 
-        public IActionResult Privacy()
+        //[Route("Home/Privacy")]
+        public async Task<IActionResult> Privacy()
         {
-            return View();
+            var vm = new HomeViewModel();
+            return View(vm);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
