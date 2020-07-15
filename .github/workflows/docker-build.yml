@@ -58,9 +58,10 @@ jobs:
           # Server address of Docker registry. If not set then will default to Docker Hub
           registry: https://docker.pkg.github.com
           # Docker repository to tag the image with
-          repository: ithedgehog/spms-net/spms
+          repository: ithedgehog/spms-net
           tags: ${{ github.run_id }}
-          tag_with_ref: false
+          tag_with_ref: true
+          tag_with_sha: true
           # Path to the build context
           path: .
           # Path to the Dockerfile (Default is '{path}/Dockerfile')
