@@ -2,8 +2,6 @@
 
 @using Microsoft.Extensions.Configuration
 @inject IConfiguration Configuration
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +11,16 @@
     <meta name="author" content="Dan Taylor, Evan Scown and SPMS.Net contributors">
     <meta name="generator" content="SPMS.Net">
     <title>@ViewData["Title"] - @Model.SiteTitle</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+    <!-- Site CSS -->
+    <link href="~/css/site.css" rel="stylesheet">
 
     @RenderSection("Style", false)
 
@@ -26,33 +32,46 @@
     {
         <!-- Analytics Omitted -->
     }
-    <script src="https://kit.fontawesome.com/6bb2ef40e5.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <header>
-        @{ await Html.RenderPartialAsync("_Menu", Model); }
-    </header>
+    @{ await Html.RenderPartialAsync("_Menu", Model); }
     <div class="container">
-        <main role="main" class="pb-3">
+        <main role="main" class="pt-3 pb-3">
             @RenderBody()
         </main>
     </div>
     <mini-profiler position="RenderPosition.BottomLeft" />
-    <footer class="border-top text-muted">
-        <div class="container">
-            &copy; 2020 - Beyond the Darkness RPG. <a href="http://www.getspms.net" target="_blank">Powered by <i>SPMS.Net</i></a> - <a href="@Model.CommitShaLink" target="_top">Deployed from @Model.CommitSha</a>  - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy & Disclaimer</a> <a asp-area="" asp-controller="Rules" asp-action="Index">Rules</a> @if (User.IsInRole("player"))
+    <div class="navbar fixed-bottom navbar-dark primary-color">
+        <div class="mr-auto ml-auto text-white-50">
+            &copy; 2020 - Beyond the Darkness RPG.&nbsp;
+            <a href="http://www.getspms.net" target="_blank" class="text-white">Powered by <i>SPMS.Net</i></a>
+            &nbsp;-&nbsp;<a href="@Model.CommitShaLink" target="_top" class="text-white">Deployed from @Model.CommitSha</a>
+            &nbsp;-&nbsp;<a asp-area="" asp-controller="Home" asp-action="Privacy" id="siteDisclaimer" class="text-white">Privacy & Disclaimer</a>
+            &nbsp;-&nbsp;<a asp-area="" asp-controller="Rules" asp-action="Index" class="text-white">Rules</a>
+            @if (User.IsInRole("player"))
             {
-                <text>[<a asp-area="" asp-controller="Debug" asp-action="Index"> Debug </a>] </text>
+                <text>&nsbp;[<a asp-area="" asp-controller="Debug" asp-action="Index" class="text-white"> Debug </a>] </text>
             }
         </div>
-    </footer>   <div class="disclaimer text-muted">
-        <div class="container">
-            @Html.Raw(Model.SiteDisclaimer)
-        </div>
     </div>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $("#siteDisclaimer").popover({
+            trigger: 'hover',
+            html: true,
+            placement: 'top',
+            title: 'Website Disclaimer',
+            content: '@Html.Raw(Model.SiteDisclaimer)'
+        });
+    </script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>
