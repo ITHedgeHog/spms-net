@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - run: echo $github.run_id
+      - run: echo ${{ github.run_id }}
       - name: 'Block Concurrent Executions'
         uses: softprops/turnstyle@v1
         with:
@@ -59,7 +61,7 @@ jobs:
           registry: https://docker.pkg.github.com
           # Docker repository to tag the image with
           repository: ithedgehog
-          tags: $GITHUB_RUN_ID
+          tags: $github.run_id
           tag_with_ref: false
           # Path to the build context
           path: .
