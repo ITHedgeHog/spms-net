@@ -404,6 +404,12 @@ namespace SPMS.Persistence.MSSQL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Theme")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Default");
+
                     b.Property<Guid>("Uuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")

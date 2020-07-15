@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Provider;
+using SPMS.Application.Dtos;
 using SPMS.Application.Services;
 
 namespace SPMS.Application
@@ -25,7 +26,7 @@ namespace SPMS.Application
             services.AddScoped<IStoryService, StoryService>();
             services.AddScoped<IAuthoringService, AuthoringService>();
             services.AddScoped<IIdentifierMask, IdentifierMasking>();
-            services.AddScoped<ITenantProvider, TenantProvider>();
+            services.AddScoped(typeof(ITenantProvider<TenantDto>), typeof(TenantProvider));
 
             return services;
         }

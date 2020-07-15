@@ -37,10 +37,16 @@ namespace SPMS.Application.Tests.Admin.Query
         [Fact]
         public async void GetSeoStatusQueryTest()
         {
-            var mockHost = new Mock<IHostProvider>();
-            mockHost.Setup(x => x.GetHost()).Returns("localhost");
+            var accessor = new Mock<ITenantAccessor<TenantDto>>();
+            accessor.Setup(x => x.Instance).Returns(new TenantDto()
+            {
+                Id = 1,
+                SiteTitle = "Test Site",
+                Author = "Dan Taylor & Evan Scown",
+                IsSpiderable = true
+            });
             var request = new SeoQuery() { Url = "localhost" };
-            var sut = new SeoQuery.SeoQueryHandler(_context,_mapper, new TenantProvider(_context, mockHost.Object));
+            var sut = new SeoQuery.SeoQueryHandler(_context,_mapper,accessor.Object);
 
             var result = await sut.Handle(request, CancellationToken.None);
 

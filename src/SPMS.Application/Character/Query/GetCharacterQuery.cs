@@ -22,10 +22,10 @@ namespace SPMS.Application.Character.Query
             private readonly ISpmsContext _db;
             private readonly IMapper _mapper;
             private readonly IUserService _userService;
-            private readonly ITenantProvider _tenant;
+            private readonly ITenantAccessor<TenantDto> _tenant;
 
 
-            public GetCharacterQueryHandler(ISpmsContext db, IMapper mapper, IUserService userService, ITenantProvider tenant)
+            public GetCharacterQueryHandler(ISpmsContext db, IMapper mapper, IUserService userService, ITenantAccessor<TenantDto> tenant)
             {
                 _db = db;
                 _mapper = mapper;
@@ -35,7 +35,7 @@ namespace SPMS.Application.Character.Query
 
             public async Task<EditBiographyDto> Handle(GetCharacterQuery request, CancellationToken cancellationToken)
             {
-                var game = await _tenant.GetTenantAsync(cancellationToken);
+                var tenant = _tenant.Instance;
                 var dto = await _db.Biography.Include(b => b.Player)
                     .Include(b => b.Posting)
                     .Include(b => b.State).Where(x => x.Id == request.Id).ProjectTo<EditBiographyDto>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellationToken: cancellationToken);
@@ -45,10 +45,10 @@ namespace SPMS.Application.Character.Query
                     return null;
                 }
                 dto ??= new EditBiographyDto();
-                dto.Postings = await _db.Posting.Where( x => x.GameId == game.Id).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToListAsync(cancellationToken);
-                dto.Statuses = await _db.BiographyStatus.Where(x => x.GameId == game.Id).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToListAsync(cancellationToken);
-                dto.States = await _db.BiographyState.Where(x => x.GameId == game.Id).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToListAsync(cancellationToken);
-                dto.Types = await _db.BiographyTypes.Where(x => x.GameId == game.Id).ProjectTo<ListItemDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
+                dto.Postings = await _db.Posting.Where( x => x.GameId == tenant.Id).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToListAsync(cancellationToken);
+                dto.Statuses = await _db.BiographyStatus.Where(x => x.GameId == tenant.Id).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToListAsync(cancellationToken);
+                dto.States = await _db.BiographyState.Where(x => x.GameId == tenant.Id).Select(x => new ListItemDto(x.Name, x.Id.ToString(), x.Default)).ToListAsync(cancellationToken);
+                dto.Types = await _db.BiographyTypes.Where(x => x.GameId == tenant.Id).ProjectTo<ListItemDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
                 return dto;
             }
         }

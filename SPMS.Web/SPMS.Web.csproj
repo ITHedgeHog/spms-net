@@ -48,7 +48,10 @@
     <Folder Include="Areas\player\Models\" />
     <Folder Include="Areas\player\Mapper\" />
     <Folder Include="Areas\player\ViewModels\" />
-    <Folder Include="Mapping\" />
+    <Folder Include="Themes\BtD\" />
+    <Folder Include="Themes\Aquarius\" />
+    <Folder Include="Themes\Default\wwwroot\" />
+    <Folder Include="Themes\ShadesOfGrey\" />
     <Folder Include="ViewModel\" />
   </ItemGroup>
 

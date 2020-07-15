@@ -23,9 +23,9 @@ namespace SPMS.Application.Admin.Query
         {
             private readonly ISpmsContext _db;
             private readonly IMapper _mapper;
-            private readonly ITenantProvider _tenant;
+            private readonly ITenantAccessor<TenantDto> _tenant;
 
-            public SeoQueryHandler(ISpmsContext db, IMapper mapper, ITenantProvider tenant)
+            public SeoQueryHandler(ISpmsContext db, IMapper mapper, ITenantAccessor<TenantDto> tenant)
             {
                 _db = db;
                 _mapper = mapper;
@@ -36,18 +36,10 @@ namespace SPMS.Application.Admin.Query
             {
 
                 // Get Matching Game
-                var game = await _tenant.GetTenantAsync(cancellationToken);
+                var tenant = _tenant.Instance;
 
-
-                var seoDto = _mapper.Map<SeoDto>(game);
+                var seoDto = _mapper.Map<SeoDto>(tenant);
                 
-                //var seoDto = new SeoDto();
-                //seoDto.Author = game.Author;
-                //seoDto.Description = game.Description;
-                //seoDto.IsSpiderable = game.IsSpiderable ?? true;
-                //seoDto.Keywords = game.Keywords;
-                //seoDto.RobotsText = game.RobotsText;
-
                 return seoDto;
             }
         }

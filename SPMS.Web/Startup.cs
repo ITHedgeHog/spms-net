@@ -3,16 +3,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Common.Provider;
 using SPMS.Web.Areas.player.Hubs;
+using SPMS.Web.Extensions;
 using SPMS.Web.Filter;
 using SPMS.Web.Policy;
 using SPMS.Web.Service;
+using SPMS.Web.ViewLocationExpander;
 using Westwind.AspNetCore.Markdown;
 
 namespace SPMS.Web
@@ -33,10 +37,10 @@ namespace SPMS.Web
             SPMS.Infrastructure.DependencyInjection.AddInfrastructure(services, Configuration);
             SPMS.Persistence.MSSQL.DependencyInjection.AddPersistence(services, Configuration);
             SPMS.Application.DependencyInjection.AddApplication(services);
-            services.AddTransient<ICurrentUserService, CurrentUserService>();
-            services.AddScoped<IHostProvider, HostProvider>();
-            services.AddScoped<IApplicationVersion, ApplicationVersion>();
-            services.AddHttpContextAccessor();
+
+            services.AddSpmsMultiTenancy()
+                .WithResolutionStrategy<TenantResolver>()
+                .WithStore<TenantProvider>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -76,9 +80,11 @@ namespace SPMS.Web
 
             services.AddMarkdown();
 
-
-
-            services.AddRazorPages();
+            //services.AddRazorPages();
+            services.Configure<RazorViewEngineOptions>(options =>
+            {
+                options.ViewLocationExpanders.Add(new SpmsTenantThemeExpander());
+            });
             services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter)))
                 .AddRazorRuntimeCompilation().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
 
@@ -96,6 +102,7 @@ namespace SPMS.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            // TODO: Move this in to the UseMultiTenancy???
             app.Use(async (httpContext, next) =>
             {
                 if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
@@ -117,7 +124,7 @@ namespace SPMS.Web
             }
 
 
-
+            app.UseMultiTenancy();
             app.UseAzureAppConfiguration();
             app.UseMiniProfiler();
             app.UseHttpsRedirection();
@@ -136,7 +143,7 @@ namespace SPMS.Web
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                //endpoints.MapRazorPages();
 
                 endpoints.MapHub<AuthoringHub>("/authoringHub");
                 endpoints.MapAreaControllerRoute(name: "MicrosoftIdentity",

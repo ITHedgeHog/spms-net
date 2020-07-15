@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SPMS.Application.Admin.Query;
+using SPMS.Web.Extensions;
 
 namespace SPMS.Web.Controllers
 {
@@ -22,7 +23,7 @@ namespace SPMS.Web.Controllers
         [HttpGet("robots.txt")]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var dto = await _mediator.Send(new SeoQuery() { Url = Request.Host.Host }, cancellationToken);
+            var dto = await _mediator.Send(new SeoQuery(), cancellationToken);
             var block = "User-Agent: *\n\rDisallow: /";
 
             var crawl = "User-Agent: *\n\rAllow: /";

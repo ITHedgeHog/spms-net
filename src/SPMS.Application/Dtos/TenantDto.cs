@@ -33,6 +33,8 @@ namespace SPMS.Application.Dtos
         public string Description { get; set; }
         public string Keywords { get; set; }
         public string Author { get; set; }
-
+        public byte[] GameKey { get; set; }
+        public int Id { get; set; }
+        public string Theme { get; set; }
     }
 }

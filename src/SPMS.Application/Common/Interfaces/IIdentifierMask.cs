@@ -1,4 +1,4 @@
-﻿namespace SPMS.Application.Services
+﻿namespace SPMS.Application.Common.Interfaces
 {
     public interface IIdentifierMask
     {
