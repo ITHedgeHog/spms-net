@@ -1,6 +1,6 @@
 # SPMS.Net 
 
-This is a hosted version of SPMS.Net which will be made available as an open source project
+This is SPMS.Net which is an open source project.
 
 
 ## Discord

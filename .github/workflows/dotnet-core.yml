@@ -1,0 +1,70 @@
+name: Build Docker Image
+
+on: [workflow_dispatch]
+  #push:
+  #  branches: [ master ]
+  #pull_request:
+  #  branches: [ master ]
+
+jobs:
+  pre-ci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: 'Block Concurrent Executions'
+        uses: softprops/turnstyle@v1
+        with:
+          poll-interval-seconds: 10
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  build-and-test:
+    name: Build & Run Tests
+    runs-on: ubuntu-latest
+    needs: [pre-ci]
+    steps:
+      - uses: actions/checkout@v2
+        #with:
+        #  fetch-depth: 0
+      - name: Fetch all history for all tags and branches
+        run:  git fetch --prune --unshallow
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.4
+        with:
+          versionSpec: '5.x.x'
+      - name: Use GitVersion
+        id: gitversion # step id used as reference for output values
+        uses: gittools/actions/gitversion/execute@v0.9.4
+        with:
+          additionalArguments: /updateprojectfiles
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v1.5.0
+        with:
+          # SDK version to use. Examples: 2.2.104, 3.1, 3.1.x
+          dotnet-version: 3.1.x
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v1.4.2
+      - run: echo $GITHUB_WORKSPACE
+      - name: Restore Node Packages
+        run: npm install -cwd $GITHUB_WORKSPACE/SPMS.Web/
+      - run: dotnet build SPMS.sln
+      - run: dotnet test SPMS.sln
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v1.1.0
+        with:
+          # Username used to log in to a Docker registry. If not set then no login will occur
+          username: ITHedgeHog
+          # Password or personal access token used to log in to a Docker registry. If not set then no login will occur
+          password: ${{ secrets.GITHUB_TOKEN }}
+          # Server address of Docker registry. If not set then will default to Docker Hub
+          registry: https://docker.pkg.github.com
+          # Docker repository to tag the image with
+          repository: ithedgehog/spms.net/spms
+          tags: ${{ github.run_id }}
+          tag_with_ref: false
+          # Path to the build context
+          path: .
+          # Path to the Dockerfile (Default is '{path}/Dockerfile')
+          dockerfile: SPMS.Web/Dockerfile
+          # Whether to push the image
+          push: true
+

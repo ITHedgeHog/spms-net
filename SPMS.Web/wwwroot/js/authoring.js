@@ -6,7 +6,7 @@
 });
 $(function() {
     $('#datetimepicker1').datetimepicker({
-        inline: true
+        inline: true, , format: "DD/MM/YYYY HH:mm"
     });
 });
 

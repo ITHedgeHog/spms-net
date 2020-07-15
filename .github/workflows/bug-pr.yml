@@ -1,12 +1,12 @@
-name: Feature Branch CI
+name: Bug Branch CI
 
 on:
   push:
     branches:
-    - "feature/*"
+    - "bug/*"
   pull_request:
     branches:
-    - "feature/*"
+    - "bug/*"
 
 jobs:
   pre-ci:
@@ -68,16 +68,16 @@ jobs:
       - run: dotnet build SPMS.sln
       - run: dotnet test SPMS.sln
   create_pr:
-    needs: [pre-ci, scanning, build-and-test]
-    name: Open Draft PR for merging feature
+    name: Open Draft PR for bug fix
     runs-on: ubuntu-latest
+    needs: [pre-ci, scanning, build-and-test]
     steps:
       - uses: actions/checkout@v2
       - name: pull-request
         uses: repo-sync/pull-request@v2
         with:
-          pr_title: "Pulling ${{ github.ref }} into main" # Title of pull request
-          pr_template: ".github/feature_pr_template.md"   # Path to pull request template, requires pr_title to be set, excludes pr_body
+          pr_title: "Merge bug fix ${{ github.ref }} into master" # Title of pull request
+          pr_template: ".github/bug_pr_template.md"   # Path to pull request template, requires pr_title to be set, excludes pr_body
           pr_label: "auto-pr"                               # Comma-separated list (no spaces)
           pr_milestone: "Beta"                              # Milestone name
           pr_draft: true                                    # Creates pull request as draft
