@@ -56,9 +56,9 @@ jobs:
           # Password or personal access token used to log in to a Docker registry. If not set then no login will occur
           password: ${{ secrets.GITHUB_TOKEN }}
           # Server address of Docker registry. If not set then will default to Docker Hub
-          registry: https://docker.pkg.github.com
+          registry: docker.pkg.github.com
           # Docker repository to tag the image with
-          repository: ithedgehog/spms-net
+          repository: ithedgehog/spms-net/spms
           tags: ${{ github.run_id }}
           tag_with_ref: true
           tag_with_sha: true
