@@ -81,14 +81,12 @@ jobs:
         registry: https://docker.pkg.github.com
         # Docker repository to tag the image with
         repository: ithedgehog
-        # Automatically tags the built image with the git short SHA as per the readme
-        tag_with_sha: true
+        tags: ${{ steps.gitversion.outputs.informationalVersion }}
+        tag_with_ref: true
         # Path to the build context
         path: .
         # Path to the Dockerfile (Default is '{path}/Dockerfile')
         dockerfile: SPMS.Web/Dockerfile
-        # Adds labels with git repository information to the built image
-        add_git_labels: true
         # Whether to push the image
         push: true
 
