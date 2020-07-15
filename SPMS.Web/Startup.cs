@@ -35,6 +35,7 @@ namespace SPMS.Web
             SPMS.Application.DependencyInjection.AddApplication(services);
             services.AddTransient<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IHostProvider, HostProvider>();
+            services.AddScoped<IApplicationVersion, ApplicationVersion>();
             services.AddHttpContextAccessor();
 
             services.Configure<CookiePolicyOptions>(options =>
