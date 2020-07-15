@@ -1,7 +1,10 @@
 ﻿@model SPMS.Common.ViewModels.ViewModel
 
 @using Microsoft.Extensions.Configuration
+@using SPMS.Application.Common.Interfaces
 @inject IConfiguration Configuration
+
+@inject IApplicationVersion ApplicationVersion
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,8 +47,8 @@
     <div class="navbar fixed-bottom navbar-dark primary-color">
         <div class="mr-auto ml-auto text-white-50">
             &copy; 2020 - Beyond the Darkness RPG.&nbsp;
-            <a href="http://www.getspms.net" target="_blank" class="text-white">Powered by <i>SPMS.Net</i></a>
-            &nbsp;-&nbsp;<a href="@Model.CommitShaLink" target="_top" class="text-white">Deployed from @Model.CommitSha</a>
+            <a href="http://www.getspms.net" target="_blank" class="text-white">Powered by <i>SPMS.Net</i> @ApplicationVersion.Version</a>
+            
             &nbsp;-&nbsp;<a asp-area="" asp-controller="Home" asp-action="Privacy" id="siteDisclaimer" class="text-white">Privacy & Disclaimer</a>
             &nbsp;-&nbsp;<a asp-area="" asp-controller="Rules" asp-action="Index" class="text-white">Rules</a>
             @if (User.IsInRole("player"))
