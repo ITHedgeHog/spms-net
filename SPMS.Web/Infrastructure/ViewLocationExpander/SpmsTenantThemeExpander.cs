@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Razor;
 using SPMS.Common;
 using SPMS.Web.Infrastructure.Extensions;
 
-namespace SPMS.Web.ViewLocationExpander
+namespace SPMS.Web.Infrastructure.ViewLocationExpander
 {
     public class SpmsTenantThemeExpander : IViewLocationExpander
     {

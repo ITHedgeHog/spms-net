@@ -16,8 +16,8 @@ using SPMS.Web.Areas.player.Hubs;
 using SPMS.Web.Infrastructure.Extensions;
 using SPMS.Web.Infrastructure.Filter;
 using SPMS.Web.Infrastructure.Services;
+using SPMS.Web.Infrastructure.ViewLocationExpander;
 using SPMS.Web.Policy;
-using SPMS.Web.ViewLocationExpander;
 using Westwind.AspNetCore.Markdown;
 
 namespace SPMS.Web
