@@ -11,7 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModel\**" />
+    <Content Remove="ViewModel\**" />
+    <EmbeddedResource Remove="ViewModel\**" />
+    <None Remove="ViewModel\**" />
     <TypeScriptCompile Remove="node_modules\**" />
+    <TypeScriptCompile Remove="ViewModel\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,7 +68,7 @@
     <Folder Include="Themes\BtD\" />
     <Folder Include="Themes\Aquarius\" />
     <Folder Include="Themes\ShadesOfGrey\" />
-    <Folder Include="ViewModel\" />
+    <Folder Include="ViewLocationExpander\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -72,6 +77,16 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Update="Areas\admin\Views\_ViewStart.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\tsconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -100,6 +115,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Areas\admin\Views\Shared\_Layout.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
+    <_ContentIncludedByDefault Remove="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\js\signalr\package.json" />
   </ItemGroup>
 
   <ItemGroup>
