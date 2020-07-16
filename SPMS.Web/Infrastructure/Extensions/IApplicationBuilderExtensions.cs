@@ -33,6 +33,15 @@ namespace SPMS.Web.Infrastructure.Extensions
         /// <returns></returns>
         public static IApplicationBuilder UseMultiTenancy(this IApplicationBuilder builder)
         {
+            builder.Use(async (httpContext, next) =>
+            {
+                if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
+                {
+                    httpContext.Request.Scheme = "https";
+                }
+                await next();
+            });
+
             builder.UseMiddleware<TenantMiddleware<TenantDto>>();
             return builder;
         }

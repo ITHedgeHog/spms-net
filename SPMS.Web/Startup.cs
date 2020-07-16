@@ -103,17 +103,6 @@ namespace SPMS.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            // TODO: Move this in to the UseMultiTenancy???
-            app.Use(async (httpContext, next) =>
-            {
-                if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
-                {
-                    httpContext.Request.Scheme = "https";
-                }
-                await next();
-            });
-
-
             if (env.IsDevelopment() || Configuration.GetValue<bool>("ShowErrors"))
             {
                 app.UseDeveloperExceptionPage();
