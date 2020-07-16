@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Razor;
 using SPMS.Common;
-using SPMS.Web.Extensions;
+using SPMS.Web.Infrastructure.Extensions;
 
 namespace SPMS.Web.ViewLocationExpander
 {

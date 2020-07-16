@@ -15,6 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\img\branding.jpg" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg" />
+    <None Remove="Themes\Default\wwwroot\img\branding.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Automapper" Version="10.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
 <PackageReference Include="MessagePack" Version="1.9.11" />
@@ -48,9 +54,10 @@
     <Folder Include="Areas\player\Models\" />
     <Folder Include="Areas\player\Mapper\" />
     <Folder Include="Areas\player\ViewModels\" />
+    <Folder Include="Extensions\" />
+    <Folder Include="Services\" />
     <Folder Include="Themes\BtD\" />
     <Folder Include="Themes\Aquarius\" />
-    <Folder Include="Themes\Default\wwwroot\" />
     <Folder Include="Themes\ShadesOfGrey\" />
     <Folder Include="ViewModel\" />
   </ItemGroup>
@@ -93,6 +100,21 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Themes\Default\wwwroot\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

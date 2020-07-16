@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SPMS.Application.Admin.Query;
-using SPMS.Web.Extensions;
 
 namespace SPMS.Web.Controllers
 {

@@ -11,11 +11,12 @@ using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Provider;
+using SPMS.Application.Dtos;
 using SPMS.Web.Areas.player.Hubs;
-using SPMS.Web.Extensions;
-using SPMS.Web.Filter;
+using SPMS.Web.Infrastructure.Extensions;
+using SPMS.Web.Infrastructure.Filter;
+using SPMS.Web.Infrastructure.Services;
 using SPMS.Web.Policy;
-using SPMS.Web.Service;
 using SPMS.Web.ViewLocationExpander;
 using Westwind.AspNetCore.Markdown;
 
@@ -123,28 +124,23 @@ namespace SPMS.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-
-            app.UseMultiTenancy();
-            app.UseAzureAppConfiguration();
-            app.UseMiniProfiler();
             app.UseHttpsRedirection();
-            app.UseMarkdown();
+            app.UseAzureAppConfiguration();
+            app.UseMultiTenancy();
+
+            app.UseThemeStaticFiles(env);
+            app.UsePerTenantStaticFiles(env);
             app.UseStaticFiles();
+            app.UseMiniProfiler();
 
-            
-
+            app.UseMarkdown();
 
             app.UseCookiePolicy();
             app.UseAuthentication();
-            
-            
-            
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapRazorPages();
-
                 endpoints.MapHub<AuthoringHub>("/authoringHub");
                 endpoints.MapAreaControllerRoute(name: "MicrosoftIdentity",
                     pattern: "MicrosoftIdentity/{controller}/{action}/{id?}",
@@ -159,7 +155,9 @@ namespace SPMS.Web
                     pattern: "player/{controller=Home}/{action=Index}/{id?}",
                     areaName: "player"
                 );
-                endpoints.MapDefaultControllerRoute();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
             
         }

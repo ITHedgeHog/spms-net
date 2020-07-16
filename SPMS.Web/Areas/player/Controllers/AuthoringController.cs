@@ -25,7 +25,6 @@ using SPMS.Common;
 using SPMS.Persistence;
 using SPMS.ViewModel;
 using SPMS.Web.Models;
-using SPMS.Web.Service;
 
 namespace SPMS.Web.Controllers
 {

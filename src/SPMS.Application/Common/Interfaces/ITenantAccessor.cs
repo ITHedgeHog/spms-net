@@ -2,7 +2,7 @@
 
 namespace SPMS.Application.Common.Interfaces
 {
-    public interface ITenantAccessor<T> where T : TenantDto
+    public interface ITenantAccessor<out T> where T : TenantDto
     {
         T Instance { get; }
     }

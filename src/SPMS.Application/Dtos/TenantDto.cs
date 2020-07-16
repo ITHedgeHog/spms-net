@@ -12,6 +12,7 @@ namespace SPMS.Application.Dtos
             UseAnalytics = false;
         }
 
+        public Guid Uuid { get; set; }
         public string gravatar { get; set; }
 
         public bool IsReadOnly { get; set; }
