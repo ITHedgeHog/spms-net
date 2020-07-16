@@ -10,20 +10,21 @@ namespace SPMS.Web.Infrastructure.ViewLocationExpander
     {
         public void PopulateValues(ViewLocationExpanderContext context)
         {
-            context.Values[StaticValues.ThemeKey] = context.ActionContext.HttpContext.GetTenant().Theme;
+            var theme = context.ActionContext.HttpContext.GetTenant()?.Theme ?? "Default";
+            context.Values[StaticValues.ThemeKey] = theme;
         }
 
         public IEnumerable<string> ExpandViewLocations(ViewLocationExpanderContext context, IEnumerable<string> viewLocations)
         {
             if (context.Values.TryGetValue(StaticValues.ThemeKey, out var theme))
             {
-                viewLocations = new[] {
-                        $"/Themes/{theme}/{{1}}/{{0}}.cshtml",
-                        $"/Themes/{theme}/Shared/{{0}}.cshtml",
-                        "/Views/{{1}}/{{0}}.cshtml",
-                        "/Views/Shared/{{1}}/{{0}}.cshtml"
-                    }
-                    .Concat(viewLocations);
+
+                viewLocations = new[]
+                {
+                    $"/Themes/{theme}/Views/{{1}}/{{0}}.cshtml",
+                    $"/Themes/{theme}/Views/Shared/{{0}}.cshtml"
+                };
+                //.Concat(viewLocations);
             }
             
             return viewLocations;

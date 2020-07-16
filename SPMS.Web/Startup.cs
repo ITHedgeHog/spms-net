@@ -84,6 +84,7 @@ namespace SPMS.Web
             //services.AddRazorPages();
             services.Configure<RazorViewEngineOptions>(options =>
             {
+                //options.ViewLocationExpanders.
                 options.ViewLocationExpanders.Add(new SpmsTenantThemeExpander());
             });
             services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter)))

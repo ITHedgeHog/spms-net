@@ -25,6 +25,7 @@ namespace SPMS.Web.Infrastructure.Middlware
 
         public async Task Invoke(HttpContext context)
         {
+            
             var tenantContext = context.GetTenant();
 
             if (tenantContext != null)
