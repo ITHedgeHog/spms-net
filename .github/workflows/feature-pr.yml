@@ -51,7 +51,7 @@ jobs:
       - run: dotnet build SPMS.sln
       - run: dotnet test SPMS.sln
   create_pr:
-    needs: [pre-ci, scanning, build-and-test]
+    needs: [pre-ci, build-and-test]
     name: Open Draft PR for merging feature
     runs-on: ubuntu-latest
     steps:
