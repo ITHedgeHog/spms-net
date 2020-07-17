@@ -39,8 +39,8 @@ namespace SPMS.Web.Infrastructure.Services
 
         public string GetEmail()
         {
-            return _httpContext.User.Claims.First(x =>
-                x.Type == "emails").Value;
+            return _httpContext.User.Claims.FirstOrDefault(x =>
+                x.Type == "emails")?.Value;
         }
 
         public bool IsNew()
@@ -50,14 +50,14 @@ namespace SPMS.Web.Infrastructure.Services
 
         public string GetFirstname()
         {
-            return _httpContext.User.Claims.First(x =>
-                x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname").Value;
+            return _httpContext.User.Claims.FirstOrDefault(x =>
+                x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname")?.Value;
         }
 
         public string GetSurname()
         {
-            return _httpContext.User.Claims.First(x =>
-                x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname").Value;
+            return _httpContext.User.Claims.FirstOrDefault(x =>
+                x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/surname")?.Value;
         }
     }
 }
