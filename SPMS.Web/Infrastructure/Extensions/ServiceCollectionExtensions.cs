@@ -38,6 +38,7 @@ namespace SPMS.Web.Infrastructure.Extensions
         /// <returns></returns>
         public TenantBuilder<T> WithResolutionStrategy<V>(ServiceLifetime lifetime = ServiceLifetime.Transient) where V : class, ITenantResolver
         {
+            _services.AddSingleton<RouteTranslator>();
             _services.AddTransient<TenantAccessService<T>>();
             _services.AddTransient(typeof(ITenantAccessor<T>), typeof(TenantAccessor<T>));
             _services.AddTransient<ICurrentUserService, CurrentUserService>();

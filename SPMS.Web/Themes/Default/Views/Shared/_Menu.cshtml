@@ -1,5 +1,5 @@
 ﻿@using SPMS.Application.Common.Interfaces
-@model SPMS.Common.ViewModels.ViewModel
+@model SPMS.Common.ViewModels.BaseViewModel
 
 @inject ICurrentUserService usr
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark primary-color">
@@ -12,7 +12,7 @@
         <div class="collapse navbar-collapse" id="navbarMainTop">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Rome</a>
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownToggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

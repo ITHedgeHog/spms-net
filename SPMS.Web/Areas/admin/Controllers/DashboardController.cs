@@ -13,7 +13,7 @@ namespace SPMS.Web.Areas.admin.Controllers
         // GET: DashboardController
         public ActionResult Index()
         {
-            var vm = new Common.ViewModels.ViewModel();
+            var vm = new Common.ViewModels.BaseViewModel();
             return View(vm);
         }
 

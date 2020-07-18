@@ -3,7 +3,7 @@
 namespace SPMS.Application.Dtos
 {
 
-    public class PlayerDashboardViewModel : SPMS.Common.ViewModels.ViewModel
+    public class PlayerDashboardViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         public PlayerDashboardViewModel() : base()
         {

@@ -2,7 +2,7 @@
 
 namespace SPMS.ViewModel
 {
-    public class BiographyListViewModel : SPMS.Common.ViewModels.ViewModel
+    public class BiographyListViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         public List<PostingViewModel> Postings { get; set; }
 

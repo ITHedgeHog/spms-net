@@ -3,7 +3,7 @@ using SPMS.Application.Dtos.Story;
 
 namespace SPMS.Application.Dtos
 {
-    public class MyCharactersViewModel : SPMS.Common.ViewModels.ViewModel
+    public class MyCharactersViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         public MyCharactersViewModel()
         {
@@ -17,7 +17,7 @@ namespace SPMS.Application.Dtos
     }
 
 
-    public class MyWritingViewModel : SPMS.Common.ViewModels.ViewModel
+    public class MyWritingViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         public MyWritingViewModel()
         {

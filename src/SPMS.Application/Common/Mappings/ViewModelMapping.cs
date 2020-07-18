@@ -20,7 +20,7 @@ namespace SPMS.Application.Common.Mappings
     {
         public ViewModelMapping()
         {
-            CreateMap<TenantDto, SPMS.Common.ViewModels.ViewModel>();
+            CreateMap<TenantDto, SPMS.Common.ViewModels.BaseViewModel>();
 
             CreateMap<ListItemDto, SelectListItem>()
                 .ForMember(x => x.Group, o => o.Ignore())

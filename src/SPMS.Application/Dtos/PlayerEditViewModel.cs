@@ -3,7 +3,7 @@ using SPMS.Common.ViewModels;
 
 namespace SPMS.Application.Dtos
 {
-    public class PlayerEditViewModel : SPMS.Common.ViewModels.ViewModel
+    public class PlayerEditViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         public int Id { get; set; }
 

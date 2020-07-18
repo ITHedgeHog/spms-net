@@ -3,7 +3,7 @@ using SPMS.Domain.Models;
 
 namespace SPMS.Application.Dtos
 {
-    public class BiographiesDto : SPMS.Common.ViewModels.ViewModel
+    public class BiographiesDto : SPMS.Common.ViewModels.BaseViewModel
     {
         public List<Posting> Postings { get; set; }
 

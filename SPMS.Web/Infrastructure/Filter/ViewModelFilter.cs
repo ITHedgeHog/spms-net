@@ -36,7 +36,7 @@ namespace SPMS.Web.Infrastructure.Filter
             //await _userService.CreateNewPlayer(CancellationToken.None);
             if (resultContext.Controller is Controller controller)
             {
-                if (controller.ViewData.Model is Common.ViewModels.ViewModel model)
+                if (controller.ViewData.Model is Common.ViewModels.BaseViewModel model)
                 {
                     var dto = await _mediator.Send(new TenantQuery() { Url = context.HttpContext.Request.Host.Host }, CancellationToken.None);
 

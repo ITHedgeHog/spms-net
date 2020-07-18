@@ -1,8 +1,8 @@
 ﻿namespace SPMS.Common.ViewModels
 {
-    public class ViewModel
+    public class BaseViewModel
     {
-        public ViewModel()
+        public BaseViewModel()
         {
             IsReadOnly = false;
             UseAnalytics = false;

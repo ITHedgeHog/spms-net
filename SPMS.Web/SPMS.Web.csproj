@@ -11,11 +11,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewLocationExpander\**" />
     <Compile Remove="ViewModel\**" />
+    <Content Remove="ViewLocationExpander\**" />
     <Content Remove="ViewModel\**" />
+    <EmbeddedResource Remove="ViewLocationExpander\**" />
     <EmbeddedResource Remove="ViewModel\**" />
+    <None Remove="ViewLocationExpander\**" />
     <None Remove="ViewModel\**" />
     <TypeScriptCompile Remove="node_modules\**" />
+    <TypeScriptCompile Remove="ViewLocationExpander\**" />
     <TypeScriptCompile Remove="ViewModel\**" />
   </ItemGroup>
 
@@ -52,6 +57,10 @@
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.1" />
     <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.2.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.3.8" />
   </ItemGroup>
 
@@ -68,7 +77,6 @@
     <Folder Include="Themes\BtD\" />
     <Folder Include="Themes\Aquarius\" />
     <Folder Include="Themes\ShadesOfGrey\" />
-    <Folder Include="ViewLocationExpander\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -135,6 +143,10 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>

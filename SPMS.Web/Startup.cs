@@ -13,6 +13,7 @@ using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Provider;
 using SPMS.Application.Dtos;
 using SPMS.Web.Areas.player.Hubs;
+using SPMS.Web.Infrastructure;
 using SPMS.Web.Infrastructure.Extensions;
 using SPMS.Web.Infrastructure.Filter;
 using SPMS.Web.Infrastructure.Services;
@@ -81,15 +82,13 @@ namespace SPMS.Web
 
             services.AddMarkdown();
 
-            //services.AddRazorPages();
-            services.Configure<RazorViewEngineOptions>(options =>
-            {
-                //options.ViewLocationExpanders.
-                options.ViewLocationExpanders.Add(new SpmsTenantThemeExpander());
-            });
+            
             services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter)))
                 .AddRazorRuntimeCompilation().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
-
+            services.Configure<RazorViewEngineOptions>(options =>
+                {
+                    options.ViewLocationExpanders.Add(new SpmsTenantThemeExpander());
+                });
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
             services.AddFeatureManagement();
 
@@ -132,22 +131,27 @@ namespace SPMS.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<AuthoringHub>("/authoringHub");
-                endpoints.MapAreaControllerRoute(name: "MicrosoftIdentity",
+                endpoints.MapAreaControllerRoute(
+                    name: "MicrosoftIdentity",
                     pattern: "MicrosoftIdentity/{controller}/{action}/{id?}",
-                    areaName: "MicrosoftIdentity"
-                );
+                    areaName: "MicrosoftIdentity");
 
-                endpoints.MapAreaControllerRoute(name: "admin",
+                endpoints.MapAreaControllerRoute(
+                    name: "admin",
                     pattern: "admin/{controller=Home}/{action=Index}/{id?}",
-                    areaName: "admin"
-                );
-                endpoints.MapAreaControllerRoute(name: "player",
+                    areaName: "admin");
+                endpoints.MapAreaControllerRoute(
+                    name: "player",
                     pattern: "player/{controller=Home}/{action=Index}/{id?}",
-                    areaName: "player"
-                );
+                    areaName: "player");
+
                 endpoints.MapControllerRoute(
-                    name: "default",
+                    name: "controllers",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapDynamicControllerRoute<RouteTranslator>("/{**slug}");
+
+                
             });
             
         }
