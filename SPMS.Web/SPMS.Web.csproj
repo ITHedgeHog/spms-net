@@ -11,14 +11,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\**" />
     <Compile Remove="ViewLocationExpander\**" />
     <Compile Remove="ViewModel\**" />
+    <Content Remove="Extensions\**" />
     <Content Remove="ViewLocationExpander\**" />
     <Content Remove="ViewModel\**" />
+    <EmbeddedResource Remove="Extensions\**" />
     <EmbeddedResource Remove="ViewLocationExpander\**" />
     <EmbeddedResource Remove="ViewModel\**" />
+    <None Remove="Extensions\**" />
     <None Remove="ViewLocationExpander\**" />
     <None Remove="ViewModel\**" />
+    <TypeScriptCompile Remove="Extensions\**" />
     <TypeScriptCompile Remove="node_modules\**" />
     <TypeScriptCompile Remove="ViewLocationExpander\**" />
     <TypeScriptCompile Remove="ViewModel\**" />
@@ -72,7 +77,6 @@
     <Folder Include="Areas\player\Models\" />
     <Folder Include="Areas\player\Mapper\" />
     <Folder Include="Areas\player\ViewModels\" />
-    <Folder Include="Extensions\" />
     <Folder Include="Services\" />
     <Folder Include="Themes\BtD\" />
     <Folder Include="Themes\Aquarius\" />

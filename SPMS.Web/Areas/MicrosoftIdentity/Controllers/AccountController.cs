@@ -15,7 +15,7 @@ namespace SPMS.Web.Areas.MicrosoftIdentity.Controllers
     /// <summary>
     /// Controller used in web apps to manage accounts.
     /// </summary>
-    //[NonController]
+    // [NonController]
     [AllowAnonymous]
     [Area("MicrosoftIdentity")]
     [Route("[area]/[controller]/[action]")]
@@ -24,6 +24,7 @@ namespace SPMS.Web.Areas.MicrosoftIdentity.Controllers
         private readonly IOptions<MicrosoftIdentityOptions> _options;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AccountController"/> class.
         /// Constructor of <see cref="AccountController"/> from <see cref="MicrosoftIdentityOptions"/>
         /// This constructor is used by dependency injection.
         /// </summary>

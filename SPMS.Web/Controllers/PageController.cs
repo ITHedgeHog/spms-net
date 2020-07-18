@@ -1,8 +1,8 @@
-﻿namespace SPMS.Web.Controllers
-{
-    using Microsoft.AspNetCore.Mvc;
-    using ViewModel;
+﻿using Microsoft.AspNetCore.Mvc;
+using SPMS.ViewModel;
 
+namespace SPMS.Web.Controllers
+{
     /// <summary>
     /// The page controller.
     /// </summary>
