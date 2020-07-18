@@ -11,7 +11,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <Compile Remove="ViewLocationExpander\**" />
+    <Compile Remove="ViewModel\**" />
+    <Content Remove="Extensions\**" />
+    <Content Remove="ViewLocationExpander\**" />
+    <Content Remove="ViewModel\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <EmbeddedResource Remove="ViewLocationExpander\**" />
+    <EmbeddedResource Remove="ViewModel\**" />
+    <None Remove="Extensions\**" />
+    <None Remove="ViewLocationExpander\**" />
+    <None Remove="ViewModel\**" />
+    <TypeScriptCompile Remove="Extensions\**" />
     <TypeScriptCompile Remove="node_modules\**" />
+    <TypeScriptCompile Remove="ViewLocationExpander\**" />
+    <TypeScriptCompile Remove="ViewModel\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\img\branding.jpg" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg" />
+    <None Remove="Themes\Default\wwwroot\img\branding.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +62,10 @@
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.1" />
     <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.2.1" />
     <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.3.8" />
   </ItemGroup>
 
@@ -52,8 +77,10 @@
     <Folder Include="Areas\player\Models\" />
     <Folder Include="Areas\player\Mapper\" />
     <Folder Include="Areas\player\ViewModels\" />
-    <Folder Include="Mapping\" />
-    <Folder Include="ViewModel\" />
+    <Folder Include="Services\" />
+    <Folder Include="Themes\BtD\" />
+    <Folder Include="Themes\Aquarius\" />
+    <Folder Include="Themes\ShadesOfGrey\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -62,6 +89,16 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Update="Areas\admin\Views\_ViewStart.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\tsconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -90,10 +127,30 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Areas\admin\Views\Shared\_Layout.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
+    <_ContentIncludedByDefault Remove="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\js\signalr\package.json" />
   </ItemGroup>
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Themes\Default\wwwroot\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>

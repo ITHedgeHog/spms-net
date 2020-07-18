@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Dtos;
 
 namespace SPMS.Application.Services
 {
@@ -8,10 +10,10 @@ namespace SPMS.Application.Services
     {
         private static byte[] _key;
 
-        public IdentifierMasking(IGameService game)
+        public IdentifierMasking(ITenantAccessor<TenantDto> tenant)
         {
-            var key = game.GetGameKey(Sodium.SecretBox.GenerateKey());
-            _key = key;
+
+            _key = tenant.Instance.GameKey;
         }
 
         public IdentifierMasking()

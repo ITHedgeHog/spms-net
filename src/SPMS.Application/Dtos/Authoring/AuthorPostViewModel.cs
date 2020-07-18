@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SPMS.Application.Dtos.Authoring
 {
-    public class AuthorPostViewModel : SPMS.Common.ViewModels.ViewModel
+    public class AuthorPostViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         
         public AuthorPostViewModel(in int activeEpisodeId)
@@ -60,7 +60,7 @@ namespace SPMS.Application.Dtos.Authoring
         public DateTime? PostAt { get; set; }
     }
 
-    public class AuthorPostDraftViewModel : SPMS.Common.ViewModels.ViewModel
+    public class AuthorPostDraftViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
 
         public AuthorPostDraftViewModel(in int activeEpisodeId)

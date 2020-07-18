@@ -45,7 +45,8 @@ namespace SPMS.Web.Controllers
         {
             try
             {
-                BiographyDto dto = await _mediator.Send(new GetBiographyQuery() {Id = id});
+                var vm = new BiographyViewModel() {Id = id};
+                BiographyDto dto = await _mediator.Send(_mapper.Map<BiographyQuery>(vm));
 
                 var biography = _mapper.Map<BiographyViewModel>(dto);
 

@@ -1,0 +1,55 @@
+﻿@model SPMS.Application.Dtos.Story.StoryOverviewDto
+
+@{
+    ViewData["Title"] = "The story so far " + Model.SiteTitle;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h2><text>S</text>@Model.SeriesNumber<text>E</text>@Model.EpisodeNumber - @Model.CurrentEpisode.Title </h2>
+        </div>
+    </div>
+    @*<div class="row">
+        @{ 
+            string columnMdClass = "col-md-12";
+            var hasBanner = !string.IsNullOrEmpty(Model.CurrentEpisode.Banner) ? true : false;
+            if(hasBanner)
+            {
+                columnMdClass = "col-md-9";
+            }
+        }
+        <div class="col-sm-12 @columnMdClass">
+            <h2>@Model.CurrentEpisode.Title</h2>
+            <markdown>
+                @Model.CurrentEpisode.Description
+            </markdown>
+        </div>
+        @if(hasBanner)
+        {
+            <div class="d-sm-none d-md-block col-md-3">
+                <img src="https://dummyimage.com/120x240/000000/fff.gif&text=Episode+One" alt="Episode Banner" />
+            </div>
+        }
+    </div>*@
+    <div class="row">
+        <div class="col-sm-12">
+            @foreach(var post in Model.CurrentEpisode.Story)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <h4>@post.Title</h4>
+                        <p>@post.Location  @post.Timeline</p>
+                    </div>
+                    <div class="card-body">
+                        <markdown markdown="@post.Content" />
+                    </div>
+                    <div class="card-footer">
+                        <p class="small">Posted @post.PublishedAt by <i>unknown user</i></p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+

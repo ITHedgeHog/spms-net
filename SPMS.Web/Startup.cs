@@ -3,16 +3,22 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
 using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Common.Provider;
+using SPMS.Application.Dtos;
 using SPMS.Web.Areas.player.Hubs;
-using SPMS.Web.Filter;
+using SPMS.Web.Infrastructure;
+using SPMS.Web.Infrastructure.Extensions;
+using SPMS.Web.Infrastructure.Filter;
+using SPMS.Web.Infrastructure.Services;
+using SPMS.Web.Infrastructure.ViewLocationExpander;
 using SPMS.Web.Policy;
-using SPMS.Web.Service;
 using Westwind.AspNetCore.Markdown;
 
 namespace SPMS.Web
@@ -33,10 +39,10 @@ namespace SPMS.Web
             SPMS.Infrastructure.DependencyInjection.AddInfrastructure(services, Configuration);
             SPMS.Persistence.MSSQL.DependencyInjection.AddPersistence(services, Configuration);
             SPMS.Application.DependencyInjection.AddApplication(services);
-            services.AddTransient<ICurrentUserService, CurrentUserService>();
-            services.AddScoped<IHostProvider, HostProvider>();
-            services.AddScoped<IApplicationVersion, ApplicationVersion>();
-            services.AddHttpContextAccessor();
+
+            services.AddSpmsMultiTenancy()
+                .WithResolutionStrategy<TenantResolver>()
+                .WithStore<TenantProvider>();
 
             services.Configure<CookiePolicyOptions>(options =>
             {
@@ -76,12 +82,13 @@ namespace SPMS.Web
 
             services.AddMarkdown();
 
-
-
-            services.AddRazorPages();
+            
             services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter)))
                 .AddRazorRuntimeCompilation().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
-
+            services.Configure<RazorViewEngineOptions>(options =>
+                {
+                    options.ViewLocationExpanders.Add(new SpmsTenantThemeExpander());
+                });
             services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
             services.AddFeatureManagement();
 
@@ -96,16 +103,6 @@ namespace SPMS.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.Use(async (httpContext, next) =>
-            {
-                if (httpContext.Request.Headers["x-forwarded-proto"] == "https")
-                {
-                    httpContext.Request.Scheme = "https";
-                }
-                await next();
-            });
-
-
             if (env.IsDevelopment() || Configuration.GetValue<bool>("ShowErrors"))
             {
                 app.UseDeveloperExceptionPage();
@@ -116,43 +113,45 @@ namespace SPMS.Web
                 app.UseExceptionHandler("/Home/Error");
             }
 
-
-
-            app.UseAzureAppConfiguration();
-            app.UseMiniProfiler();
             app.UseHttpsRedirection();
-            app.UseMarkdown();
+            app.UseAzureAppConfiguration();
+            app.UseMultiTenancy();
+
+            app.UseThemeStaticFiles(env);
+            app.UsePerTenantStaticFiles(env);
             app.UseStaticFiles();
+            app.UseMiniProfiler();
 
-            
-
+            app.UseMarkdown();
 
             app.UseCookiePolicy();
             app.UseAuthentication();
-            
-            
-            
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
-
                 endpoints.MapHub<AuthoringHub>("/authoringHub");
-                endpoints.MapAreaControllerRoute(name: "MicrosoftIdentity",
+                endpoints.MapAreaControllerRoute(
+                    name: "MicrosoftIdentity",
                     pattern: "MicrosoftIdentity/{controller}/{action}/{id?}",
-                    areaName: "MicrosoftIdentity"
-                );
+                    areaName: "MicrosoftIdentity");
 
-                endpoints.MapAreaControllerRoute(name: "admin",
+                endpoints.MapAreaControllerRoute(
+                    name: "admin",
                     pattern: "admin/{controller=Home}/{action=Index}/{id?}",
-                    areaName: "admin"
-                );
-                endpoints.MapAreaControllerRoute(name: "player",
+                    areaName: "admin");
+                endpoints.MapAreaControllerRoute(
+                    name: "player",
                     pattern: "player/{controller=Home}/{action=Index}/{id?}",
-                    areaName: "player"
-                );
-                endpoints.MapDefaultControllerRoute();
+                    areaName: "player");
+
+                endpoints.MapControllerRoute(
+                    name: "controllers",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapDynamicControllerRoute<RouteTranslator>("/{**slug}");
+
+                
             });
             
         }

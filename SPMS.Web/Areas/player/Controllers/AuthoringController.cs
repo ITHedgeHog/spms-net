@@ -25,7 +25,6 @@ using SPMS.Common;
 using SPMS.Persistence;
 using SPMS.ViewModel;
 using SPMS.Web.Models;
-using SPMS.Web.Service;
 
 namespace SPMS.Web.Controllers
 {
@@ -166,7 +165,7 @@ namespace SPMS.Web.Controllers
             ViewData["Id"] = episodeEntry.Id;
             ViewData["PostTitle"] = episodeEntry.Title;
             ViewData["PostContent"] = episodeEntry.Content;
-            return View(new Common.ViewModels.ViewModel());
+            return View(new Common.ViewModels.BaseViewModel());
         }
 
         // POST: Authoring/Delete/5

@@ -3,7 +3,7 @@ using SPMS.Application.Dtos.Common;
 
 namespace SPMS.Application.Dtos
 {
-    public class EditBiographyDto : SPMS.Common.ViewModels.ViewModel
+    public class EditBiographyDto : SPMS.Common.ViewModels.BaseViewModel
     {
         public int Id { get; set; }
         public string Firstname { get; set; }

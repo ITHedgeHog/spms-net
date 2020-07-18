@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SPMS.ViewModel.Home
 {
-    public class HomeViewModel : SPMS.Common.ViewModels.ViewModel
+    public class HomeViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
     }
 }

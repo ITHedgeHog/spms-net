@@ -19,6 +19,7 @@ namespace SPMS.Persistence.Configuration
             builder.Property(x => x.IsTest).HasDefaultValue(false);
             builder.Property(x => x.Uuid).HasDefaultValueSql("NEWID()");
             builder.Property(x => x.IsSpiderable).HasDefaultValue(true);
+            builder.Property(x => x.Theme).IsRequired().HasDefaultValue("Default");
 
         }
     }

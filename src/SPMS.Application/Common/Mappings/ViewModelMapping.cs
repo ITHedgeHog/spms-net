@@ -2,6 +2,8 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SPMS.Application.Character.Command;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Common.Resolvers;
 using SPMS.Application.Dtos;
 using SPMS.Application.Dtos.Common;
 using SPMS.Application.Dtos.Story;
@@ -18,7 +20,7 @@ namespace SPMS.Application.Common.Mappings
     {
         public ViewModelMapping()
         {
-            CreateMap<TenantDto, SPMS.Common.ViewModels.ViewModel>();
+            CreateMap<TenantDto, SPMS.Common.ViewModels.BaseViewModel>();
 
             CreateMap<ListItemDto, SelectListItem>()
                 .ForMember(x => x.Group, o => o.Ignore())
@@ -94,48 +96,5 @@ namespace SPMS.Application.Common.Mappings
     }
 
 
-    public class DtoIdHiderResolver : IValueResolver<DtoWithId, ViewModelWithId, string>
-    {
-        private readonly IIdentifierMask _masker;
-
-        public DtoIdHiderResolver(IIdentifierMask masker)
-        {
-            _masker = masker;
-        }
-
-        public string Resolve(DtoWithId source, ViewModelWithId destination, string destMember, ResolutionContext context)
-        {
-            return _masker.HideId(source.Id);
-        }
-    }
-
-    public class IdHiderResolver : IValueResolver<StoryPostDto, StoryPostViewModel, string>
-    {
-        private readonly IIdentifierMask _masker;
-
-        public IdHiderResolver(IIdentifierMask masker)
-        {
-            _masker = masker;
-        }
-
-        public string Resolve(StoryPostDto source, StoryPostViewModel destination, string destMember, ResolutionContext context)
-        {
-            return _masker.HideId(source.Id);
-        }
-    }
-
-    public class IdRevealerResolver : IValueResolver<StoryPostViewModel, StoryPostDto, int>
-    {
-        private readonly IIdentifierMask _masker;
-
-        public IdRevealerResolver(IIdentifierMask masker)
-        {
-            _masker = masker;
-        }
-
-        public int Resolve(StoryPostViewModel source,  StoryPostDto destination, int destMember, ResolutionContext context)
-        {
-            return _masker.RevealId(source.Id);
-        }
-    }
+    
 }

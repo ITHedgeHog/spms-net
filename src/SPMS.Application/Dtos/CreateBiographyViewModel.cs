@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SPMS.Application.Dtos
 {
-    public class CreateBiographyViewModel : SPMS.Common.ViewModels.ViewModel
+    public class CreateBiographyViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         public CreateBiographyViewModel()
         {

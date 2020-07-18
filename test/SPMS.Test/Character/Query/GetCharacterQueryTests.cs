@@ -20,11 +20,13 @@ namespace SPMS.Application.Tests.Character.Query
     {
         private readonly ISpmsContext _context;
         private readonly IMapper _mapper;
+        private ITenantAccessor<TenantDto> _tenant;
 
         public GetCharacterQueryTests(GetCharacterQueryFixture fixture)
         {
             _context = fixture.Context;
             _mapper = fixture.Mapper;
+            _tenant = fixture.Tenant;
         }
 
         [Fact]
@@ -33,10 +35,8 @@ namespace SPMS.Application.Tests.Character.Query
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(u => u.GetAuthId()).Returns("123");
             mockUserService.Setup(u => u.IsAdmin()).Returns(false);
-            var mockGameService = new Mock<ITenantProvider>();
-            mockGameService.Setup(x => x.GetTenantAsync(CancellationToken.None)).ReturnsAsync(_context.Game.First(x => x.IsTest));
-            var request = new GetCharacterQuery() { Id = 1, Url =  "localhost" };
-            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, mockGameService.Object);
+           var request = new GetCharacterQuery() { Id = 1, Url =  "localhost" };
+            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, _tenant);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -52,10 +52,8 @@ namespace SPMS.Application.Tests.Character.Query
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(u => u.GetAuthId()).Returns("123");
             mockUserService.Setup(u => u.IsAdmin()).Returns(false);
-            var mockGameService = new Mock<ITenantProvider>();
-            mockGameService.Setup(x => x.GetTenantAsync(CancellationToken.None)).ReturnsAsync(_context.Game.First(x => x.IsTest));
             var request = new GetCharacterQuery() { Id = 1001, Url = "localhost" };
-            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, mockGameService.Object);
+            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, _tenant);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -72,10 +70,8 @@ namespace SPMS.Application.Tests.Character.Query
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(u => u.GetAuthId()).Returns("562");
             mockUserService.Setup(u => u.IsAdmin()).Returns(true);
-            var mockGameService = new Mock<ITenantProvider>();
-            mockGameService.Setup(x => x.GetTenantAsync( CancellationToken.None)).ReturnsAsync(_context.Game.First(x => x.IsTest));
             var request = new GetCharacterQuery() { Id = 1, Url = "localhost" };
-            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, mockGameService.Object);
+            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, _tenant);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -92,10 +88,8 @@ namespace SPMS.Application.Tests.Character.Query
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(u => u.GetAuthId()).Returns("562");
             mockUserService.Setup(u => u.IsAdmin()).Returns(false);
-            var mockGameService = new Mock<ITenantProvider>();
-            mockGameService.Setup(x => x.GetTenantAsync(CancellationToken.None)).ReturnsAsync(_context.Game.First(x => x.IsTest));
             var request = new GetCharacterQuery() { Id = 1, Url = "localhost" };
-            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, mockGameService.Object);
+            var sut = new GetCharacterQuery.GetCharacterQueryHandler(_context, _mapper, mockUserService.Object, _tenant);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -107,8 +101,19 @@ namespace SPMS.Application.Tests.Character.Query
     {
         public IMapper Mapper { get; set; }
         public SpmsContext Context { get; set; }
+        public ITenantAccessor<TenantDto> Tenant { get; set; }
         public GetCharacterQueryFixture()
         {
+            var accessor = new Mock<ITenantAccessor<TenantDto>>();
+            accessor.Setup(x => x.Instance).Returns(new TenantDto()
+            {
+                Id = 1,
+                SiteTitle = "Test Site",
+                Author = "Dan Taylor & Evan Scown",
+                IsSpiderable = true
+            });
+            Tenant = accessor.Object;
+
             Context = SpmsContextFactory.Create();
             var game = Context.Game.First();
             Context.Biography.Add(new Domain.Models.Biography() { Firstname = "Dan", Surname = "Taylor", Player = new Player() { AuthString = "123" }, State = new BiographyState() { Default = false, Name = "State", GameId = game.Id }, Posting = new Posting(){Name = "Starbase Gamma"}});

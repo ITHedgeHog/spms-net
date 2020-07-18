@@ -8,7 +8,6 @@ using Microsoft.Extensions.Logging;
 using SPMS.Application.Services;
 using SPMS.ViewModel.Rules;
 using SPMS.Web.Models;
-using SPMS.Web.Service;
 
 namespace SPMS.Web.Controllers
 {

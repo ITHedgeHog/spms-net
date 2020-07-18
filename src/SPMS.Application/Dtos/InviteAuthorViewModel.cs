@@ -3,7 +3,7 @@ using SPMS.Application.Dtos.Authoring;
 
 namespace SPMS.Application.Dtos
 {
-    public class InviteAuthorViewModel : SPMS.Common.ViewModels.ViewModel
+    public class InviteAuthorViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         public InviteAuthorViewModel()
         {

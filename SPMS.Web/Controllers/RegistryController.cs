@@ -13,7 +13,7 @@ namespace SPMS.Web.Controllers
     {
         public IActionResult Index()
         {
-            var vm = new Common.ViewModels.ViewModel();
+            var vm = new Common.ViewModels.BaseViewModel();
             return View(vm);
         }
     }

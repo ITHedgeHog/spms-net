@@ -34,6 +34,7 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.CommitShaLink, o => o.Ignore())
                 .ForMember(x => x.CommitSha, o => o.Ignore());
 
+            CreateMap<TenantDto, SeoDto>();
 
 
             CreateMap<PlayerRole, PlayerRoleDto>().ForMember(x => x.Name, opt => opt.MapFrom(y => y.Name))
