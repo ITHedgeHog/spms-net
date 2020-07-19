@@ -30,6 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\img\branding.jpg" />
     <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg" />
     <None Remove="Themes\Default\wwwroot\img\branding.jpg" />
@@ -132,6 +136,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
   </ItemGroup>
 
   <ItemGroup>
