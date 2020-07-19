@@ -16,17 +16,16 @@ namespace SPMS.Web.Infrastructure.ViewLocationExpander
 
         public IEnumerable<string> ExpandViewLocations(ViewLocationExpanderContext context, IEnumerable<string> viewLocations)
         {
-            if (context.Values.TryGetValue(StaticValues.ThemeKey, out var theme))
+            if (context.Values.TryGetValue(StaticValues.ThemeKey, out var theme) && string.IsNullOrEmpty(context.AreaName))
             {
-
                 viewLocations = new[]
                 {
                     $"/Themes/{theme}/Views/{{1}}/{{0}}.cshtml",
-                    $"/Themes/{theme}/Views/Shared/{{0}}.cshtml"
+                    $"/Themes/{theme}/Views/Shared/{{0}}.cshtml",
                 }
                 .Concat(viewLocations);
             }
-            
+
             return viewLocations;
         }
     }
