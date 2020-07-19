@@ -9,10 +9,10 @@ using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Mappings;
 using SPMS.Application.Dtos;
 using SPMS.Application.Services;
+using SPMS.Application.Tests.Common;
 using SPMS.Domain.Models;
 using SPMS.Persistence.MSSQL;
 using Xunit;
-using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 
 namespace SPMS.Application.Tests.Character.Query
 {
@@ -114,7 +114,7 @@ namespace SPMS.Application.Tests.Character.Query
             });
             Tenant = accessor.Object;
 
-            Context = SpmsContextFactory.Create();
+            Context = TestSpmsContextFactory.Create();
             var game = Context.Game.First();
             Context.Biography.Add(new Domain.Models.Biography() { Firstname = "Dan", Surname = "Taylor", Player = new Player() { AuthString = "123" }, State = new BiographyState() { Default = false, Name = "State", GameId = game.Id }, Posting = new Posting(){Name = "Starbase Gamma"}});
             Context.SaveChanges();

@@ -13,12 +13,12 @@ using SPMS.Application.Common.Mappings;
 using SPMS.Application.Dtos.Story;
 using SPMS.Application.Services;
 using SPMS.Application.Story.Query;
+using SPMS.Application.Tests.Common;
 using SPMS.Application.Tests.Mapping;
 using SPMS.Common;
 using SPMS.Domain.Models;
 using SPMS.Persistence.MSSQL;
 using Xunit;
-using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 
 namespace SPMS.Application.Tests.Story.Query
 {
@@ -58,7 +58,7 @@ namespace SPMS.Application.Tests.Story.Query
         public SpmsContext Context { get; set; }
         public StoryOverviewFixture()
         {
-            Context = SpmsContextFactory.Create();
+            Context = TestSpmsContextFactory.Create();
             var game = Context.Game.First();
             Context.Biography.Add(new Domain.Models.Biography() { Firstname = "Dan", Surname = "Taylor", Player = new Player() { AuthString = "123" }, State = new BiographyState() { Default = false, Name = "State", GameId = game.Id }, Posting = new Posting() { Name = "Starbase Gamma" } });
             Context.SaveChanges();

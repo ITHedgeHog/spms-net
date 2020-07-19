@@ -57,7 +57,7 @@ namespace SPMS.Web.Controllers
             var vm = new MyWritingViewModel
             {
                 IsCreateCharacterEnabled = _userService.IsPlayer(),
-                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published)
+                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published),
             };
 
             var tmp = _context.EpisodeEntry
@@ -71,7 +71,7 @@ namespace SPMS.Web.Controllers
             vm.DraftPosts = _context.EpisodeEntry
                 .Include(e => e.EpisodeEntryType)
                 .Include(e => e.Episode)
-                .Include(p => p.EpisodeEntryPlayer).ThenInclude(p=>p.Player)
+                .Include(p => p.EpisodeEntryPlayer).ThenInclude(p=> p.Player)
                 .Include(e => e.EpisodeEntryStatus)
                 .Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Draft)
                 .ProjectTo<PostViewModel>(_mapper.ConfigurationProvider).ToList();
@@ -87,6 +87,7 @@ namespace SPMS.Web.Controllers
             {
                 vm.Characters.Add(bio.Id, bio.Firstname + " " + bio.Surname);
             }
+
             return View(vm);
         }
     }

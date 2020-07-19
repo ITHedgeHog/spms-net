@@ -14,10 +14,10 @@ using SPMS.Application.Dtos;
 using SPMS.Application.Dtos.Admin;
 using SPMS.Application.Services;
 using SPMS.Application.Tests.Character.Query;
+using SPMS.Application.Tests.Common;
 using SPMS.Domain.Models;
 using SPMS.Persistence.MSSQL;
 using Xunit;
-using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 
 namespace SPMS.Application.Tests.Admin.Query
 {
@@ -68,7 +68,7 @@ namespace SPMS.Application.Tests.Admin.Query
 
         public SeoQueryFixture()
         {
-            Context = SpmsContextFactory.Create();
+            Context = TestSpmsContextFactory.Create();
 
             var mock = new Mock<IHttpContextAccessor>();
             var context = new DefaultHttpContext();

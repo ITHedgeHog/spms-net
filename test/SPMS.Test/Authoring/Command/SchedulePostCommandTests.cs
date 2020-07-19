@@ -5,11 +5,11 @@ using MediatR;
 using Moq;
 using Shouldly;
 using SPMS.Application.Authoring.Command.SchedulePost;
+using SPMS.Application.Tests.Common;
 using SPMS.Common;
 using SPMS.Domain.Models;
 using SPMS.Persistence.MSSQL;
 using Xunit;
-using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 
 namespace SPMS.Application.Tests.Authoring.Command
 {
@@ -55,7 +55,7 @@ namespace SPMS.Application.Tests.Authoring.Command
         public SpmsContext Context { get; set; }
         public SchedulePostFixture()
         {
-            Context = SpmsContextFactory.Create();
+            Context = TestSpmsContextFactory.Create();
             Context.EpisodeEntry.Add(new EpisodeEntry()
             {
                 Title = "Post 1",
