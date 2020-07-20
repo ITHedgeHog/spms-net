@@ -33,7 +33,12 @@ namespace SPMS.Web.Infrastructure.Services
 
         public string GetName()
         {
-            return _httpContext.User.Identity.Name;
+            if (_httpContext != null && _httpContext.User.Identity.IsAuthenticated)
+            {
+                return _httpContext.User.Identity.Name;
+            }
+
+            return "SPMS System";
 
         }
 
