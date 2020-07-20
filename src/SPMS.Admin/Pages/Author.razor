@@ -1,0 +1,43 @@
+﻿@page "/author"
+
+
+<h3>Author</h3>
+
+@using Syncfusion.Blazor.RichTextEditor
+
+<SfRichTextEditor>
+    <p>Rich Text Editor allows to insert images from online source as well as local computer where you want to insert the image in your content.</p>
+    <p><b>Get started Quick Toolbar to click on the image</b></p>
+    <p>It is possible to add custom style on the selected image inside the Rich Text Editor through quick toolbar.</p>
+</SfRichTextEditor>
+
+
+
+<SfRichTextEditor EditorMode="EditorMode.Markdown" Placeholder="Your post here..." ShowCharCount="true">
+    <ChildContent>
+        <RichTextEditorToolbarSettings Items="@Tools"></RichTextEditorToolbarSettings>
+        @*<RichTextEditorInlineMode Enable="true" OnSelection="true"></RichTextEditorInlineMode>*@
+    </ChildContent>
+</SfRichTextEditor>
+
+
+
+  @code {
+        //public object[] Tools = new object[]
+        //{
+        //    "Bold", "Italic", "Underline", "SubScript", "SuperScript", "StrikeThrough",
+        //    "FontName", "FontSize", "FontColor", "BackgroundColor",
+        //    "LowerCase", "UpperCase", "|",
+        //    "Formats", "Alignments", "OrderedList", "UnorderedList",
+        //    "Outdent", "Indent", "|", "CreateTable",
+        //    "CreateLink", "Image", "|", "ClearFormat", "Print",
+        //    "SourceCode", "FullScreen", "|", "Undo", "Redo"
+        //                    };
+
+
+        public object[] Tools = new object[] {
+            "Bold", "Italic", "StrikeThrough", "|",
+            "Formats", "OrderedList", "UnorderedList", "|",
+            "CreateLink", "Image", "CreateTable", "FullScreen", "|", "Undo", "Redo"
+        };
+    }
