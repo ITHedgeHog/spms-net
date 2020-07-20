@@ -7,7 +7,12 @@ namespace SPMS.Web.Infrastructure.Services
     {
         public string Version => Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
             ?.InformationalVersion ?? "0.0.0";
+
+        public string FileVersion => Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyFileVersionAttribute>()
+            ?.Version ?? "0.0.0";
+
+
         public string InformationVersion => Assembly.GetEntryAssembly()!.GetCustomAttribute<AssemblyInformationalVersionAttribute>()
-            ?.InformationalVersion ?? "0.0.0";
+                                                                                       ?.InformationalVersion ?? "0.0.0";
     }
 }
