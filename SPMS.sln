@@ -30,6 +30,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMS.BackgroundService", "src\SPMS.BackgroundService\SPMS.BackgroundService.csproj", "{AE6F0E64-6259-4130-A04F-513746AC8333}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{3476AED8-17C3-456E-B0FE-2CD2EC1353B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3476AED8-17C3-456E-B0FE-2CD2EC1353B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3476AED8-17C3-456E-B0FE-2CD2EC1353B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE6F0E64-6259-4130-A04F-513746AC8333}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE6F0E64-6259-4130-A04F-513746AC8333}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE6F0E64-6259-4130-A04F-513746AC8333}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE6F0E64-6259-4130-A04F-513746AC8333}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
