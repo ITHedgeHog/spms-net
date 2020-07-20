@@ -36,8 +36,4 @@
     <ProjectReference Include="..\..\SPMS.Web\SPMS.Web.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Authoring\Query\" />
-  </ItemGroup>
-
 </Project>

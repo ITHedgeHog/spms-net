@@ -5,7 +5,9 @@ using SPMS.Application.Character.Command;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Resolvers;
 using SPMS.Application.Dtos;
+using SPMS.Application.Dtos.Authoring;
 using SPMS.Application.Dtos.Common;
+using SPMS.Application.Dtos.Player;
 using SPMS.Application.Dtos.Story;
 using SPMS.Application.Services;
 using SPMS.Domain.Models;
@@ -13,6 +15,7 @@ using SPMS.ViewModel;
 using SPMS.ViewModel.character;
 using SPMS.ViewModel.Common;
 using SPMS.ViewModel.Story;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SPMS.Application.Common.Mappings
 {
@@ -20,6 +23,9 @@ namespace SPMS.Application.Common.Mappings
     {
         public ViewModelMapping()
         {
+
+            WritingPortalMappings();
+
             CreateMap<TenantDto, SPMS.Common.ViewModels.BaseViewModel>();
 
             CreateMap<ListItemDto, SelectListItem>()
@@ -92,6 +98,25 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.EpisodeId, o => o.Ignore())
                 .ForMember(x => x.Episode, o => o.Ignore())
                 .ForMember(x=>x.PostedBy, o =>o.Ignore());
+        }
+
+        private void WritingPortalMappings()
+        {
+            CreateMap<AuthorDto, AuthorViewModel>();
+            CreateMap<PostDto, PostViewModel>();
+            CreateMap<WritingPortalDto, MyWritingViewModel>()
+                .ForMember(x => x.Characters, o => o.Ignore())
+                .ForMember(x => x.gravatar, o => o.Ignore())
+                .ForMember(x => x.IsReadOnly, o => o.Ignore())
+                .ForMember(x => x.SiteAnalytics, o => o.Ignore())
+                .ForMember(x => x.SiteDisclaimer, o => o.Ignore())
+                .ForMember(x => x.SiteTitle, o => o.Ignore())
+                .ForMember(x => x.UseAnalytics, o => o.Ignore())
+                .ForMember(x => x.IsPlayer, o => o.Ignore())
+                .ForMember(x => x.IsAdmin, o => o.Ignore())
+                .ForMember(x => x.CommitSha, o => o.Ignore())
+                .ForMember(x => x.CommitShaLink, o => o.Ignore())
+                .ForMember(x => x.GameName, o => o.Ignore());
         }
     }
 
