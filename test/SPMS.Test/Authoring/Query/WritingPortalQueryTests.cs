@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -34,6 +35,7 @@ namespace SPMS.Application.Tests.Authoring.Query
         public async Task ShouldReturnWritingPortalDto()
         {
             var mockUserService = new Mock<IUserService>();
+            mockUserService.Setup(x => x.GetId()).Returns(1);
             var request = new WritingPortalQuery();
             var sut = new WritingPortalQuery.WritingPortalQueryHandler(_db, mockUserService.Object, _mapper);
 
@@ -41,6 +43,7 @@ namespace SPMS.Application.Tests.Authoring.Query
              
             result.ShouldBeOfType<WritingPortalDto>();
             result.DraftPosts.ShouldBeOfType<List<PostDto>>();
+            result.DraftPosts.Count.ShouldBe(1);
             result.PendingPosts.ShouldBeOfType<List<PostDto>>();
         }
     }
@@ -62,7 +65,34 @@ namespace SPMS.Application.Tests.Authoring.Query
                 Born = "Earth",
                 StateId = Context.BiographyState.First().Id,
                 StatusId = Context.BiographyStatus.First().Id,
-                TypeId = Context.BiographyTypes.First().Id
+                TypeId = Context.BiographyTypes.First().Id,
+                PlayerId = 1
+            });
+            Context.SaveChanges();
+
+            Context.EpisodeEntry.Add(new EpisodeEntry()
+            {
+                EpisodeId = Context.Episode.First().Id,
+                Title = "post",
+                Content = "Blargh",
+                EpisodeEntryPlayer = new Collection<EpisodeEntryPlayer>()
+                {
+                    new EpisodeEntryPlayer() { PlayerId = 1}
+                },
+                EpisodeEntryStatusId = Context.EpisodeEntryStatus.First(x => x.Name == StaticValues.Draft).Id,
+                EpisodeEntryTypeId = Context.EpisodeEntryType.First().Id
+            });
+            Context.EpisodeEntry.Add(new EpisodeEntry()
+            {
+                EpisodeId = Context.Episode.First().Id,
+                Title = "post",
+                Content = "Blargh",
+                EpisodeEntryPlayer = new Collection<EpisodeEntryPlayer>()
+                {
+                    new EpisodeEntryPlayer() { PlayerId = 2}
+                },
+                EpisodeEntryStatusId = Context.EpisodeEntryStatus.First(x => x.Name == StaticValues.Draft).Id,
+                EpisodeEntryTypeId = Context.EpisodeEntryType.First().Id
             });
             Context.SaveChanges();
 

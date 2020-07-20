@@ -8,7 +8,6 @@ namespace SPMS.Application.Dtos.Player
     {
         public WritingPortalDto()
         {
-            Characters = new Dictionary<int, string>();
             DraftPosts = new List<PostDto>();
             PendingPosts = new List<PostDto>();
         }
@@ -17,7 +16,6 @@ namespace SPMS.Application.Dtos.Player
 
         public List<PostDto> DraftPosts { get; set; }
 
-        public Dictionary<int, string> Characters { get; set; }
         public bool HasEpisode { get; set; }
         public List<PostDto> PendingPosts { get; set; }
     }

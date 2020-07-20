@@ -33,43 +33,31 @@ namespace SPMS.Application.Authoring.Query
 
             public async Task<WritingPortalDto> Handle(WritingPortalQuery request, CancellationToken cancellationToken)
             {
-                var vm = new WritingPortalDto
+                var userId = _userService.GetId();
+                var dto = new WritingPortalDto
                 {
                     IsCreateCharacterEnabled = _userService.IsPlayer(),
                     HasEpisode = _db.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published),
+                    DraftPosts = GetPostsByStatus(userId, StaticValues.Draft),
+                    PendingPosts = GetPostsByStatus(userId, StaticValues.Pending),
                 };
 
-                var tmp = _db.EpisodeEntry
+
+                return dto;
+            }
+
+            private List<PostDto> GetPostsByStatus(int userId, string statusName)
+            {
+                return _db.EpisodeEntry
                     .Include(e => e.EpisodeEntryType)
                     .Include(e => e.Episode)
                     .Include(e => e.EpisodeEntryStatus)
                     .Include(p => p.EpisodeEntryPlayer).ThenInclude(p => p.Player)
-                    .Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Pending).ToList();
-
-                var owner = _userService.GetAuthId();
-                vm.DraftPosts = _db.EpisodeEntry
-                    .Include(e => e.EpisodeEntryType)
-                    .Include(e => e.Episode)
-                    .Include(p => p.EpisodeEntryPlayer).ThenInclude(p => p.Player)
-                    .Include(e => e.EpisodeEntryStatus)
-                    .Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Draft)
-                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider).ToList();
-                vm.PendingPosts = _db.EpisodeEntry
-                    .Include(e => e.EpisodeEntryType)
-                    .Include(e => e.Episode)
-                    .Include(p => p.EpisodeEntryPlayer).ThenInclude(p => p.Player)
-                    .Include(e => e.EpisodeEntryStatus)
-                    .Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Pending)
-                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider).ToList();
-                var bios = _db.Biography.Include(b => b.Player).Where(x => x.Player.AuthString == owner);
-                foreach (var bio in bios)
-                {
-                    vm.Characters.Add(bio.Id, bio.Firstname + " " + bio.Surname);
-                }
-
-
-
-                return new WritingPortalDto();
+                    .Where(e => e.EpisodeEntryType.Name == StaticValues.Post
+                                && e.EpisodeEntryStatus.Name == statusName
+                                && e.EpisodeEntryPlayer.Any(x => x.PlayerId == userId))
+                    .ProjectTo<PostDto>(_mapper.ConfigurationProvider)
+                    .ToList();
             }
         }
     }
