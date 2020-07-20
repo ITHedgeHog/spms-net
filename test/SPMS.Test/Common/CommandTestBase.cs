@@ -10,12 +10,12 @@ namespace SPMS.Application.Tests.Common
 
         public CommandTestBase()
         {
-            Context = SpmsContextFactory.Create();
+            Context = TestSpmsContextFactory.Create();
         }
 
         public void Dispose()
         {
-            SpmsContextFactory.Destroy(Context);
+            TestSpmsContextFactory.Destroy(Context);
         }
     }
 }
