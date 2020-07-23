@@ -41,6 +41,7 @@
   <ItemGroup>
     <None Remove="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\img\branding.jpg" />
     <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg" />
+    <None Remove="tenantfiles\6D769C55-9886-48DF-9454-188D6762A7C3\img\branding.jpg" />
     <None Remove="Themes\Default\wwwroot\img\branding.jpg" />
   </ItemGroup>
 
@@ -152,6 +153,10 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="tenantfiles\6D769C55-9886-48DF-9454-188D6762A7C3\img\branding.jpg">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
