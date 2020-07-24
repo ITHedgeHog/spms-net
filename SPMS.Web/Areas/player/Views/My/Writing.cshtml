@@ -11,7 +11,7 @@
 
     <div class="row">
         <div class="col-sm-12">
-            @if (Model.Characters.Any() && Model.HasEpisode)
+            @if (Model.CanPost)
             {
                 <form asp-controller="Authoring" asp-action="NewPost" method="post">
                     <button type="submit" class="btn btn-primary">Create New Post</button>

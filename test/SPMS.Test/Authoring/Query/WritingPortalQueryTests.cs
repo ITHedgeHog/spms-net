@@ -40,11 +40,27 @@ namespace SPMS.Application.Tests.Authoring.Query
             var sut = new WritingPortalQuery.WritingPortalQueryHandler(_db, mockUserService.Object, _mapper);
 
             var result = await sut.Handle(request, CancellationToken.None);
-             
+
             result.ShouldBeOfType<WritingPortalDto>();
             result.DraftPosts.ShouldBeOfType<List<PostDto>>();
             result.DraftPosts.Count.ShouldBe(1);
             result.PendingPosts.ShouldBeOfType<List<PostDto>>();
+
+
+        }
+
+        [Fact]
+        public async Task ShouldAllowNewPost()
+        {
+            var mockUserService = new Mock<IUserService>();
+            mockUserService.Setup(x => x.GetId()).Returns(1);
+            var request = new WritingPortalQuery();
+            var sut = new WritingPortalQuery.WritingPortalQueryHandler(_db, mockUserService.Object, _mapper);
+
+            var result = await sut.Handle(request, CancellationToken.None);
+
+            result.ShouldBeOfType<WritingPortalDto>();
+            result.CanPost.ShouldBeTrue();
         }
     }
 
