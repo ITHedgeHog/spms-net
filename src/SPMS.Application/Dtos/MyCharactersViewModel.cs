@@ -21,18 +21,15 @@ namespace SPMS.Application.Dtos
     {
         public MyWritingViewModel()
         {
-            Characters = new Dictionary<int, string>();
+            new Dictionary<int, string>();
             DraftPosts = new List<PostViewModel>();
             PendingPosts = new List<PostViewModel>();
         }
 
-        public bool IsCreateCharacterEnabled { get; set; }
-
         public List<PostViewModel> DraftPosts { get; set; }
 
-        public Dictionary<int, string> Characters { get; set; }
-        public bool HasEpisode { get; set; }
         public List<PostViewModel> PendingPosts { get; set; }
+        public bool CanPost { get; set; }
     }
 
 }

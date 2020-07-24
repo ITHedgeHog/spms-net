@@ -12,12 +12,10 @@ namespace SPMS.Application.Dtos.Player
             PendingPosts = new List<PostDto>();
         }
 
-        public bool IsCreateCharacterEnabled { get; set; }
-
         public List<PostDto> DraftPosts { get; set; }
 
-        public bool HasEpisode { get; set; }
         public List<PostDto> PendingPosts { get; set; }
+        public bool CanPost { get; set; }
     }
 
 
