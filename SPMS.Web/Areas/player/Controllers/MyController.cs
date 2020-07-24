@@ -45,7 +45,7 @@ namespace SPMS.Web.Controllers
             var vm = new MyCharactersViewModel
             {
                 IsCreateCharacterEnabled = _userService.IsPlayer(),
-                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published)
+                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published),
             };
 
 
@@ -67,45 +67,8 @@ namespace SPMS.Web.Controllers
         [HttpGet("player/writing-portal")]
         public async Task<IActionResult> Writing(CancellationToken cancellationToken)
         {
-            MyWritingViewModel vm;
-            if (await _featureManager.IsEnabledAsync(nameof(FeatureFlags.NewWritingPortal)).ConfigureAwait(true))
-            {
-                var dto = await _mediator.Send(new WritingPortalQuery(), cancellationToken).ConfigureAwait(true);
-
-                vm = _mapper.Map<MyWritingViewModel>(dto);
-            }
-            else
-            {
-                vm = new MyWritingViewModel
-                {
-                    IsCreateCharacterEnabled = _userService.IsPlayer(),
-                    HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published),
-                };
-
-                var owner = _userService.GetAuthId();
-                vm.DraftPosts = _context.EpisodeEntry
-                    .Include(e => e.EpisodeEntryType)
-                    .Include(e => e.Episode)
-                    .Include(p => p.EpisodeEntryPlayer).ThenInclude(p => p.Player)
-                    .Include(e => e.EpisodeEntryStatus)
-                    .Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Draft)
-                    .ProjectTo<PostViewModel>(_mapper.ConfigurationProvider).ToList();
-                vm.PendingPosts = _context.EpisodeEntry
-                    .Include(e => e.EpisodeEntryType)
-                    .Include(e => e.Episode)
-                    .Include(p => p.EpisodeEntryPlayer).ThenInclude(p => p.Player)
-                    .Include(e => e.EpisodeEntryStatus)
-                    .Where(e => e.EpisodeEntryType.Name == StaticValues.Post && e.EpisodeEntryStatus.Name == StaticValues.Pending)
-                    .ProjectTo<PostViewModel>(_mapper.ConfigurationProvider).ToList();
-                var bios = _context.Biography.Include(b => b.Player).Where(x => x.Player.AuthString == owner);
-                foreach (var bio in bios)
-                {
-                    vm.Characters.Add(bio.Id, bio.Firstname + " " + bio.Surname);
-                }
-
-
-            }
-
+            var dto = await _mediator.Send(new WritingPortalQuery(), cancellationToken).ConfigureAwait(true);
+            var vm = _mapper.Map<MyWritingViewModel>(dto);
             return View(vm);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Common;
 using SPMS.Domain.Models;
@@ -20,6 +21,11 @@ namespace SPMS.Application.Tests.Common
             context.Database.EnsureCreated();
 
             // Add Seed Data
+            context.EpisodeStatus.Add(new EpisodeStatus() {Name = StaticValues.Published});
+            context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Draft });
+            context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Archived });
+            context.EpisodeStatus.Add(new EpisodeStatus() { Name = StaticValues.Pending });
+
             context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Published });
             context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() { Name = StaticValues.Draft });
             context.EpisodeEntryStatus.Add(new EpisodeEntryStatus() {Name = StaticValues.Archived});
@@ -38,7 +44,7 @@ namespace SPMS.Application.Tests.Common
             {
                 Title = "Episode 1",
                 Series = series,
-                Status = new EpisodeStatus() { Name = StaticValues.Published }
+                StatusId = context.EpisodeStatus.First(x => x.Name == StaticValues.Published).Id
             };
             context.Episode.Add(episode);
             
@@ -46,7 +52,7 @@ namespace SPMS.Application.Tests.Common
             {
                 Title = "Episode 2",
                 Series = series,
-                Status = new EpisodeStatus() { Name = StaticValues.Draft }
+                StatusId = context.EpisodeStatus.First(x => x.Name == StaticValues.Draft).Id
             };
             context.Episode.Add(episode);
 
