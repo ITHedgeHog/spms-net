@@ -105,7 +105,6 @@ namespace SPMS.Application.Common.Mappings
             CreateMap<AuthorDto, AuthorViewModel>();
             CreateMap<PostDto, PostViewModel>();
             CreateMap<WritingPortalDto, MyWritingViewModel>()
-                .ForMember(x => x.Characters, o => o.Ignore())
                 .ForMember(x => x.gravatar, o => o.Ignore())
                 .ForMember(x => x.IsReadOnly, o => o.Ignore())
                 .ForMember(x => x.SiteAnalytics, o => o.Ignore())

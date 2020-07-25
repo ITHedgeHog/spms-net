@@ -36,8 +36,7 @@ namespace SPMS.Application.Authoring.Query
                 var userId = _userService.GetId();
                 var dto = new WritingPortalDto
                 {
-                    IsCreateCharacterEnabled = _userService.IsPlayer(),
-                    HasEpisode = _db.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published),
+                    CanPost = _db.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published),
                     DraftPosts = GetPostsByStatus(userId, StaticValues.Draft),
                     PendingPosts = GetPostsByStatus(userId, StaticValues.Pending),
                 };
