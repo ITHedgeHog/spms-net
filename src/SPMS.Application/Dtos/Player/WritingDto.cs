@@ -38,6 +38,7 @@ namespace SPMS.Application.Dtos.Player
         public DateTime? UpdatedAt { get; set; }
         public string LastAuthor { get; set; }
         public List<AuthorDto> Authors { get; set; }
+        public string Type { get; set; }
     }
 
     public class AuthorDto

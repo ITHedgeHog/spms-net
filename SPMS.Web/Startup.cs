@@ -131,6 +131,7 @@ namespace SPMS.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<AuthoringHub>("/authoringHub");
+
                 endpoints.MapAreaControllerRoute(
                     name: "MicrosoftIdentity",
                     pattern: "MicrosoftIdentity/{controller}/{action}/{id?}",
