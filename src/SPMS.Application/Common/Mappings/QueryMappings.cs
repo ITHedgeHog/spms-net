@@ -26,6 +26,7 @@ namespace SPMS.Application.Common.Mappings
             //CreateMap<Epis>()
 
             CreateMap<EpisodeEntry, PostDto>()
+                .ForMember(x => x.Type, o => o.MapFrom(y => y.EpisodeEntryType.Name))
                 .ForMember(x => x.CreatedAt, o => o.MapFrom(y => y.Created))
                 .ForMember(x => x.UpdatedAt, o => o.MapFrom(y => y.LastModified))
                 .ForMember(x => x.LastAuthor, o => o.MapFrom(y => y.LastModifiedBy))
