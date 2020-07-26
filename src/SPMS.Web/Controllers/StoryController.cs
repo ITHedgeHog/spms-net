@@ -11,6 +11,7 @@ namespace SPMS.Web.Controllers
     /// <summary>
     /// Story Controller
     /// </summary>
+    [Route("story")]
     public class StoryController : Controller
     {
         private readonly IMediator _mediator;
@@ -32,6 +33,9 @@ namespace SPMS.Web.Controllers
         /// </summary>
         /// <param name="cancellationToken">Cancellation Token.</param>
         /// <returns>IActionResult.</returns>
+        [HttpGet("")]
+        [Route("index")]
+
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
             var query = new StoryOverviewQuery();
@@ -43,6 +47,7 @@ namespace SPMS.Web.Controllers
         /// Show the Story So Far Page.
         /// </summary>
         /// <returns>IActionResult.</returns>
+        [HttpGet("SoFar")]
         public IActionResult Sofar()
         {
             var vm = new Common.ViewModels.BaseViewModel();
@@ -55,6 +60,7 @@ namespace SPMS.Web.Controllers
         /// <param name="id">Id of entry.</param>
         /// <param name="cancellationToken">Cancellation Token.</param>
         /// <returns>IActionResult.</returns>
+        [HttpGet("{id}")]
         public async Task<IActionResult> Show(string id, CancellationToken cancellationToken)
         {
             var dto = await _mediator.Send(new StoryPostQuery() {Id = id}, cancellationToken).ConfigureAwait(true);

@@ -16,6 +16,7 @@ namespace SPMS.Persistence.Configuration
             builder.Property(x => x.Timeline).IsRequired(false).HasMaxLength(255);
 
             builder.Property(x => x.Content).IsRequired(false);
+            builder.Property(x => x.IsPostedToDiscord).IsRequired(true).HasDefaultValue(false);
         }
     }
 }

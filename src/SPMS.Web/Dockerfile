@@ -1,6 +1,3 @@
-ARG BRANCH="main"
-ARG COMMIT=""
-
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
 WORKDIR /app
 EXPOSE 80
@@ -17,7 +14,7 @@ RUN apt-get update -yq \
     && curl -sL https://deb.nodesource.com/setup_10.x | bash \
     && apt-get install nodejs -yq
 
-COPY ["SPMS.Web/SPMS.Web.csproj", "SPMS.Web/"]
+COPY ["src/SPMS.Web/SPMS.Web.csproj", "SPMS.Web/"]
 RUN dotnet restore "SPMS.Web/SPMS.Web.csproj"
 COPY . .
 WORKDIR "/src/SPMS.Web"
@@ -30,6 +27,5 @@ RUN dotnet publish "SPMS.Web.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENV COMMIT_SHA=${COMMIT}
-ENV COMMIT_BRANCH=${BRANCH}
+
 ENTRYPOINT ["dotnet", "SPMS.Web.dll"]

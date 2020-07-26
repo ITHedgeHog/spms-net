@@ -34,7 +34,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\SPMS.Web\SPMS.Web.csproj" />
+    <ProjectReference Include="..\..\src\SPMS.Application\SPMS.Application.csproj" />
+    <ProjectReference Include="..\..\src\SPMS.Web\SPMS.Web.csproj" />
   </ItemGroup>
 
 </Project>

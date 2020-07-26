@@ -1,0 +1,30 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:55506/",
+      "sslPort": 44338
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "SPMS.Web": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "APPCONFIG": "Endpoint=https://spms-net.azconfig.io;Id=zDE9-lo-s0:XrvZ8ylNfk+zr3s0HNVk;Secret=bKGuHMNLKR8sXJrwc7EP1/vNaSg8AQBUR3qclc1nIHI=",
+        "CACHETIMEOUT": "5"
+
+      },
+      "applicationUrl": "https://localhost:32776/;http://localhost:32775"
+    }
+  }
+}

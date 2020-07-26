@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -45,6 +43,8 @@ namespace SPMS.Application.Authoring.Command.PublishAllPendingPosts
 
                 
                 await _db.SaveChangesAsync(cancellationToken).ConfigureAwait(true);
+
+                
 
                 return true;
             }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SPMS.Persistence.MSSQL;
 
 namespace SPMS.Persistence.MSSQL.Migrations
 {
     [DbContext(typeof(SpmsContext))]
-    partial class SpmsContextModelSnapshot : ModelSnapshot
+    [Migration("20200727012018_GameDiscordWebHook")]
+    partial class GameDiscordWebHook
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,11 +248,6 @@ namespace SPMS.Persistence.MSSQL.Migrations
 
                     b.Property<int>("EpisodeId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsPostedToDiscord")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");

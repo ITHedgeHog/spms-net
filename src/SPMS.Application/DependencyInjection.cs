@@ -26,6 +26,7 @@ namespace SPMS.Application
             services.AddScoped<IStoryService, StoryService>();
             services.AddScoped<IAuthoringService, AuthoringService>();
             services.AddScoped<IIdentifierMask, IdentifierMasking>();
+            services.AddScoped<IBackgroundIdentifierMask, BackgroundIdentifierMasking>();
             services.AddScoped(typeof(ITenantProvider<TenantDto>), typeof(TenantProvider));
 
             return services;

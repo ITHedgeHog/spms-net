@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.74
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Web", "SPMS.Web\SPMS.Web.csproj", "{941F4BBB-C1A2-4872-8CB8-8C6E8196F496}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Web", "src\SPMS.Web\SPMS.Web.csproj", "{941F4BBB-C1A2-4872-8CB8-8C6E8196F496}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Application.Tests", "test\SPMS.Test\SPMS.Application.Tests.csproj", "{3C35991F-18D0-48B7-B643-3D50A48423E9}"
 EndProject

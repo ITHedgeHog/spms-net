@@ -90,7 +90,8 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.PublishedAt, o => o.Ignore())
                 .ForMember(x => x.LastModified, o => o.Ignore())
                 .ForMember(x => x.LastModifiedBy, o => o.Ignore())
-                .ForMember(x => x.CreatedBy, o => o.Ignore());
+                .ForMember(x => x.CreatedBy, o => o.Ignore())
+                .ForMember(x=>x.IsPostedToDiscord, o=>o.Ignore());
 
             CreateMap<AuthorViewModel, EpisodeEntryPlayer>()
                 .ForMember(x => x.PlayerId, o => o.MapFrom(y => y.Id))
