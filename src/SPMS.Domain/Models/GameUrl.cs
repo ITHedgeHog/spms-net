@@ -6,6 +6,7 @@
 
         public int GameId { get; set; }
         public Game Game { get; set; }
+        public bool IsPrimary { get; set; }
 
     }
 }

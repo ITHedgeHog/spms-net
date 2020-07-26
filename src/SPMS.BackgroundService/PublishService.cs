@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using SPMS.Application.Authoring.Command.NotifyDiscord;
 using SPMS.Application.Authoring.Command.PublishAllPendingPosts;
 using SPMS.Application.Common.Interfaces;
 
@@ -52,8 +53,11 @@ namespace SPMS.BackgroundService
                         .GetRequiredService<IMediator>();
 
                 var result = await mediator.Send(new PublishAllPendingPostsCommand(), _stoppingToken).ConfigureAwait(true);
+                _logger.LogInformation("Published posts: " + result);
+                var intResult = await mediator.Send(new NotifyDiscordCmd(), _stoppingToken);
+                _logger.LogInformation($"{intResult} items posted to Discord.");
             }
-
+             
         }
 
         public Task StopAsync(CancellationToken stoppingToken)

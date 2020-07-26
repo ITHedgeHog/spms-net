@@ -21,5 +21,6 @@ namespace SPMS.Domain.Models
         public string Keywords { get; set; }
         public string RobotsText { get; set; }
         public string Theme { get; set; }
+        public string DiscordWebHook { get; set; }
     }
 }

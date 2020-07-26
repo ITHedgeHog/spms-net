@@ -28,5 +28,6 @@ namespace SPMS.Domain.Models
         public int EpisodeId { get; set; }
         public Episode Episode { get; set; }
         public DateTime? PublishedAt { get; set; }
+        public bool IsPostedToDiscord { get; set; }
     }
 }

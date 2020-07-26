@@ -9,9 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.FeatureManagement;
 using Microsoft.Identity.Web;
-using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Provider;
-using SPMS.Application.Dtos;
 using SPMS.Web.Areas.player.Hubs;
 using SPMS.Web.Infrastructure;
 using SPMS.Web.Infrastructure.Extensions;
@@ -36,6 +34,7 @@ namespace SPMS.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddOptions();
+            services.AddHttpClient();
             SPMS.Infrastructure.DependencyInjection.AddInfrastructure(services, Configuration);
             SPMS.Persistence.MSSQL.DependencyInjection.AddPersistence(services, Configuration);
             SPMS.Application.DependencyInjection.AddApplication(services);

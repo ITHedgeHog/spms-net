@@ -172,11 +172,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\SPMS.Application\SPMS.Application.csproj" />
-    <ProjectReference Include="..\src\SPMS.BackgroundService\SPMS.BackgroundService.csproj" />
-    <ProjectReference Include="..\src\SPMS.Common\SPMS.Common.csproj" />
-    <ProjectReference Include="..\src\SPMS.Infrastructure\SPMS.Infrastructure.csproj" />
-    <ProjectReference Include="..\src\SPMS.Persistence.MSSQL\SPMS.Persistence.MSSQL.csproj" />
+    <ProjectReference Include="..\SPMS.Application\SPMS.Application.csproj" />
+    <ProjectReference Include="..\SPMS.BackgroundService\SPMS.BackgroundService.csproj" />
+    <ProjectReference Include="..\SPMS.Common\SPMS.Common.csproj" />
+    <ProjectReference Include="..\SPMS.Domain\SPMS.Domain.csproj" />
+    <ProjectReference Include="..\SPMS.Infrastructure\SPMS.Infrastructure.csproj" />
+    <ProjectReference Include="..\SPMS.Persistence.MSSQL\SPMS.Persistence.MSSQL.csproj" />
+    <ProjectReference Include="..\SPMS.Persistence\SPMS.Persistence.csproj" />
+    <ProjectReference Include="..\SPMS.ViewModel\SPMS.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>
