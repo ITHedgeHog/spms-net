@@ -15,4 +15,8 @@
     <PackageReference Include="Syncfusion.Blazor" Version="18.2.0.45" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Components\CommonMarkEditor\" />
+  </ItemGroup>
+
 </Project>
