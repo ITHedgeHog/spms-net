@@ -38,5 +38,6 @@ namespace SPMS.Application.Dtos
         public List<ListItemDto> States { get; set; }
         public int TypeId { get; set; }
         public List<ListItemDto> Types { get; set; }
+        public int GameId { get; set; }
     }
 }
