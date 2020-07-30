@@ -12,7 +12,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using SPMS.Admin.Data;
 using SPMS.Application.Common.Interfaces;
-using SPMS.Admin.Infrastructure.Services;
+using SPMS.Application.Common.Provider;
+using SPMS.WebShared.Infrastructure.Extensions;
+using SPMS.WebShared.Infrastructure.Services;
+using CurrentUserService = SPMS.Admin.Infrastructure.Services.CurrentUserService;
 
 namespace SPMS.Admin
 {
@@ -29,6 +32,8 @@ namespace SPMS.Admin
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
+
             services.AddOptions();
             services.AddHttpClient();
             services.AddHttpContextAccessor();
@@ -37,8 +42,16 @@ namespace SPMS.Admin
             SPMS.Application.DependencyInjection.AddApplication(services);
             services.AddScoped<ICurrentUserService, CurrentUserService>();
 
+
+            services.AddSpmsMultiTenancy()
+                .WithResolutionStrategy<TenantResolver>()
+                .WithStore<TenantProvider>();
+
             services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
-                .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+                .AddAzureAD(options => Configuration.Bind("AzureAdB2C", options));
+
+            //var cfg = Configuration.GetSection("AzureAdB2C");
+            //services.Configure<OpenIdConnectOptions>(cfg);
 
 
             //services.AddAuthorization(options =>
@@ -97,6 +110,7 @@ namespace SPMS.Admin
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
+            services.AddApplicationInsightsTelemetry(Configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
