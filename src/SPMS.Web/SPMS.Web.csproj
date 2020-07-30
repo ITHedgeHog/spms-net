@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\img\branding.jpg" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\img\branding.jpg" />
     <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg" />
     <None Remove="tenantfiles\6D769C55-9886-48DF-9454-188D6762A7C3\img\branding.jpg" />
     <None Remove="Themes\Aquarius\wwwroot\img\branding.jpg" />
@@ -102,12 +102,12 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\manifest.json">
+    <Content Update="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\manifest.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\tsconfig.json">
+    <Content Update="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\tsconfig.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -137,7 +137,7 @@
   <ItemGroup>
     <_ContentIncludedByDefault Remove="Areas\admin\Views\Shared\_Layout.cshtml" />
     <_ContentIncludedByDefault Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
-    <_ContentIncludedByDefault Remove="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\js\signalr\package.json" />
+    <_ContentIncludedByDefault Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\js\signalr\package.json" />
   </ItemGroup>
 
   <ItemGroup>
