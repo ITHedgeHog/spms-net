@@ -42,7 +42,10 @@
     <None Remove="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\img\branding.jpg" />
     <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg" />
     <None Remove="tenantfiles\6D769C55-9886-48DF-9454-188D6762A7C3\img\branding.jpg" />
+    <None Remove="Themes\Aquarius\wwwroot\img\branding.jpg" />
+    <None Remove="Themes\BtD\wwwroot\img\branding.jpg" />
     <None Remove="Themes\Default\wwwroot\img\branding.jpg" />
+    <None Remove="Themes\ShadesOfGrey\wwwroot\img\branding.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -88,9 +91,6 @@
     <Folder Include="Areas\player\Models\" />
     <Folder Include="Areas\player\Mapper\" />
     <Folder Include="Areas\player\ViewModels\" />
-    <Folder Include="Themes\BtD\" />
-    <Folder Include="Themes\Aquarius\" />
-    <Folder Include="Themes\ShadesOfGrey\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -161,7 +161,19 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="Themes\Aquarius\wwwroot\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Themes\BtD\wwwroot\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="Themes\Default\wwwroot\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Themes\ShadesOfGrey\wwwroot\img\branding.jpg">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -180,6 +192,7 @@
     <ProjectReference Include="..\SPMS.Persistence.MSSQL\SPMS.Persistence.MSSQL.csproj" />
     <ProjectReference Include="..\SPMS.Persistence\SPMS.Persistence.csproj" />
     <ProjectReference Include="..\SPMS.ViewModel\SPMS.ViewModel.csproj" />
+    <ProjectReference Include="..\SPMS.WebShared\SPMS.WebShared.csproj" />
   </ItemGroup>
 
 </Project>

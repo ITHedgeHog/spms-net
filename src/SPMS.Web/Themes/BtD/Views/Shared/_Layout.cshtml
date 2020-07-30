@@ -1,0 +1,87 @@
+﻿@model SPMS.Common.ViewModels.BaseViewModel
+
+@using Microsoft.Extensions.Configuration
+@using SPMS.Application.Common.Interfaces
+@inject IConfiguration Configuration
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Dan Taylor, Evan Scown and SPMS.Net contributors">
+    <meta name="generator" content="SPMS.Net">
+    <title>@ViewData["Title"] - @Model.SiteTitle</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Material Design Bootstrap -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/css/mdb.min.css" rel="stylesheet">
+    <!-- Site CSS -->
+    <link href="~/css/site.css" rel="stylesheet">
+
+    <!-- Favicons Make the Dream Work -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/tenant/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/tenant/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/tenant/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/tenant/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/tenant/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/tenant/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/tenant/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/tenant/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/tenant/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/tenant/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/tenant/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/tenant/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/tenant/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/tenant/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for @Model.SiteTitle" href="/rss/" />
+
+    @RenderSection("Style", false)
+
+    @if (Model.UseAnalytics)
+    {
+        @Html.Raw(Model.SiteAnalytics)
+    }
+    else
+    {
+        <!-- Analytics Omitted -->
+    }
+</head>
+<body>
+    @{ await Html.RenderPartialAsync("_Menu", Model); }
+    <div class="container">
+        <main role="main" class="pt-3 pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <mini-profiler position="RenderPosition.BottomLeft" />
+    @{ await Html.RenderPartialAsync("_Footer", Model); }
+    <!-- JQuery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Bootstrap tooltips -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!-- MDB core JavaScript -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.19.1/js/mdb.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $("#siteDisclaimer").popover({
+            trigger: 'hover',
+            html: true,
+            placement: 'top',
+            title: 'Website Disclaimer',
+            content: '@Html.Raw(Model.SiteDisclaimer)'
+        });
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

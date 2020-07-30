@@ -12,6 +12,11 @@ using Microsoft.Identity.Web;
 using SPMS.Application.Common.Provider;
 using SPMS.Web.Areas.player.Hubs;
 using SPMS.Web.Policy;
+using SPMS.WebShared.Infrastructure;
+using SPMS.WebShared.Infrastructure.Extensions;
+using SPMS.WebShared.Infrastructure.Filter;
+using SPMS.WebShared.Infrastructure.Services;
+using SPMS.WebShared.Infrastructure.ViewLocationExpander;
 using Westwind.AspNetCore.Markdown;
 
 namespace SPMS.Web

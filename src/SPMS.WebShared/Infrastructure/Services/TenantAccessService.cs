@@ -1,4 +1,9 @@
-﻿namespace SPMS.WebShared.Infrastructure.Services
+﻿using System.Threading;
+using System.Threading.Tasks;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Dtos;
+
+namespace SPMS.WebShared.Infrastructure.Services
 {
     /// <summary>
     /// Tenant access service

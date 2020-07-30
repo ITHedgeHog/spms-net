@@ -26,25 +26,24 @@ namespace SPMS.Web
 
                 var host = CreateHostBuilder(args).Build();
 
-                using (var scope = host.Services.CreateScope())
-                {
-                    var services = scope.ServiceProvider;
-
-                    try
-                    {
-                        var spmsContext = services.GetService<SpmsContext>();
-                        await spmsContext.Database.MigrateAsync();
-                        var mediator = services.GetRequiredService<IMediator>();
-                        await mediator.Send(new BasicDataSeederCommand());
-                    }
-                    catch (Exception ex)
-                    {
-                        var logger = services.GetRequiredService<ILogger<Program>>();
-                        logger.LogError(ex, "An error occurred whilst migrating or initialising the database.");
-                    }
-                } 
-
-                host.Run();
+                // TODO: Run in Admin Portal, clean up here if that sticks
+                // using (var scope = host.Services.CreateScope())
+                // {
+                //    var services = scope.ServiceProvider;
+                //    try
+                //    {
+                //        var spmsContext = services.GetService<SpmsContext>();
+                //        await spmsContext.Database.MigrateAsync();
+                //        var mediator = services.GetRequiredService<IMediator>();
+                //        await mediator.Send(new BasicDataSeederCommand());
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        var logger = services.GetRequiredService<ILogger<Program>>();
+                //        logger.LogError(ex, "An error occurred whilst migrating or initialising the database.");
+                //    }
+                // }
+                await host.RunAsync();
             }
             catch (Exception ex)
             {

@@ -1,4 +1,8 @@
-﻿namespace SPMS.WebShared.Infrastructure.Services
+﻿using System.Linq;
+using Microsoft.AspNetCore.Http;
+using SPMS.Application.Common.Interfaces;
+
+namespace SPMS.WebShared.Infrastructure.Services
 {
     public class CurrentUserService : ICurrentUserService
     {

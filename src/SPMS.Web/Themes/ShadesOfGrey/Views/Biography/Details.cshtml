@@ -1,0 +1,71 @@
+﻿@model SPMS.ViewModel.BiographyViewModel
+
+@{
+    ViewData["Title"] = $"Biography for {Model.Firstname} {Model.Surname}";
+}
+
+    <div class="row">
+        <div class="col">
+            <h1>Biography for @Model.Firstname @Model.Surname</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-9 order-2 order-md-1">
+            <markdown markdown="History" />
+        </div>
+        <div class="col-sm-12 col-md-3 order-1 order-md-2">
+            <div class="card">
+                <img src="~/img/default-avatar.png" alt="@Model.Firstname @Model.Surname Avatar" class="card-img-top bg-dark" />
+                <div class="card-body">
+                    <h4 class="card-title">@Html.DisplayFor(m => m.Firstname)  @Html.DisplayFor(m => m.Surname)</h4>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <strong>Species:</strong>&nbsp;@Html.DisplayFor(m => m.Species)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Homeworld:</strong>&nbsp;@Html.DisplayFor(m => m.Homeworld)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Gender:</strong>&nbsp;@Html.DisplayFor(m => m.Gender)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Born:</strong>&nbsp;@Html.DisplayFor(m => m.Born)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Eyes:</strong>&nbsp;@Html.DisplayFor(m => m.Eyes)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Hair:</strong>&nbsp;@Html.DisplayFor(m => m.Hair)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Height:</strong>&nbsp;@Html.DisplayFor(m => m.Height)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Weight:</strong>&nbsp;@Html.DisplayFor(m => m.Weight)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Affiliation:</strong>&nbsp;@Html.DisplayFor(m => m.Affiliation)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Assignment:</strong>&nbsp;@Html.DisplayFor(m => m.Assignment)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Position:</strong>&nbsp;@Html.DisplayFor(m => m.Assignment)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Rank:</strong>&nbsp;@Html.DisplayFor(m => m.Rank)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Insignia:</strong>&nbsp;@Html.DisplayFor(m => m.RankImage)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Player:</strong>&nbsp;@Html.DisplayFor(m => m.Player)
+                        </li>
+                        <li class="list-group-item">
+                            <strong>State:</strong>&nbsp;@Html.DisplayFor(m => m.Status)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>

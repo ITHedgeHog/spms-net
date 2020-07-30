@@ -47,6 +47,9 @@ namespace SPMS.Persistence.MSSQL.Migrations
                     b.Property<string>("Firstname")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
 
@@ -93,6 +96,8 @@ namespace SPMS.Persistence.MSSQL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GameId");
 
                     b.HasIndex("PlayerId");
 
@@ -598,6 +603,10 @@ namespace SPMS.Persistence.MSSQL.Migrations
 
             modelBuilder.Entity("SPMS.Domain.Models.Biography", b =>
                 {
+                    b.HasOne("SPMS.Domain.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId");
+
                     b.HasOne("SPMS.Domain.Models.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId");

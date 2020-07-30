@@ -1,4 +1,8 @@
-﻿namespace SPMS.WebShared.Infrastructure.Services
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using SPMS.Application.Common.Interfaces;
+
+namespace SPMS.WebShared.Infrastructure.Services
 {
     public class TenantResolver : ITenantResolver
     {

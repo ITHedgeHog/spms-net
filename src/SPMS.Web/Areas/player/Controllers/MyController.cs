@@ -17,6 +17,7 @@ using SPMS.Application.Dtos.Story;
 using SPMS.Application.Services;
 using SPMS.Common;
 using SPMS.Web.Models;
+using SPMS.WebShared.Infrastructure.Extensions;
 
 namespace SPMS.Web.Controllers
 {
@@ -45,12 +46,11 @@ namespace SPMS.Web.Controllers
             var vm = new MyCharactersViewModel
             {
                 IsCreateCharacterEnabled = _userService.IsPlayer(),
-                HasEpisode = _context.Episode.Include(e => e.Status).Any(e => e.Status.Name == StaticValues.Published),
+                HasEpisode = _context.Episode.Include(e => e.Status).Include(e => e.Series)
+                    .Any(e => e.Status.Name == StaticValues.Published && e.Series.GameId == HttpContext.GetTenant().Id),
             };
-
-
             var owner = _userService.GetAuthId();
-            var bios = _context.Biography.Include(b => b.Player).Where(x => x.Player.AuthString == owner);
+            var bios = _context.Biography.Include(b => b.Player).Where(x => x.Player.AuthString == owner && x.GameId.HasValue && x.GameId.Value == HttpContext.GetTenant().Id);
             foreach (var bio in bios)
             {
                 vm.Characters.Add(bio.Id, bio.Firstname + " " + bio.Surname);

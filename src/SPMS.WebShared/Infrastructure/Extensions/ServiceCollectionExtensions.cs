@@ -1,4 +1,7 @@
-﻿namespace SPMS.WebShared.Infrastructure.Extensions
+﻿using Microsoft.Extensions.DependencyInjection;
+using SPMS.Application.Dtos;
+
+namespace SPMS.WebShared.Infrastructure.Extensions
 {
     /// <summary>
     /// ServiceCollectionExtensions.

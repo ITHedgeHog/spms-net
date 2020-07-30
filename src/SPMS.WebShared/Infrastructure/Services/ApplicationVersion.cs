@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using SPMS.Application.Common.Interfaces;
 
 namespace SPMS.WebShared.Infrastructure.Services
 {
