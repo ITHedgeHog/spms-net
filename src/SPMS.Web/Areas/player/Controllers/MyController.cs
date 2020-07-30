@@ -19,6 +19,7 @@ using SPMS.Common;
 using SPMS.Web.Models;
 using SPMS.WebShared.Infrastructure.Extensions;
 
+
 namespace SPMS.Web.Controllers
 {
     [Authorize(Policy = "Player")]
@@ -51,6 +52,7 @@ namespace SPMS.Web.Controllers
             };
             var owner = _userService.GetAuthId();
             var bios = _context.Biography.Include(b => b.Player).Where(x => x.Player.AuthString == owner && x.GameId.HasValue && x.GameId.Value == HttpContext.GetTenant().Id);
+
             foreach (var bio in bios)
             {
                 vm.Characters.Add(bio.Id, bio.Firstname + " " + bio.Surname);

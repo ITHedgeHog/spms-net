@@ -13,6 +13,7 @@ using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Story.Query;
 using SPMS.WebShared.Infrastructure.Extensions;
 
+
 namespace SPMS.Web.Controllers
 {
     public class SyndicationController : Controller

@@ -157,6 +157,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+
     <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\img\branding.jpg">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -177,6 +178,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+
   </ItemGroup>
 
   <ItemGroup>
@@ -193,6 +195,7 @@
     <ProjectReference Include="..\SPMS.Persistence\SPMS.Persistence.csproj" />
     <ProjectReference Include="..\SPMS.ViewModel\SPMS.ViewModel.csproj" />
     <ProjectReference Include="..\SPMS.WebShared\SPMS.WebShared.csproj" />
+
   </ItemGroup>
 
 </Project>

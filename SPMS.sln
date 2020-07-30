@@ -30,11 +30,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.BackgroundService", "src\SPMS.BackgroundService\SPMS.BackgroundService.csproj", "{AE6F0E64-6259-4130-A04F-513746AC8333}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.Admin", "src\SPMS.Admin\SPMS.Admin.csproj", "{71350B34-66A5-4420-9C4D-6F26158F1FB0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SPMS.WebShared", "src\SPMS.WebShared\SPMS.WebShared.csproj", "{A187BA54-2EEB-46BA-B442-AB19B25814C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SPMS.BackgroundService", "src\SPMS.BackgroundService\SPMS.BackgroundService.csproj", "{AE6F0E64-6259-4130-A04F-513746AC8333}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
