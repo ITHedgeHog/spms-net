@@ -1,13 +1,9 @@
-﻿using System;
-using System.IO;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Routing;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.FileProviders;
 using SPMS.Application.Dtos;
-using SPMS.Web.Infrastructure.Middlware;
+using SPMS.WebShared.Infrastructure.Middlware;
 
-namespace SPMS.Web.Infrastructure.Extensions
+namespace SPMS.WebShared.Infrastructure.Extensions
 {
     /// <summary>
     /// Nice method to register our middleware

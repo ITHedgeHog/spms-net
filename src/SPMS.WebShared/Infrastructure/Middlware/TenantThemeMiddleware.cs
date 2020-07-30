@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Hosting;
-using SPMS.Application.Dtos;
-using SPMS.Web.Infrastructure.Extensions;
+﻿using SPMS.WebShared.Infrastructure.Extensions;
 
-namespace SPMS.Web.Infrastructure.Middlware
+namespace SPMS.WebShared.Infrastructure.Middlware
 {
     public class TenantFilesMiddleware
     {
@@ -26,7 +16,7 @@ namespace SPMS.Web.Infrastructure.Middlware
         public async Task Invoke(HttpContext context)
         {
             
-            var tenantContext = context.GetTenant();
+            var tenantContext = HttpContextExtensions.GetTenant(context);
 
             if (tenantContext != null)
             {
@@ -40,7 +30,7 @@ namespace SPMS.Web.Infrastructure.Middlware
                     paths.RemoveAt(0);
                     paths.RemoveAt(0);
                 }
-                var filePath = string.Join('/', paths);
+                var filePath = string.Join<string>('/', paths);
                 var newPath = new PathString($"/tenantfiles/{tenantFolder}/{filePath}");
 
                 context.Request.Path = newPath;
@@ -67,7 +57,7 @@ namespace SPMS.Web.Infrastructure.Middlware
 
         public async Task Invoke(HttpContext context)
         {
-            var tenantContext = context.GetTenant();
+            var tenantContext = HttpContextExtensions.GetTenant(context);
 
             if (tenantContext != null)
             {
@@ -81,7 +71,7 @@ namespace SPMS.Web.Infrastructure.Middlware
                     paths.RemoveAt(0);
                     paths.RemoveAt(0);
                 }
-                var filePath = string.Join('/', paths);
+                var filePath = string.Join<string>('/', paths);
                 var newPath = new PathString($"/tenanttheme/{tenantFolder}/wwwroot/{filePath}");
 
                 context.Request.Path = newPath;

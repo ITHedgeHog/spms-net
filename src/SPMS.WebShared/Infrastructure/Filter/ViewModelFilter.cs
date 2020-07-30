@@ -1,13 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
-using SPMS.Application.Common.Interfaces;
-using SPMS.Application.System.Query;
-
-namespace SPMS.Web.Infrastructure.Filter
+﻿namespace SPMS.WebShared.Infrastructure.Filter
 {
     public class ViewModelFilter : ActionFilterAttribute
     {

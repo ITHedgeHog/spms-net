@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
-using SPMS.Application.Common.Interfaces;
 
-namespace SPMS.Web.Infrastructure.Services
+namespace SPMS.WebShared.Infrastructure.Services
 {
     public class ApplicationVersion : IApplicationVersion
     {

@@ -2,7 +2,7 @@
 using SPMS.Application.Dtos;
 using SPMS.Common;
 
-namespace SPMS.Web.Infrastructure.Extensions
+namespace SPMS.WebShared.Infrastructure.Extensions
 {
     /// <summary>
     /// Extensions to HttpContext to make multi-tenancy easier to use

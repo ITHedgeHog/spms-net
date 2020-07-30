@@ -1,11 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
-using System.Text;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-
-namespace SPMS.Web.Infrastructure.TagHelper
+﻿namespace SPMS.WebShared.Infrastructure.TagHelper
 {
     [HtmlTargetElement("img", Attributes = "gravatar-email")]
     public class GravatarTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper

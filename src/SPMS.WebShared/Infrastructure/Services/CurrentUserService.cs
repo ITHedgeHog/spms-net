@@ -1,8 +1,4 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Http;
-using SPMS.Application.Common.Interfaces;
-
-namespace SPMS.Web.Infrastructure.Services
+﻿namespace SPMS.WebShared.Infrastructure.Services
 {
     public class CurrentUserService : ICurrentUserService
     {
@@ -50,7 +46,7 @@ namespace SPMS.Web.Infrastructure.Services
 
         public bool IsNew()
         {
-            return bool.TryParse(_httpContext.User.Claims.FirstOrDefault(x => x.Type == "newUser")?.Value, out var isNewClaim) && isNewClaim;
+            return bool.TryParse((string?) _httpContext.User.Claims.FirstOrDefault(x => x.Type == "newUser")?.Value, out var isNewClaim) && isNewClaim;
         }
 
         public string GetFirstname()

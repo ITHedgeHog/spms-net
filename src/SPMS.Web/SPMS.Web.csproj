@@ -149,7 +149,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="tenantfiles\6A687182-5E68-41BB-B034-A46454074C90\img\branding.jpg">
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\img\branding.jpg">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
@@ -157,7 +157,7 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Include="tenantfiles\6D769C55-9886-48DF-9454-188D6762A7C3\img\branding.jpg">
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\img\branding.jpg">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>

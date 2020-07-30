@@ -1,13 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Routing;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 
-namespace SPMS.Web.Infrastructure
+namespace SPMS.WebShared.Infrastructure
 {
     public class RouteTranslator : DynamicRouteValueTransformer
     {
@@ -25,7 +18,7 @@ namespace SPMS.Web.Infrastructure
 
             List<string> match = ((WhiteList[])Enum.GetValues(typeof(WhiteList))).Select(x => x.ToString())
                                                                                  .ToList();
-            if (match.Any(x => x.ToLower() == slug.ToLower()))
+            if (Enumerable.Any<string>(match, x => x.ToLower() == slug.ToLower()))
             {
                 var i = 1;
                 values["controller"] = slug;

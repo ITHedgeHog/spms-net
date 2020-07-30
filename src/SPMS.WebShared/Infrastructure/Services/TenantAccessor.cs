@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using SPMS.Application.Common.Interfaces;
-using SPMS.Application.Dtos;
-using SPMS.Web.Infrastructure.Extensions;
+﻿using SPMS.WebShared.Infrastructure.Extensions;
 
-namespace SPMS.Web.Infrastructure.Services
+namespace SPMS.WebShared.Infrastructure.Services
 {
     public class TenantAccessor<T> : ITenantAccessor<T> where T : TenantDto
     {
@@ -14,6 +11,6 @@ namespace SPMS.Web.Infrastructure.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public T Instance => _httpContextAccessor.HttpContext.GetTenant<T>();
+        public T Instance => HttpContextExtensions.GetTenant<T>(_httpContextAccessor.HttpContext);
     }
 }

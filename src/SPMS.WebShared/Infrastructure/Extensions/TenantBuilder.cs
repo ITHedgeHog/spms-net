@@ -1,10 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using SPMS.Application.Common.Interfaces;
-using SPMS.Application.Dtos;
-using SPMS.BackgroundService;
-using SPMS.Web.Infrastructure.Services;
+﻿using SPMS.WebShared.Infrastructure.Services;
 
-namespace SPMS.Web.Infrastructure.Extensions
+namespace SPMS.WebShared.Infrastructure.Extensions
 {
     /// <summary>
     /// Tenant Builder.

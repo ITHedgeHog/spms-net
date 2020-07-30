@@ -1,10 +1,6 @@
-﻿using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using SPMS.Application.Dtos;
-using SPMS.Common;
-using SPMS.Web.Infrastructure.Services;
+﻿using SPMS.WebShared.Infrastructure.Services;
 
-namespace SPMS.Web.Infrastructure.Middlware
+namespace SPMS.WebShared.Infrastructure.Middlware
 {
     internal class TenantMiddleware<T> where T : TenantDto
     {
