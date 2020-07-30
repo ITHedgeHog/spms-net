@@ -48,5 +48,6 @@ namespace SPMS.Application.Dtos
         [Display(Name="State")]
         public int StateId { get; set; }
         public List<SelectListItem> States { get; set; }
+        public int GameId { get; set; }
     }
 }
