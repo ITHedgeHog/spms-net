@@ -192,7 +192,8 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.State, opt => opt.MapFrom(y => y.State.Name))
                 .ForMember(x => x.Player, opt => opt.MapFrom(y => y.Player.DisplayName))
                 .ForMember(x => x.Posting, opt => opt.MapFrom(y => y.Posting.Name))
-                .ForMember(x => x.Status, o => o.MapFrom(y => y.Status.Name));
+                .ForMember(x => x.Status, o => o.MapFrom(y => y.Status.Name))
+                .ForMember(x => x.Type, o => o.MapFrom(y => y.Type.Name));
 
         }
 

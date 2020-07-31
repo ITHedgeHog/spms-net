@@ -33,6 +33,7 @@ namespace SPMS.Application.Dtos
         public string Player { get; set; }
         public string History { get; set; }
         public int TypeId { get; set; }
+        public string Type { get; set; }
         
     }
 }

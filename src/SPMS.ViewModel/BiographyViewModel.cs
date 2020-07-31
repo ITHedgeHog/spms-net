@@ -33,5 +33,7 @@
         public int PlayerId { get; set; }
         public string Player { get; set; }
         public string History { get; set; }
+        public string Type { get; set; }
+        public int TypeId { get; set; }
     }
 }
