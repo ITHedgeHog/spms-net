@@ -14,12 +14,22 @@ RUN apt-get update -yq \
     && curl -sL https://deb.nodesource.com/setup_10.x | bash \
     && apt-get install nodejs -yq
 
-COPY ["src/SPMS.Web/SPMS.Web.csproj", "SPMS.Web/"]
-RUN dotnet restore "SPMS.Web/SPMS.Web.csproj"
+COPY ["src/SPMS.Web/SPMS.Web.csproj", "src/SPMS.Web/"]
+COPY ["src/SPMS.WebShared/SPMS.WebShared.csproj", "src/SPMS.WebShared/"]
+COPY ["src/SPMS.BackgroundService/SPMS.BackgroundService.csproj", "src/SPMS.BackgroundService/"]
+COPY ["src/SPMS.Application/SPMS.Application.csproj", "src/SPMS.Application/"]
+COPY ["src/SPMS.Common/SPMS.Common.csproj", "src/SPMS.Common/"]
+COPY ["src/SPMS.ViewModel/SPMS.ViewModel.csproj", "src/SPMS.ViewModel/"]
+COPY ["src/SPMS.Domain/SPMS.Domain.csproj", "src/SPMS.Domain/"]
+COPY ["src/SPMS.Persistence.MSSQL/SPMS.Persistence.MSSQL.csproj", "src/SPMS.Persistence.MSSQL/"]
+COPY ["src/SPMS.Persistence/SPMS.Persistence.csproj", "src/SPMS.Persistence/"]
+COPY ["src/SPMS.Infrastructure/SPMS.Infrastructure.csproj", "src/SPMS.Infrastructure/"]
+RUN dotnet restore "src/SPMS.Web/SPMS.Web.csproj"
 COPY . .
-WORKDIR "/src/SPMS.Web"
+WORKDIR "/src/src/SPMS.Web"
 RUN npm install
 RUN dotnet build "SPMS.Web.csproj" -c Release -o /app/build
+RUN dotnet test
 
 FROM build AS publish
 RUN dotnet publish "SPMS.Web.csproj" -c Release -o /app/publish
