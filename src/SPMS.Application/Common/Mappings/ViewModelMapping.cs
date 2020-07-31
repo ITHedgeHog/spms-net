@@ -2,8 +2,12 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SPMS.Application.Character.Command;
+using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Common.Resolvers;
 using SPMS.Application.Dtos;
+using SPMS.Application.Dtos.Authoring;
 using SPMS.Application.Dtos.Common;
+using SPMS.Application.Dtos.Player;
 using SPMS.Application.Dtos.Story;
 using SPMS.Application.Services;
 using SPMS.Domain.Models;
@@ -11,6 +15,7 @@ using SPMS.ViewModel;
 using SPMS.ViewModel.character;
 using SPMS.ViewModel.Common;
 using SPMS.ViewModel.Story;
+using NotImplementedException = System.NotImplementedException;
 
 namespace SPMS.Application.Common.Mappings
 {
@@ -18,7 +23,10 @@ namespace SPMS.Application.Common.Mappings
     {
         public ViewModelMapping()
         {
-            CreateMap<TenantDto, SPMS.Common.ViewModels.ViewModel>();
+
+            WritingPortalMappings();
+
+            CreateMap<TenantDto, SPMS.Common.ViewModels.BaseViewModel>();
 
             CreateMap<ListItemDto, SelectListItem>()
                 .ForMember(x => x.Group, o => o.Ignore())
@@ -91,51 +99,26 @@ namespace SPMS.Application.Common.Mappings
                 .ForMember(x => x.Episode, o => o.Ignore())
                 .ForMember(x=>x.PostedBy, o =>o.Ignore());
         }
-    }
 
-
-    public class DtoIdHiderResolver : IValueResolver<DtoWithId, ViewModelWithId, string>
-    {
-        private readonly IIdentifierMask _masker;
-
-        public DtoIdHiderResolver(IIdentifierMask masker)
+        private void WritingPortalMappings()
         {
-            _masker = masker;
-        }
-
-        public string Resolve(DtoWithId source, ViewModelWithId destination, string destMember, ResolutionContext context)
-        {
-            return _masker.HideId(source.Id);
-        }
-    }
-
-    public class IdHiderResolver : IValueResolver<StoryPostDto, StoryPostViewModel, string>
-    {
-        private readonly IIdentifierMask _masker;
-
-        public IdHiderResolver(IIdentifierMask masker)
-        {
-            _masker = masker;
-        }
-
-        public string Resolve(StoryPostDto source, StoryPostViewModel destination, string destMember, ResolutionContext context)
-        {
-            return _masker.HideId(source.Id);
+            CreateMap<AuthorDto, AuthorViewModel>();
+            CreateMap<PostDto, PostViewModel>();
+            CreateMap<WritingPortalDto, MyWritingViewModel>()
+                .ForMember(x => x.gravatar, o => o.Ignore())
+                .ForMember(x => x.IsReadOnly, o => o.Ignore())
+                .ForMember(x => x.SiteAnalytics, o => o.Ignore())
+                .ForMember(x => x.SiteDisclaimer, o => o.Ignore())
+                .ForMember(x => x.SiteTitle, o => o.Ignore())
+                .ForMember(x => x.UseAnalytics, o => o.Ignore())
+                .ForMember(x => x.IsPlayer, o => o.Ignore())
+                .ForMember(x => x.IsAdmin, o => o.Ignore())
+                .ForMember(x => x.CommitSha, o => o.Ignore())
+                .ForMember(x => x.CommitShaLink, o => o.Ignore())
+                .ForMember(x => x.GameName, o => o.Ignore());
         }
     }
 
-    public class IdRevealerResolver : IValueResolver<StoryPostViewModel, StoryPostDto, int>
-    {
-        private readonly IIdentifierMask _masker;
 
-        public IdRevealerResolver(IIdentifierMask masker)
-        {
-            _masker = masker;
-        }
-
-        public int Resolve(StoryPostViewModel source,  StoryPostDto destination, int destMember, ResolutionContext context)
-        {
-            return _masker.RevealId(source.Id);
-        }
-    }
+    
 }

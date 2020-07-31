@@ -1,0 +1,17 @@
+﻿@using SPMS.Application.Common.Interfaces
+@model SPMS.Common.ViewModels.BaseViewModel
+
+@inject ICurrentUserService usr
+@inject IApplicationVersion ApplicationVersion
+<div class="navbar fixed-bottom navbar-dark primary-color">
+    <div class="mr-auto ml-auto text-white-50">
+        &copy;&nbsp;2020 Beyond the Darkness RPG&nbsp;
+        <a href="https://github.com/ITHedgeHog/spms-net" target="_blank" class="text-white">Powered by <i>SPMS.Net</i>&nbsp;&middot;&nbsp;@ApplicationVersion.Version</a>
+        &nbsp;&middot;&nbsp;<a asp-area="" asp-controller="Home" asp-action="Privacy" id="siteDisclaimer" class="text-white">Privacy & Disclaimer</a>
+        &nbsp;&middot;&nbsp;<a asp-area="" asp-controller="Rules" asp-action="Index" class="text-white">Rules</a>
+        @if (User.IsInRole("player"))
+        {
+            <text>&nsbp;[<a asp-area="" asp-controller="Debug" asp-action="Index" class="text-white"> Debug </a>] </text>
+        }
+    </div>
+</div>

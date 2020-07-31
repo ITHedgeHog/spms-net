@@ -6,7 +6,7 @@ using SPMS.ViewModel.Story;
 
 namespace SPMS.Application.Dtos.Story
 {
-    public class StoryOverviewDto : SPMS.Common.ViewModels.ViewModel
+    public class StoryOverviewDto : SPMS.Common.ViewModels.BaseViewModel
     {
         public StoryOverviewDto()
         {

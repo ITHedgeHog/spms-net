@@ -3,6 +3,7 @@
     public enum FeatureFlags
     {
         Beta,
-        Registry
+        Registry,
+        NewWritingPortal
     }
 }

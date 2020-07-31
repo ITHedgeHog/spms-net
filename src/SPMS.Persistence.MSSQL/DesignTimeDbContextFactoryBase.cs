@@ -15,7 +15,7 @@ namespace SPMS.Persistence.MSSQL
         public TContext CreateDbContext(string[] args)
         {
             Console.WriteLine(Directory.GetCurrentDirectory());
-            var basePath = Directory.GetCurrentDirectory() + string.Format("{0}..{0}..{0}SPMS.Web", Path.DirectorySeparatorChar);
+            var basePath = Directory.GetCurrentDirectory() + string.Format("{0}..{0}SPMS.Web", Path.DirectorySeparatorChar);
             Console.WriteLine(basePath);
             return Create(basePath, Environment.GetEnvironmentVariable(AspNetCoreEnvironment));
         }

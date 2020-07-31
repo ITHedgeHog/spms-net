@@ -13,6 +13,9 @@
         public static string BioStatusAlive => "Alive";
         public static string BioStatusDeceased => "Deceased";
         public static string BioStatusMia => "MIA";
+        public static string HttpContextTenantKey => "TenantContext";
+        public static string ThemeKey => "Theme";
+        public static string ThemeTenantKey => "ThemeTenant";
 
         public const string BioTypePlayer = "Player Character";
         public const string BioTypeNpc = "Non-Player Character";

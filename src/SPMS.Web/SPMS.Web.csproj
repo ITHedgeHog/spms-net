@@ -1,0 +1,202 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
+    <UserSecretsId>ccee7d01-251a-4075-a581-39f4fcb537ff</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
+    <ApplicationInsightsResourceId>/subscriptions/54f6fb53-339f-4634-b1d2-b3867940d3a7/resourceGroups/SPMS/providers/microsoft.insights/components/SPMS</ApplicationInsightsResourceId>
+    <AssemblyName>SPMS.Web</AssemblyName>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Extensions\**" />
+    <Compile Remove="Services\**" />
+    <Compile Remove="ViewLocationExpander\**" />
+    <Compile Remove="ViewModel\**" />
+    <Content Remove="Extensions\**" />
+    <Content Remove="Services\**" />
+    <Content Remove="ViewLocationExpander\**" />
+    <Content Remove="ViewModel\**" />
+    <EmbeddedResource Remove="Extensions\**" />
+    <EmbeddedResource Remove="Services\**" />
+    <EmbeddedResource Remove="ViewLocationExpander\**" />
+    <EmbeddedResource Remove="ViewModel\**" />
+    <None Remove="Extensions\**" />
+    <None Remove="Services\**" />
+    <None Remove="ViewLocationExpander\**" />
+    <None Remove="ViewModel\**" />
+    <TypeScriptCompile Remove="Extensions\**" />
+    <TypeScriptCompile Remove="node_modules\**" />
+    <TypeScriptCompile Remove="Services\**" />
+    <TypeScriptCompile Remove="ViewLocationExpander\**" />
+    <TypeScriptCompile Remove="ViewModel\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\img\branding.jpg" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg" />
+    <None Remove="tenantfiles\6D769C55-9886-48DF-9454-188D6762A7C3\img\branding.jpg" />
+    <None Remove="Themes\Aquarius\wwwroot\img\branding.jpg" />
+    <None Remove="Themes\BtD\wwwroot\img\branding.jpg" />
+    <None Remove="Themes\Default\wwwroot\img\branding.jpg" />
+    <None Remove="Themes\ShadesOfGrey\wwwroot\img\branding.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Automapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="GitVersionTask" Version="5.3.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+<PackageReference Include="MessagePack" Version="1.9.11" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.14.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Protocols.MessagePack" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="3.0.2" />
+    <PackageReference Include="Microsoft.Azure.SignalR" Version="1.5.0" />
+    <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="0.1.5-preview" />
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.9.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.3" />
+    <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.1" />
+    <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.2.1" />
+    <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="System.ServiceModel.Syndication" Version="4.7.0" />
+    <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.3.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Areas\admin\Data\" />
+    <Folder Include="Areas\admin\Models\" />
+    <Folder Include="Areas\admin\ViewModels\" />
+    <Folder Include="Areas\player\Data\" />
+    <Folder Include="Areas\player\Models\" />
+    <Folder Include="Areas\player\Mapper\" />
+    <Folder Include="Areas\player\ViewModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Areas\admin\Views\_ViewImports.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="Areas\admin\Views\_ViewStart.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\tsconfig.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <TypeScriptTarget>ES2015</TypeScriptTarget>
+    <TypeScriptJSXEmit>React</TypeScriptJSXEmit>
+    <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptSourceMap>True</TypeScriptSourceMap>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\admin\Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Areas\admin\Views\Shared\_Layout.cshtml" />
+    <_ContentIncludedByDefault Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
+    <_ContentIncludedByDefault Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\js\signalr\package.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="stylecop.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Themes\Aquarius\wwwroot\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Themes\BtD\wwwroot\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Themes\Default\wwwroot\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Themes\ShadesOfGrey\wwwroot\img\branding.jpg">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SPMS.Application\SPMS.Application.csproj" />
+    <ProjectReference Include="..\SPMS.BackgroundService\SPMS.BackgroundService.csproj" />
+    <ProjectReference Include="..\SPMS.Common\SPMS.Common.csproj" />
+    <ProjectReference Include="..\SPMS.Domain\SPMS.Domain.csproj" />
+    <ProjectReference Include="..\SPMS.Infrastructure\SPMS.Infrastructure.csproj" />
+    <ProjectReference Include="..\SPMS.Persistence.MSSQL\SPMS.Persistence.MSSQL.csproj" />
+    <ProjectReference Include="..\SPMS.Persistence\SPMS.Persistence.csproj" />
+    <ProjectReference Include="..\SPMS.ViewModel\SPMS.ViewModel.csproj" />
+    <ProjectReference Include="..\SPMS.WebShared\SPMS.WebShared.csproj" />
+
+  </ItemGroup>
+
+</Project>

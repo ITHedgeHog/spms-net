@@ -14,10 +14,10 @@ using SPMS.Application.Dtos;
 using SPMS.Application.Dtos.Admin;
 using SPMS.Application.Services;
 using SPMS.Application.Tests.Character.Query;
+using SPMS.Application.Tests.Common;
 using SPMS.Domain.Models;
 using SPMS.Persistence.MSSQL;
 using Xunit;
-using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 
 namespace SPMS.Application.Tests.Admin.Query
 {
@@ -37,10 +37,16 @@ namespace SPMS.Application.Tests.Admin.Query
         [Fact]
         public async void GetSeoStatusQueryTest()
         {
-            var mockHost = new Mock<IHostProvider>();
-            mockHost.Setup(x => x.GetHost()).Returns("localhost");
+            var accessor = new Mock<ITenantAccessor<TenantDto>>();
+            accessor.Setup(x => x.Instance).Returns(new TenantDto()
+            {
+                Id = 1,
+                SiteTitle = "Test Site",
+                Author = "Dan Taylor & Evan Scown",
+                IsSpiderable = true
+            });
             var request = new SeoQuery() { Url = "localhost" };
-            var sut = new SeoQuery.SeoQueryHandler(_context,_mapper, new TenantProvider(_context, mockHost.Object));
+            var sut = new SeoQuery.SeoQueryHandler(_context,_mapper,accessor.Object);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -62,7 +68,7 @@ namespace SPMS.Application.Tests.Admin.Query
 
         public SeoQueryFixture()
         {
-            Context = SpmsContextFactory.Create();
+            Context = TestSpmsContextFactory.Create();
 
             var mock = new Mock<IHttpContextAccessor>();
             var context = new DefaultHttpContext();

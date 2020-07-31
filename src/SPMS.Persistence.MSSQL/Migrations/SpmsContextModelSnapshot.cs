@@ -15,7 +15,7 @@ namespace SPMS.Persistence.MSSQL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.5")
+                .HasAnnotation("ProductVersion", "3.1.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -46,6 +46,9 @@ namespace SPMS.Persistence.MSSQL.Migrations
 
                     b.Property<string>("Firstname")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("GameId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Gender")
                         .HasColumnType("nvarchar(max)");
@@ -93,6 +96,8 @@ namespace SPMS.Persistence.MSSQL.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GameId");
 
                     b.HasIndex("PlayerId");
 
@@ -247,6 +252,11 @@ namespace SPMS.Persistence.MSSQL.Migrations
                     b.Property<int>("EpisodeId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsPostedToDiscord")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
@@ -371,6 +381,9 @@ namespace SPMS.Persistence.MSSQL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DiscordWebHook")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("GameKey")
                         .HasColumnType("varbinary(max)");
 
@@ -404,6 +417,12 @@ namespace SPMS.Persistence.MSSQL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Theme")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Default");
+
                     b.Property<Guid>("Uuid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier")
@@ -426,6 +445,11 @@ namespace SPMS.Persistence.MSSQL.Migrations
 
                     b.Property<int>("GameId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsPrimary")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Url")
                         .HasColumnType("nvarchar(max)");
@@ -579,6 +603,10 @@ namespace SPMS.Persistence.MSSQL.Migrations
 
             modelBuilder.Entity("SPMS.Domain.Models.Biography", b =>
                 {
+                    b.HasOne("SPMS.Domain.Models.Game", "Game")
+                        .WithMany()
+                        .HasForeignKey("GameId");
+
                     b.HasOne("SPMS.Domain.Models.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId");

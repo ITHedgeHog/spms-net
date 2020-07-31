@@ -4,51 +4,54 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.ApplicationInsights.WindowsServer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using SPMS.Application.Common.Interfaces;
+using SPMS.Application.Dtos;
 using SPMS.Common;
 using SPMS.Domain.Models;
 
 namespace SPMS.Application.Common.Provider
 {
-    public class TenantProvider : ITenantProvider
+    public class TenantProvider : ITenantProvider<TenantDto>
     {
         private readonly ISpmsContext _db;
-        private readonly string _url;
-        private Game _game;
+        private readonly IMapper _mapper;
+        private TenantDto _tenant;
 
-        public TenantProvider(ISpmsContext db, IHostProvider host)
+        public TenantProvider(ISpmsContext db, IMapper mapper)
         {
             _db = db;
-            _url = host.GetHost();
+            _mapper = mapper;
 
         }
 
-        public async Task<Game> GetTenantAsync(CancellationToken cancellationToken)
+        public async Task<TenantDto> GetTenantAsync(string url, CancellationToken cancellationToken)
         {
-            if (_game == null)
-            {
-                _game = await _db.Game.Include(gd => gd.Url).Where(x => x.Url.Any(y => y.Url == _url))
-                            .FirstOrDefaultAsync(cancellationToken: cancellationToken) ??
-                       await  _db.Game.Include(g => g.Url).FirstAsync(gm => gm.Name == StaticValues.TestGame,
-                            cancellationToken: cancellationToken);
-            }
-            return _game;
+            return _tenant ??= await _db.Game.Include(gd => gd.Url).Where(x => x.Url.Any(y => y.Url == url))
+                                   .ProjectTo<TenantDto>(_mapper.ConfigurationProvider)
+                                   .FirstOrDefaultAsync(cancellationToken: cancellationToken) ??
+                               await _db.Game.Include(g => g.Url)
+                                   .Where(gm => gm.Name == StaticValues.TestGame)
+                                   .ProjectTo<TenantDto>(_mapper.ConfigurationProvider)
+                                   .FirstOrDefaultAsync(cancellationToken);
         }
 
+        //TODO Make this extension method off of HttpContext
         public async Task<string> ProtectIdAsync(int id, CancellationToken cancellationToken)
         {
-            if(_game == null)
-                await GetTenantAsync(cancellationToken);
+            if(_tenant == null)
+                await GetTenantAsync(string.Empty, cancellationToken);
             return HideIdentifier(id.ToString());
         }
 
         public async Task<int> UnprotectAsync(string identifier, CancellationToken cancellationToken)
         {
-            if (_game == null)
-                await GetTenantAsync(cancellationToken);
+            if (_tenant == null)
+                await GetTenantAsync(string.Empty, cancellationToken);
             return int.Parse(RevealIdentifier(identifier));
         }
 
@@ -57,14 +60,14 @@ namespace SPMS.Application.Common.Provider
             Span<byte> data = SimpleBase.Base58.Bitcoin.Decode(hidden);
             byte[] nonce = data.Slice(0, 12).ToArray();
             byte[] encrypted = data.Slice(12).ToArray();
-            byte[] plain = Sodium.SecretAeadAes.Decrypt(encrypted, nonce, _game.GameKey);
+            byte[] plain = Sodium.SecretAeadAes.Decrypt(encrypted, nonce, _tenant.GameKey);
             return Encoding.UTF8.GetString(plain);
 
         }
         public string HideIdentifier(string id)
         {
             byte[] nonce = Sodium.SecretAeadAes.GenerateNonce();
-            byte[] encrypted = Sodium.SecretAeadAes.Encrypt(Encoding.UTF8.GetBytes(id), nonce, _game.GameKey);
+            byte[] encrypted = Sodium.SecretAeadAes.Encrypt(Encoding.UTF8.GetBytes(id), nonce, _tenant.GameKey);
 
             return SimpleBase.Base58.Bitcoin.Encode(nonce.Concat(encrypted).ToArray());
         }

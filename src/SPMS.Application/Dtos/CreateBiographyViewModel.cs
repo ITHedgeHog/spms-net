@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace SPMS.Application.Dtos
 {
-    public class CreateBiographyViewModel : SPMS.Common.ViewModels.ViewModel
+    public class CreateBiographyViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         public CreateBiographyViewModel()
         {
@@ -48,5 +48,6 @@ namespace SPMS.Application.Dtos
         [Display(Name="State")]
         public int StateId { get; set; }
         public List<SelectListItem> States { get; set; }
+        public int GameId { get; set; }
     }
 }

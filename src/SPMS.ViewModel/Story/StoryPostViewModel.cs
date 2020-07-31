@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SPMS.ViewModel.Story
 {
-    public class StoryPostViewModel : SPMS.Common.ViewModels.ViewModel
+    public class StoryPostViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         public string Id { get; set; }
         public string Title { get; set; }

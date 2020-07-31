@@ -26,7 +26,7 @@ services:
     image: ${DOCKER_REGISTRY-}spmsweb
     build:
       context: .
-      dockerfile: SPMS.Web/Dockerfile
+      dockerfile: src/SPMS.Web/Dockerfile
     # depends_on:
     #  - sql
     #  - redis_db

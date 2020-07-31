@@ -5,7 +5,7 @@ using SPMS.ViewModel.Common;
 
 namespace SPMS.ViewModel.character
 {
-    public class EditCharacterViewModel : SPMS.Common.ViewModels.ViewModel
+    public class EditCharacterViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
         public int Id { get; set; }
         public string Firstname { get; set; }

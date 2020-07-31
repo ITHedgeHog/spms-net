@@ -1,0 +1,70 @@
+﻿@model SPMS.Common.ViewModels.BaseViewModel
+
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Dan Taylor, Evan Scown and SPMS.Net contributors">
+    <meta name="generator" content="SPMS.Net">
+    <title>@ViewData["Title"] - Admin Portal @Model.SiteTitle</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @@media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    <link href="~/player/css/dashboard.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/6bb2ef40e5.js" crossorigin="anonymous"></script>
+
+
+    @{ await RenderSectionAsync("Style", false); }
+</head>
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" asp-area="player" asp-controller="PlayerDashboard" asp-action="Index">Player Portal</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <input class="form-control form-control-dark w-100 disabled" type="text" placeholder="Search" aria-label="Search" disabled="disabled">
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Back to site</a>
+            </li>
+        </ul>
+        <i class="fas fa-window-close"></i>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            
+            @{ await Html.RenderPartialAsync("_Nav"); }
+
+            @RenderBody();
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
+    <script src="~/player/js/dashboard.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

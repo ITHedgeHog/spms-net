@@ -340,10 +340,10 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
-/SPMS.Web/appsettings.Production.json
-/SPMS.Web/appsettings.Development.json
-/SPMS.Web/appsettings.Production1.json
+**/appsettings.Production.json
+**/appsettings.Development.json
+**/appsettings.Production1.json
 /docker-compose.override.yml
 /.vscode
-/SPMS.Web/Properties/launchSettings.json
-/SPMS.Web/.vscode
+**/Properties/launchSettings.json
+((/.vscode

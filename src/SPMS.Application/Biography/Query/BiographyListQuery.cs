@@ -22,9 +22,9 @@ namespace SPMS.Application.Biography.Query
         {
             private readonly ISpmsContext _db;
             private readonly IMapper _mapper;
-            private readonly ITenantProvider _tenant;
+            private readonly ITenantAccessor<TenantDto> _tenant;
 
-            public BiographyListQueryHandler(ISpmsContext db, IMapper mapper, ITenantProvider tenant)
+            public BiographyListQueryHandler(ISpmsContext db, IMapper mapper, ITenantAccessor<TenantDto> tenant)
             {
                 _db = db;
                 _mapper = mapper;
@@ -33,12 +33,7 @@ namespace SPMS.Application.Biography.Query
 
             public async Task<BiographiesDto> Handle(BiographyListQuery request, CancellationToken cancellationToken)
             {
-                var game = await _tenant.GetTenantAsync(cancellationToken);
-                //var bio = await _db.Biography.Include(x => x.State).Include(x => x.Status).ToListAsync(cancellationToken: cancellationToken);
-                //var bioDto = await _db.Biography.Include(x => x.State)
-                //    .Include(x => x.Status)
-                //    .Where(x => x.Posting.GameId == game.Id)
-                //    .ProjectTo<Application.Dtos.BiographyDto>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken: cancellationToken);
+                var game = _tenant.Instance;
                 var dto = new BiographiesDto
                 {
                     Postings = await _db.Posting.Where(x => x.Name != "Undefined").OrderBy(x => x.Name).ToListAsync(cancellationToken: cancellationToken),

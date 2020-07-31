@@ -11,11 +11,11 @@ using SPMS.Application.Character.Command;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Mappings;
 using SPMS.Application.Services;
+using SPMS.Application.Tests.Common;
 using SPMS.Common;
 using SPMS.Domain.Models;
 using SPMS.Persistence.MSSQL;
 using Xunit;
-using SpmsContextFactory = SPMS.Application.Tests.Common.SpmsContextFactory;
 
 namespace SPMS.Application.Tests.Character.Command
 {
@@ -79,7 +79,7 @@ namespace SPMS.Application.Tests.Character.Command
         public Mock<IGameService> MockGameService { get; set; }
         public UpdateCharacterCommandFixture()
         {
-            Context = SpmsContextFactory.Create();
+            Context = TestSpmsContextFactory.Create();
             var posting = new Posting() {Name = "Posting", GameId = 1, Default = true};
             Context.Posting.Add(posting);
             var biographyType = new BiographyType() { Default = true, GameId = 1, Name = StaticValues.BioTypePlayer};

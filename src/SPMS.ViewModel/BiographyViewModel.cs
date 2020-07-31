@@ -1,6 +1,6 @@
 ﻿namespace SPMS.ViewModel
 {
-    public class ViewModelWithId : SPMS.Common.ViewModels.ViewModel
+    public class ViewModelWithId : SPMS.Common.ViewModels.BaseViewModel
     {
         public string Id { get; set; }
     }

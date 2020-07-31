@@ -7,12 +7,10 @@ namespace SPMS.Application.Tests.Mapping
 {
     public class ApplicationMappingsTest : IClassFixture<ApplicationMappingsFixture>
     {
-        private readonly IConfigurationProvider _configuration;
         private readonly IMapper _mapper;
 
         public ApplicationMappingsTest(ApplicationMappingsFixture fixture) 
         {
-            _configuration = fixture.ConfigurationProvider;
             _mapper = fixture.Mapper;
         }
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SPMS.ViewModel.Rules
 {
-    public class RulesViewModel : SPMS.Common.ViewModels.ViewModel
+    public class RulesViewModel : SPMS.Common.ViewModels.BaseViewModel
     {
     }
 }

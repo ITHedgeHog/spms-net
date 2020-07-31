@@ -1,0 +1,6 @@
+﻿@if (TempData.ContainsKey("message") && !string.IsNullOrEmpty(TempData["message"].ToString()))
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["Message"]
+    </div>
+}

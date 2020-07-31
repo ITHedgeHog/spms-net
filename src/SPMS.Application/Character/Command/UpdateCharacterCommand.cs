@@ -75,6 +75,7 @@ namespace SPMS.Application.Character.Command
                     if (!entity.TypeId.HasValue)
                         entity.TypeId = (await _context.BiographyTypes.FirstAsync(x => x.Default && x.GameId == gameId, cancellationToken: cancellationToken)).Id;
                     entity.PlayerId = _userService.GetId();
+                    entity.GameId = gameId;
 
                     await _context.Biography.AddAsync(entity, cancellationToken);
                     await _context.SaveChangesAsync(cancellationToken);
