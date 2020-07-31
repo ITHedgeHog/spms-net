@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using SPMS.WebShared.Infrastructure.Extensions;
 
 namespace SPMS.WebShared.Infrastructure.Middlware
@@ -8,12 +9,14 @@ namespace SPMS.WebShared.Infrastructure.Middlware
     public class TenantFilesMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<TenantFilesMiddleware> _logger;
 
 
         public TenantFilesMiddleware(
-            RequestDelegate next)
+            RequestDelegate next, ILogger<TenantFilesMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -25,8 +28,9 @@ namespace SPMS.WebShared.Infrastructure.Middlware
             {
                 //remove the prefix portion of the path
                 var originalPath = context.Request.Path;
+                _logger.LogInformation($"Original path {originalPath}");
                 var tenantFolder = tenantContext.Uuid.ToString();
-
+                _logger.LogInformation($"Tenant Folder {tenantFolder}");
                 var paths = context.Request.Path.ToString().Split('/').ToList();
                 if (paths.Any())
                 {
@@ -34,8 +38,9 @@ namespace SPMS.WebShared.Infrastructure.Middlware
                     paths.RemoveAt(0);
                 }
                 var filePath = string.Join<string>('/', paths);
+                _logger.LogInformation($"New filePath {filePath}");
                 var newPath = new PathString($"/tenantfiles/{tenantFolder}/{filePath}");
-
+                _logger.LogInformation($"NewPath {newPath}");
                 context.Request.Path = newPath;
 
                 if(_next != null)
@@ -60,7 +65,7 @@ namespace SPMS.WebShared.Infrastructure.Middlware
 
         public async Task Invoke(HttpContext context)
         {
-            var tenantContext = HttpContextExtensions.GetTenant(context);
+            var tenantContext = context.GetTenant();
 
             if (tenantContext != null)
             {
