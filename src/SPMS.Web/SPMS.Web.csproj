@@ -12,43 +12,536 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Extensions\**" />
-    <Compile Remove="Services\**" />
-    <Compile Remove="ViewLocationExpander\**" />
-    <Compile Remove="ViewModel\**" />
-    <Content Remove="Extensions\**" />
-    <Content Remove="Services\**" />
-    <Content Remove="ViewLocationExpander\**" />
-    <Content Remove="ViewModel\**" />
-    <EmbeddedResource Remove="Extensions\**" />
-    <EmbeddedResource Remove="Services\**" />
-    <EmbeddedResource Remove="ViewLocationExpander\**" />
-    <EmbeddedResource Remove="ViewModel\**" />
-    <None Remove="Extensions\**" />
-    <None Remove="Services\**" />
-    <None Remove="ViewLocationExpander\**" />
-    <None Remove="ViewModel\**" />
-    <TypeScriptCompile Remove="Extensions\**" />
-    <TypeScriptCompile Remove="node_modules\**" />
-    <TypeScriptCompile Remove="Services\**" />
-    <TypeScriptCompile Remove="ViewLocationExpander\**" />
-    <TypeScriptCompile Remove="ViewModel\**" />
+    <Compile Include="Extensions\**" />
+    <Compile Include="Services\**" />
+    <Compile Include="ViewLocationExpander\**" />
+    <Compile Include="ViewModel\**" />
+    <Content Include="Extensions\**" />
+    <Content Include="Services\**" />
+    <Content Include="ViewLocationExpander\**" />
+    <Content Include="ViewModel\**" />
+    <EmbeddedResource Include="Extensions\**" />
+    <EmbeddedResource Include="Services\**" />
+    <EmbeddedResource Include="ViewLocationExpander\**" />
+    <EmbeddedResource Include="ViewModel\**" />
+    <None Include="Extensions\**" />
+    <None Include="Services\**" />
+    <None Include="ViewLocationExpander\**" />
+    <None Include="ViewModel\**" />
+    <None Include="tenantfiles\**" />
+    <TypeScriptCompile Include="Extensions\**" />
+    <TypeScriptCompile Include="node_modules\**" />
+    <TypeScriptCompile Include="Services\**" />
+    <TypeScriptCompile Include="ViewLocationExpander\**" />
+    <TypeScriptCompile Include="ViewModel\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Remove="stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\img\branding.jpg" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-144x144.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-192x192.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-36x36.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-48x48.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-72x72.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-96x96.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-114x114.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-120x120.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-144x144.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-152x152.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-180x180.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-57x57.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-60x60.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-72x72.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-76x76.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-precomposed.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\browserconfig.xml" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\css\markdown-editor.css" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\css\pulse.css" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\css\simplemde.min.css" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\css\site.css" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\favicon-16x16.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\favicon-32x32.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\favicon-96x96.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\favicon.ico" />
     <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg" />
-    <None Remove="tenantfiles\6D769C55-9886-48DF-9454-188D6762A7C3\img\branding.jpg" />
-    <None Remove="Themes\Aquarius\wwwroot\img\branding.jpg" />
-    <None Remove="Themes\BtD\wwwroot\img\branding.jpg" />
-    <None Remove="Themes\Default\wwwroot\img\branding.jpg" />
-    <None Remove="Themes\ShadesOfGrey\wwwroot\img\branding.jpg" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\default-avatar.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\ms-icon-144x144.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\ms-icon-150x150.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\ms-icon-310x310.png" />
+    <None Remove="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\ms-icon-70x70.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-144x144.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-192x192.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-36x36.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-48x48.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-72x72.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-96x96.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-114x114.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-120x120.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-144x144.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-152x152.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-180x180.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-57x57.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-60x60.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-72x72.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-76x76.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-precomposed.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\browserconfig.xml" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\css\markdown-editor.css" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\css\pulse.css" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\css\simplemde.min.css" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\css\site.css" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\favicon-16x16.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\favicon-32x32.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\favicon-96x96.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\favicon.ico" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\img\branding.jpg" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\img\default-avatar.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\ms-icon-144x144.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\ms-icon-150x150.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\ms-icon-310x310.png" />
+    <None Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\ms-icon-70x70.png" />
+    <None Remove="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\android-icon-144x144.png" />
+    <None Remove="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\css\markdown-editor.css" />
+    <None Remove="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\css\pulse.css" />
+    <None Remove="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\css\simplemde.min.css" />
+    <None Remove="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\css\site.css" />
+    <None Remove="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\img\branding.jpg" />
+    <None Remove="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\img\default-avatar.png" />
+    <None Remove="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\22nd-member-sim.png" />
+    <None Remove="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\star-wars.png" />
   </ItemGroup>
 
+  <!--<ItemGroup>
+    <Content Include="stylecop.json" />
+  </ItemGroup>-->
+  <!--<ItemGroup>
+    <Content Include="tenantfiles\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>-->
+  <ItemGroup>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-192x192.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-48x48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-72x72.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\android-icon-96x96.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-114x114.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-120x120.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-152x152.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-180x180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-57x57.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-60x60.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-72x72.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-76x76.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon-precomposed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\apple-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\browserconfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\css\markdown-editor.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\css\pulse.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\css\simplemde.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\css\site.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\favicon-16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\favicon-32x32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\favicon-96x96.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\default-avatar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\ms-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\ms-icon-150x150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\ms-icon-310x310.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\ms-icon-70x70.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-192x192.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-48x48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-72x72.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\android-icon-96x96.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-114x114.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-120x120.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-152x152.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-180x180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-57x57.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-60x60.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-72x72.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-76x76.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon-precomposed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\apple-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\browserconfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\css\markdown-editor.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\css\pulse.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\css\simplemde.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\css\site.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\favicon-16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\favicon-32x32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\favicon-96x96.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\img\branding.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\img\default-avatar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\ms-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\ms-icon-150x150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\ms-icon-310x310.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\ms-icon-70x70.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\android-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\android-icon-192x192.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\android-icon-36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\android-icon-48x48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\android-icon-72x72.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\android-icon-96x96.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon-114x114.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon-120x120.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon-152x152.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon-180x180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon-57x57.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon-60x60.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon-72x72.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon-76x76.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon-precomposed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\apple-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\browserconfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\css\markdown-editor.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\css\pulse.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\css\simplemde.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\css\site.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\favicon-16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\favicon-32x32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\favicon-96x96.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\img\branding.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\img\default-avatar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\ms-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\ms-icon-150x150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\ms-icon-310x310.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\ms-icon-70x70.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\android-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\android-icon-192x192.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\android-icon-36x36.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\android-icon-48x48.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\android-icon-72x72.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\android-icon-96x96.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon-114x114.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon-120x120.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon-152x152.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon-180x180.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon-57x57.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon-60x60.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon-72x72.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon-76x76.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon-precomposed.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\apple-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\browserconfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\css\markdown-editor.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\css\pulse.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\css\simplemde.min.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\css\site.css">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\favicon-16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\favicon-32x32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\favicon-96x96.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\22nd-member-sim.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\bounty1.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\bounty2.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\branding.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\deathmark.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\default-avatar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\isd1.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\lambda_shuttle.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\neb_xwing1.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\neb_ywing1.PNG">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\rogue-one-movie-screencaps.com-11644.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\rogue-one-movie-screencaps.com-11656.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\star-wars.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\x-wing-tie-fighter-1536x864-758041997114.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\ms-icon-144x144.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\ms-icon-150x150.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\ms-icon-310x310.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\ms-icon-70x70.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Automapper" Version="10.0.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
@@ -56,7 +549,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-<PackageReference Include="MessagePack" Version="1.9.11" />
+    <PackageReference Include="MessagePack" Version="1.9.11" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.14.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="3.1.6" />
@@ -65,6 +558,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.StackExchangeRedis" Version="3.1.6" />
     <PackageReference Include="Microsoft.Azure.AppConfiguration.AspNetCore" Version="3.0.2" />
     <PackageReference Include="Microsoft.Azure.SignalR" Version="1.5.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.ApplicationInsights" Version="2.14.0" />
     <PackageReference Include="Microsoft.FeatureManagement.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.Identity.Web" Version="0.1.5-preview" />
     <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="3.9.7">
@@ -83,7 +577,6 @@
     <PackageReference Include="System.ServiceModel.Syndication" Version="4.7.0" />
     <PackageReference Include="Westwind.AspNetCore.Markdown" Version="3.3.8" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Areas\admin\Data\" />
     <Folder Include="Areas\admin\Models\" />
@@ -92,6 +585,7 @@
     <Folder Include="Areas\player\Models\" />
     <Folder Include="Areas\player\Mapper\" />
     <Folder Include="Areas\player\ViewModels\" />
+    <Folder Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\js\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -103,15 +597,17 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-    <Content Update="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\manifest.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    <Content Update="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\tsconfig.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    <Content Update="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
 
@@ -121,7 +617,7 @@
     <TypeScriptModuleKind>ES6</TypeScriptModuleKind>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
-    <TypeScriptRemoveComments>False</TypeScriptRemoveComments>
+    <TypeScriptIncludeComments>False</TypeScriptIncludeComments>
     <TypeScriptOutFile />
     <TypeScriptOutDir />
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
@@ -132,54 +628,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\admin\Views\Shared\_Layout.cshtml" />
+    <UpToDateCheckInput Include="Areas\admin\Views\Shared\_Layout.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="Areas\admin\Views\Shared\_Layout.cshtml" />
-    <_ContentIncludedByDefault Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
-    <_ContentIncludedByDefault Remove="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\js\signalr\package.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <UpToDateCheckInput Remove="Areas\admin\Views\Shared\_Nav.cshtml" />
+    <UpToDateCheckInput Include="Areas\admin\Views\Shared\_Nav.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <AdditionalFiles Include="stylecop.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="tenantfiles\6a687182-5e68-41bb-b034-a46454074c90\img\branding.jpg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\img\branding.jpg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-
-    <Content Include="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\img\branding.jpg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Themes\Aquarius\wwwroot\img\branding.jpg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Themes\BtD\wwwroot\img\branding.jpg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Themes\Default\wwwroot\img\branding.jpg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Include="Themes\ShadesOfGrey\wwwroot\img\branding.jpg">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-
   </ItemGroup>
 
   <ItemGroup>
@@ -196,7 +653,6 @@
     <ProjectReference Include="..\SPMS.Persistence\SPMS.Persistence.csproj" />
     <ProjectReference Include="..\SPMS.ViewModel\SPMS.ViewModel.csproj" />
     <ProjectReference Include="..\SPMS.WebShared\SPMS.WebShared.csproj" />
-
   </ItemGroup>
 
 </Project>
