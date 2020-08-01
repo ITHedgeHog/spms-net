@@ -32,12 +32,15 @@ namespace SPMS.Application.Authoring.Command.PublishAllPendingPosts
                     (await _db.EpisodeEntryStatus.FirstAsync(x => x.Name == StaticValues.Pending,
                         cancellationToken: cancellationToken).ConfigureAwait(true)).Id;
 
-                var entitiesToPublish = await _db.EpisodeEntry.Where(x => x.EpisodeEntryStatusId == pendingId && x.PublishedAt <= now).ToListAsync(cancellationToken).ConfigureAwait(true);
+                var entitiesToPublish = await _db.EpisodeEntry.Where(x => x.EpisodeEntryStatusId == pendingId && (x.PublishedAt <= now || x.PublishedAt.HasValue == false)).ToListAsync(cancellationToken).ConfigureAwait(true);
 
                 if (!entitiesToPublish.Any()) return false;
 
                 foreach (var entity in entitiesToPublish)
                 {
+                    if(entity.PublishedAt.HasValue == false)
+                        entity.PublishedAt = DateTime.UtcNow;
+
                     entity.EpisodeEntryStatusId = publishedId;
                 }
 
