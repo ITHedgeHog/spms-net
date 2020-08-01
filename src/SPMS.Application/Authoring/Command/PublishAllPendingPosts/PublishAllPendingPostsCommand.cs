@@ -34,7 +34,7 @@ namespace SPMS.Application.Authoring.Command.PublishAllPendingPosts
 
                 var entitiesToPublish = await _db.EpisodeEntry.Where(x => x.EpisodeEntryStatusId == pendingId && x.PublishedAt <= now).ToListAsync(cancellationToken).ConfigureAwait(true);
 
-                if (entitiesToPublish == null) return false;
+                if (!entitiesToPublish.Any()) return false;
 
                 foreach (var entity in entitiesToPublish)
                 {

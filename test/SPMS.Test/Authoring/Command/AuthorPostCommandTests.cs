@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using Shouldly;
 using SPMS.Application.Authoring.Command.CreatePost;
@@ -31,13 +32,37 @@ namespace SPMS.Application.Tests.Authoring.Command
             var mediatorMock = new Mock<IMediator>();
             var sut = new CreatePost.CreatePostHandler(_db, _tenant,  _userService);
 
+            var result = await sut.Handle(new CreatePost(), CancellationToken.None);
+
+            result.ShouldBe<int>(1);
+
+            _db.EpisodeEntry
+                .Include(x => x.Episode)
+                .ThenInclude(x => x.Series)
+                .Count(x => x.Episode.Series.GameId == _tenant.Instance.Id).ShouldBe(1);
+        }
+
+        [Fact]
+        public async void ShouldCreateNewPostForGame15()
+        {
+            var mockTenantAccessor = new Mock<ITenantAccessor<TenantDto>>();
+            mockTenantAccessor.Setup(x => x.Instance).Returns(new TenantDto() { Id = 15, GameName = "Test Game" });
+            var mockUserService = new Mock<IUserService>();
+            mockUserService.Setup(x => x.GetId()).Returns(1);
+            //UserService = mockUserService.Object;
+            var mediatorMock = new Mock<IMediator>();
+            var sut = new CreatePost.CreatePostHandler(_db, mockTenantAccessor.Object, mockUserService.Object);
 
             var result = await sut.Handle(new CreatePost(), CancellationToken.None);
 
             result.ShouldBe<int>(1);
 
-            _db.EpisodeEntry.Count().ShouldBe(1);
+            _db.EpisodeEntry
+                .Include(x => x.Episode)
+                .ThenInclude(x => x.Series)
+                .Count(x => x.Episode.Series.GameId == mockTenantAccessor.Object.Instance.Id).ShouldBe(1);
         }
+
     }
     public class AuthorPostCommandTestsFixture : IDisposable
     {

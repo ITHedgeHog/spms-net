@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Common;
 
@@ -22,16 +23,19 @@ namespace SPMS.Application.Authoring.Command.NotifyDiscord
             private readonly ISpmsContext _db;
             private readonly IMediator _mediator;
             private readonly IBackgroundIdentifierMask _mask;
+            private readonly ILogger<NotifyDiscordCmdHandler> _logger;
 
-            public NotifyDiscordCmdHandler(ISpmsContext db, IMediator mediator, IBackgroundIdentifierMask mask)
+            public NotifyDiscordCmdHandler(ISpmsContext db, IMediator mediator, IBackgroundIdentifierMask mask, ILogger<NotifyDiscordCmdHandler> logger)
             {
                 _db = db;
                 _mediator = mediator;
                 _mask = mask;
+                _logger = logger;
             }
 
             public async Task<int> Handle(NotifyDiscordCmd request, CancellationToken cancellationToken)
             {
+                var itemsSent = 0;
                 var itemsToPost = _db.EpisodeEntry.Include(e => e.EpisodeEntryStatus)
                     .Include(e => e.EpisodeEntryType)
                     .Include(e => e.Episode)
@@ -56,16 +60,25 @@ namespace SPMS.Application.Authoring.Command.NotifyDiscord
                         WebHookUrl = item.Episode.Series.Game.DiscordWebHook,
                         Message = $"New Post {url} by {item.LastModifiedBy} @ {item.PublishedAt}",
                     };
+                    _logger.LogInformation($"Created {cmd.WebHookUrl} and {cmd.Message}");
 
-                    await _mediator.Publish(cmd, cancellationToken);
+                    try
+                    {
+                        await _mediator.Publish(cmd, cancellationToken);
 
-                    item.IsPostedToDiscord = true;
-                    _db.EpisodeEntry.Update(item);
+                        item.IsPostedToDiscord = true;
+                        _db.EpisodeEntry.Update(item);
+                        itemsSent++;
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, ex.Message);
+                    }
                 }
 
                 await _db.SaveChangesAsync(cancellationToken);
 
-                return itemsToPost.Count;
+                return itemsSent;
             }
         }
 
