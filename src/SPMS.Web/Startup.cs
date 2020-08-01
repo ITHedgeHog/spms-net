@@ -80,10 +80,11 @@ namespace SPMS.Web
             }).AddEntityFramework();
 
             services.AddMarkdown();
-
-            
-            services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter)))
-                .AddRazorRuntimeCompilation().AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
+            var mvc = services.AddControllersWithViews(opt => opt.Filters.Add(typeof(ViewModelFilter)))
+                .AddApplicationPart(typeof(MarkdownPageProcessorMiddleware).Assembly);
+            #if DEBUG
+            mvc.AddRazorRuntimeCompilation();
+            #endif
             services.Configure<RazorViewEngineOptions>(options =>
                 {
                     options.ViewLocationExpanders.Add(new SpmsTenantThemeExpander());

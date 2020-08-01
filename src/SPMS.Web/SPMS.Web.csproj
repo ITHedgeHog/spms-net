@@ -585,7 +585,6 @@
     <Folder Include="Areas\player\Models\" />
     <Folder Include="Areas\player\Mapper\" />
     <Folder Include="Areas\player\ViewModels\" />
-    <Folder Include="tenantfiles\570eb444-a117-4d65-8cfe-15aaea2f4cf7\js\" />
   </ItemGroup>
 
   <ItemGroup>
