@@ -11,11 +11,13 @@ using Shouldly;
 using SPMS.Application.Authoring.Query;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Common.Mappings;
+using SPMS.Application.Dtos;
 using SPMS.Application.Dtos.Player;
 using SPMS.Application.Tests.Common;
 using SPMS.Common;
 using SPMS.Domain.Models;
 using SPMS.Persistence.MSSQL;
+using SPMS.Web.Infrastructure.Services;
 using Xunit;
 
 namespace SPMS.Application.Tests.Authoring.Query
@@ -24,11 +26,13 @@ namespace SPMS.Application.Tests.Authoring.Query
     {
         private readonly SpmsContext _db;
         private readonly IMapper _mapper;
+        private ITenantAccessor<TenantDto> _tenantAccessor;
 
         public WritingPortalQueryTests(WritingPortalQueryFixture fixture)
         {
             _db = fixture.Context;
             _mapper = fixture.Mapper;
+            _tenantAccessor = fixture.TenantAccessor;
         }
 
         [Fact]
@@ -36,8 +40,9 @@ namespace SPMS.Application.Tests.Authoring.Query
         {
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(x => x.GetId()).Returns(1);
+            
             var request = new WritingPortalQuery();
-            var sut = new WritingPortalQuery.WritingPortalQueryHandler(_db, mockUserService.Object, _mapper);
+            var sut = new WritingPortalQuery.WritingPortalQueryHandler(_db, mockUserService.Object, _mapper, _tenantAccessor);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -55,7 +60,7 @@ namespace SPMS.Application.Tests.Authoring.Query
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(x => x.GetId()).Returns(1);
             var request = new WritingPortalQuery();
-            var sut = new WritingPortalQuery.WritingPortalQueryHandler(_db, mockUserService.Object, _mapper);
+            var sut = new WritingPortalQuery.WritingPortalQueryHandler(_db, mockUserService.Object, _mapper, _tenantAccessor);
 
             var result = await sut.Handle(request, CancellationToken.None);
 
@@ -69,6 +74,7 @@ namespace SPMS.Application.Tests.Authoring.Query
     {
         public SpmsContext Context { get; set; }
         public IMapper Mapper { get; set; }
+        public ITenantAccessor<TenantDto> TenantAccessor { get; set; }
         public WritingPortalQueryFixture()
         {
             Context = TestSpmsContextFactory.Create();
@@ -119,6 +125,10 @@ namespace SPMS.Application.Tests.Authoring.Query
             });
 
             Mapper = configurationProvider.CreateMapper();
+
+            var mockTenantAccessor = new Mock<ITenantAccessor<TenantDto>>();
+            mockTenantAccessor.Setup(x => x.Instance).Returns(new TenantDto(){ Id = 1, GameName = "Test Game"});
+            TenantAccessor = mockTenantAccessor.Object;
 
         }
 

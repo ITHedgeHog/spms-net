@@ -110,6 +110,7 @@
     <None Remove="tenantfiles\6d769c55-9886-48df-9454-188d6762a7c3\img\default-avatar.png" />
     <None Remove="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\22nd-member-sim.png" />
     <None Remove="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\img\star-wars.png" />
+    <None Remove="Themes\Default\TextFile.txt" />
   </ItemGroup>
 
   <!--<ItemGroup>
@@ -541,6 +542,9 @@
     <Content Include="tenantfiles\ee29af14-d3a0-41be-aa18-f3d487e6f6dd\ms-icon-70x70.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Themes\Default\TextFile.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Automapper" Version="10.0.0" />
@@ -585,6 +589,9 @@
     <Folder Include="Areas\player\Models\" />
     <Folder Include="Areas\player\Mapper\" />
     <Folder Include="Areas\player\ViewModels\" />
+    <Folder Include="Themes\BtD\" />
+    <Folder Include="Themes\Aquarius\" />
+    <Folder Include="Themes\ShadesOfGrey\" />
   </ItemGroup>
 
   <ItemGroup>
