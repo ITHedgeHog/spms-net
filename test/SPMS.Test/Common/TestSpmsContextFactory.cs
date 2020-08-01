@@ -36,7 +36,7 @@ namespace SPMS.Application.Tests.Common
             context.EpisodeEntryType.Add(new EpisodeEntryType() { Name = StaticValues.PersonalLog });
             context.SaveChanges();
 
-            var game = new Game() { SiteTitle = "Test Game", Description = "The test game", Name = "Test Game", Author = "Dan Taylor & Evan Scown", Keywords = "", RobotsText = "", IsTest = true, IsSpiderable = true, Url = new Collection<GameUrl>(){new GameUrl(){ Url = "localhost"}}};
+            var game = new Game() { SiteTitle = "Test Game", Description = "The test game", Name = "Test Game", Author = "Dan Taylor & Evan Scown", Keywords = "", RobotsText = "", IsTest = true, IsSpiderable = true, DiscordWebHook = "webhookurl", Url = new Collection<GameUrl>(){new GameUrl(){ Url = "localhost", IsPrimary = true}}};
             context.Game.Add(game);
             var series = new Series() {Game = game, Title = "Series 1", IsActive = true, GameId = game.Id};
             context.Series.Add(series);

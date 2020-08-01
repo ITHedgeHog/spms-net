@@ -32,10 +32,10 @@ namespace SPMS.Application.Authoring.Command.CreatePost
             public async Task<int> Handle(CreatePost request, CancellationToken cancellationToken)
             {
                 var gameId = _tenant.Instance.Id;
-                var activeEpisodeId = await _db.Episode
+                var episode = await _db.Episode
                     .Include(e => e.Series)
                     .Include(e => e.Status)
-                    .CountAsync(e => e.Series.GameId == gameId && (e.Status.Name == StaticValues.Published || e.Status.Name == StaticValues.Archived), cancellationToken: cancellationToken);
+                    .FirstAsync(e => e.Series.GameId == gameId && (e.Status.Name == StaticValues.Published), cancellationToken: cancellationToken);
                 
                 var entity = new EpisodeEntry();
                 var episodeEntryStatus = 
@@ -44,7 +44,7 @@ namespace SPMS.Application.Authoring.Command.CreatePost
                     cancellationToken: cancellationToken)).Id;
                 entity.EpisodeEntryTypeId = (await _db.EpisodeEntryType.FirstAsync(x => x.Name == StaticValues.Post,
                     cancellationToken: cancellationToken)).Id;
-                entity.EpisodeId = activeEpisodeId;
+                entity.EpisodeId = episode.Id;
                 await _db.EpisodeEntry.AddAsync(entity, cancellationToken: cancellationToken);
                 await _db.SaveChangesAsync(cancellationToken);
                 entity.EpisodeEntryPlayer =

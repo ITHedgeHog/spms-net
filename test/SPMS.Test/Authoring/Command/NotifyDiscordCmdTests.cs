@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Shouldly;
 using SPMS.Application.Authoring.Command.NotifyDiscord;
@@ -30,11 +32,21 @@ namespace SPMS.Application.Tests.Authoring.Command
         [Fact]
         public async Task ShouldReturn1()
         {
+            var inMemorySettings = new Dictionary<string, string>
+            {
+                {"NotificationDelay", "15"},
+            };
+
+            IConfiguration configuration = new ConfigurationBuilder()
+                .AddInMemoryCollection(inMemorySettings)
+                .Build();
             var cmd = new NotifyDiscordCmd();
             var mockMediator = new Mock<IMediator>();
             var mockIdentifierMask = new Mock<IBackgroundIdentifierMask>();
+            var mockLogger = new Mock<ILogger<NotifyDiscordCmd.NotifyDiscordCmdHandler>>();
 
-            var sut = new NotifyDiscordCmd.NotifyDiscordCmdHandler(_db, mockMediator.Object, mockIdentifierMask.Object);
+            var sut = new NotifyDiscordCmd.NotifyDiscordCmdHandler(_db, 
+                mockMediator.Object, mockIdentifierMask.Object, mockLogger.Object, configuration);
 
             var result = await sut.Handle(cmd, CancellationToken.None);
 

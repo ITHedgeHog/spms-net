@@ -9,6 +9,8 @@ using SPMS.Application.Authoring.Command.CreatePost;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Application.Dtos;
 using SPMS.Application.Tests.Common;
+using SPMS.Common;
+using SPMS.Domain.Models;
 using SPMS.Persistence.MSSQL;
 using Xunit;
 
@@ -49,7 +51,17 @@ namespace SPMS.Application.Tests.Authoring.Command
             mockTenantAccessor.Setup(x => x.Instance).Returns(new TenantDto() { Id = 15, GameName = "Test Game" });
             var mockUserService = new Mock<IUserService>();
             mockUserService.Setup(x => x.GetId()).Returns(1);
-            //UserService = mockUserService.Object;
+            // Add Series && Episode for Game 15
+            await _db.Series.AddAsync(new Series() {Title = "Game 15", IsActive = true, GameId = 15});
+            await _db.SaveChangesAsync(CancellationToken.None);
+            await _db.Episode.AddAsync(new Episode()
+            {
+                SeriesId = _db.Series.First(x => x.GameId == 15).Id,
+                Title = "Episode 1",
+                StatusId = _db.EpisodeStatus.First(x => x.Name == StaticValues.Published).Id,
+            });
+            await _db.SaveChangesAsync(CancellationToken.None);
+            
             var mediatorMock = new Mock<IMediator>();
             var sut = new CreatePost.CreatePostHandler(_db, mockTenantAccessor.Object, mockUserService.Object);
 
@@ -60,7 +72,13 @@ namespace SPMS.Application.Tests.Authoring.Command
             _db.EpisodeEntry
                 .Include(x => x.Episode)
                 .ThenInclude(x => x.Series)
-                .Count(x => x.Episode.Series.GameId == mockTenantAccessor.Object.Instance.Id).ShouldBe(1);
+                .Count(x => x.Episode.Series.GameId == 15).ShouldBe(1);
+
+             _db.EpisodeEntry
+                .Include(x => x.Episode)
+                .ThenInclude(x => x.Series)
+                .Include(x => x.EpisodeEntryPlayer)
+                .Any(x => x.EpisodeEntryPlayer.Any()).ShouldBeTrue();
         }
 
     }

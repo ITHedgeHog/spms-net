@@ -9,6 +9,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SPMS.Application.Common.Interfaces;
 using SPMS.Common;
@@ -24,17 +25,20 @@ namespace SPMS.Application.Authoring.Command.NotifyDiscord
             private readonly IMediator _mediator;
             private readonly IBackgroundIdentifierMask _mask;
             private readonly ILogger<NotifyDiscordCmdHandler> _logger;
+            private readonly int _notificationDelay;
 
-            public NotifyDiscordCmdHandler(ISpmsContext db, IMediator mediator, IBackgroundIdentifierMask mask, ILogger<NotifyDiscordCmdHandler> logger)
+            public NotifyDiscordCmdHandler(ISpmsContext db, IMediator mediator, IBackgroundIdentifierMask mask, ILogger<NotifyDiscordCmdHandler> logger, IConfiguration configuration)
             {
                 _db = db;
                 _mediator = mediator;
                 _mask = mask;
                 _logger = logger;
+                _notificationDelay = configuration.GetValue<int>("NotificationDelay", 15);
             }
 
             public async Task<int> Handle(NotifyDiscordCmd request, CancellationToken cancellationToken)
             {
+                
                 var itemsSent = 0;
                 var itemsToPost = _db.EpisodeEntry.Include(e => e.EpisodeEntryStatus)
                     .Include(e => e.EpisodeEntryType)
@@ -42,7 +46,10 @@ namespace SPMS.Application.Authoring.Command.NotifyDiscord
                     .ThenInclude(e => e.Series)
                     .ThenInclude(e => e.Game)
                     .ThenInclude(e => e.Url)
-                    .Where(x => x.EpisodeEntryStatus.Name == StaticValues.Published && x.PublishedAt <= DateTime.UtcNow && x.IsPostedToDiscord == false && x.Episode.Series.Game.IsReadonly == false)
+                    .Where(x => x.EpisodeEntryStatus.Name == StaticValues.Published 
+                                && x.PublishedAt.Value.AddMinutes(_notificationDelay) <= DateTime.UtcNow 
+                                && x.IsPostedToDiscord == false 
+                                && x.Episode.Series.Game.IsReadonly == false)
                     .OrderBy(x => x.Episode.Series.GameId)
                     .ThenBy(x => x.Timeline)
                     .ToList();
