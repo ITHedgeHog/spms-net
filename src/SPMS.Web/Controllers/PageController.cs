@@ -19,17 +19,19 @@ namespace SPMS.Web.Controllers
         /// </returns>
         public IActionResult Show(string slug)
         {
-            if (slug.Equals("faq"))
-            {
-                return View("faq");
-            }
-
             // todo: grab from db.
             var page = new PageViewModel()
             {
                 UrlSlug = slug,
                 Content = "**Markdown Test** Blah blah blah",
             };
+            
+            if (slug.Equals("faq"))
+            {
+                return View("faq", page);
+            }
+
+            
 
             return View(page);
         }

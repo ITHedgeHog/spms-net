@@ -72,7 +72,7 @@ namespace SPMS.Application.Tests.Authoring.Command
             _db.EpisodeEntry
                 .Include(x => x.Episode)
                 .ThenInclude(x => x.Series)
-                .Count(x => x.Episode.Series.GameId == 15).ShouldBe(1);
+                .Count(x => x.Episode.Series.GameId == 15).ShouldBeGreaterThanOrEqualTo(1);
 
              _db.EpisodeEntry
                 .Include(x => x.Episode)
