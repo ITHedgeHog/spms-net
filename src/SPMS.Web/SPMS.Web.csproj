@@ -549,7 +549,6 @@
     <Folder Include="Areas\player\ViewModels\" />
     <Folder Include="Themes\BtD\" />
     <Folder Include="Themes\Aquarius\" />
-    <Folder Include="Themes\ShadesOfGrey\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,7 +9,7 @@ namespace SPMS.Web.Controllers
     public class PageController : Controller
     {
         /// <summary>
-        /// Show the page
+        /// Show the page.
         /// </summary>
         /// <param name="slug">
         /// The page slug.
@@ -19,6 +19,11 @@ namespace SPMS.Web.Controllers
         /// </returns>
         public IActionResult Show(string slug)
         {
+            if (slug.Equals("faq"))
+            {
+                return View("faq");
+            }
+
             // todo: grab from db.
             var page = new PageViewModel()
             {
