@@ -36,7 +36,7 @@ namespace SPMS.Application.Tests.Authoring.Command
 
             var result = await sut.Handle(new CreatePost(), CancellationToken.None);
 
-            result.ShouldBe<int>(2);
+            result.ShouldBe<int>(1);
 
             _db.EpisodeEntry
                 .Include(x => x.Episode)
@@ -67,7 +67,7 @@ namespace SPMS.Application.Tests.Authoring.Command
 
             var result = await sut.Handle(new CreatePost(), CancellationToken.None);
 
-            result.ShouldBe<int>(1);
+            result.ShouldBe<int>(2);
 
             _db.EpisodeEntry
                 .Include(x => x.Episode)
